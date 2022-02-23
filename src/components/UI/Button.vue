@@ -1,32 +1,39 @@
 <template>
-  <div class="flex">
-    <button class="button">Book a ticket</button>
-    <button class="button button__brand">Book a ticket</button>
-    <button class="button button_brand button__brand__empty">
-      Book a ticket
-    </button>
-    <button class="button button__brand__empty__borderless">
-      Book a ticket
-    </button>
-    <button class="button button__primary">Book a ticket</button>
-    <button class="button button__primary__selected">Book a ticket</button>
-  </div>
+  <button v-bind:class="applyClass"><slot></slot></button>
 </template>
 
 <script>
+export default {
+  props: {
+    variation: {
+      type: String,
+      required: true,
+    },
+  },
+  computed: {
+    applyClass() {
+      const variationTrimmed = this.variation.trim();
+      const classes = variationTrimmed.split(" ").join("__");
+      return `button button__${classes}`;
+    },
+  },
+};
+
+/* <Button class="brand">Book a ticket</button> */
+/* <Button class="brand empty"> */
+/*   Book a ticket */
+/* </Button> */
+/* <Button class="brand empty borderless"> */
+/*   Book a ticket */
+/* </Button> */
+/* <Button variation="button primary">Book a ticket</button> */
+/* <Button variation="button primary  selected">Book a ticket</button> */
+
 /* TODO: arrow versions for each of the buttons */
 /* TODO : use separate class for font sizes*/
 </script>
 
 <style lang="scss">
-.flex {
-  max-width: 500px;
-  margin-inline: auto;
-  gap: 10px;
-  display: inline-flex;
-  flex-direction: column;
-}
-
 .button {
   font-size: 1.125rem; /* 18px */
   padding: 1em 2.222em; /* 18px 40px  */

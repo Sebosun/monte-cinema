@@ -2,19 +2,22 @@
   <div id="app">
     <h1 class="title">Welcome to the best Cinema in Monterail</h1>
     <br />
-    <Buttons />
+    <Button variation="brand">Hello Vue</Button>
+    <Button variation="brand empty">Hello Vue</Button>
+    <Button variation="brand empty borderless">Hello Vue</Button>
     <MovieCard />
+    <div class="background--rose">:)</div>
   </div>
 </template>
 
 <script>
-import Buttons from "./components/UI/Buttons.vue";
+import Button from "./components/UI/Button.vue";
 import MovieCard from "./components/UI/MovieCard.vue";
 
 export default {
   name: "App",
   components: {
-    Buttons,
+    Button,
     MovieCard,
   },
 };
@@ -27,6 +30,10 @@ export default {
 
 :root {
   font-family: "Roboto", sans-serif;
+}
+
+.background--rose {
+  background-color: var(--color-rose);
 }
 
 .title {
