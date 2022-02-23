@@ -15,6 +15,7 @@
 
 <script>
 /* TODO: arrow versions for each of the buttons */
+/* TODO : use separate class for font sizes*/
 </script>
 
 <style lang="scss">

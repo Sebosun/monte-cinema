@@ -3,16 +3,19 @@
     <h1 class="title">Welcome to the best Cinema in Monterail</h1>
     <br />
     <Buttons />
+    <MovieCard />
   </div>
 </template>
 
 <script>
 import Buttons from "./components/UI/Buttons.vue";
+import MovieCard from "./components/UI/MovieCard.vue";
 
 export default {
   name: "App",
   components: {
     Buttons,
+    MovieCard,
   },
 };
 </script>
