@@ -1,28 +1,26 @@
 <template>
   <div id="app">
-    <Header />
-    <h1 class="title">Welcome to the best Cinema in Monterail</h1>
+    <main-header />
+    <main class="main">
+      <hero-section class="background--rose" />
+    </main>
     <br />
-    <Button small variation="brand">Hello Vue</Button>
-    <Button medium variation="brand empty">Hello Vue</Button>
-    <Button large variation="primary">Hello Vue</Button>
-    <Button large variation="primary selected">Hello Vue</Button>
-    <MovieCard />
+    <movie-card />
     <div class="background--rose">:)</div>
   </div>
 </template>
 
 <script>
-import Button from "./components/UI/Button.vue";
-import MovieCard from "./components/UI/MovieCard.vue";
-import Header from "./components/Header.vue";
+import MovieCard from "./components/UI/MovieCard";
+import MainHeader from "./components/MainHeader";
+import HeroSection from "./components/HeroSection";
 
 export default {
   name: "App",
   components: {
-    Button,
     MovieCard,
-    Header,
+    MainHeader,
+    HeroSection,
   },
 };
 </script>
@@ -37,19 +35,22 @@ export default {
   font-family: "Roboto", sans-serif;
 }
 
+@include media-md {
+  #app {
+    margin-inline: 48px;
+  }
+}
+
 .background--rose {
   background-color: var(--color-rose);
 }
 
-.title {
+.font--header {
   font-family: Eczar;
-  font-size: 5rem;
   font-weight: 600;
-  line-height: 82px;
-  letter-spacing: -0.01em;
 }
-
-#app {
-  color: #2c3e50;
+.font--paragraph {
+  font-family: Roboto Mono;
+  font-weight: 400;
 }
 </style>
