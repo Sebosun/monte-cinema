@@ -5,13 +5,9 @@ TODO: Get vue svg loader to load svgs
     <button class="hamburgerButton">
       <HamburgerMenu />
     </button>
-    <nav class="header__navigation">
-      <ul>
-        <li>Contact Us</li>
-        <li>Screenings</li>
-        <li>Movies</li>
-      </ul>
-    </nav>
+
+    <header-navigation class="header__navigation" />
+
     <div class="header__actions">
       <Button variation="brand empty borderless">Register</Button>
       <Button variation="brand">Login</Button>
@@ -22,6 +18,7 @@ TODO: Get vue svg loader to load svgs
 <script>
 import MonteCinemaLogo from "../assets/monte cinema.svg";
 import HamburgerMenu from "../assets/navigation-menu 1.svg";
+import HeaderNavigation from "./header-navigation.vue";
 import Button from "./UI/Button.vue";
 
 export default {
@@ -29,6 +26,7 @@ export default {
     MonteCinemaLogo,
     HamburgerMenu,
     Button,
+    HeaderNavigation,
   },
 };
 </script>
@@ -52,7 +50,10 @@ export default {
 
   &__navigation {
     display: none;
+    max-width: 50%;
+    flex-grow: 1;
   }
+
   &__actions {
     display: none;
   }
@@ -64,7 +65,6 @@ export default {
 
     &__navigation {
       display: block;
-      flex-grow: 1;
       ul {
         list-style-type: none;
         display: flex;
