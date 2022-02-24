@@ -9,12 +9,37 @@ export default {
       type: String,
       required: true,
     },
+    small: {
+      type: Boolean,
+      default: false,
+    },
+    medium: {
+      type: Boolean,
+      default: false,
+    },
+    large: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     applyClass() {
+      let styles = "button button__";
       const variationTrimmed = this.variation.trim();
-      const classes = variationTrimmed.split(" ").join("__");
-      return `button button__${classes}`;
+      styles += variationTrimmed.split(" ").join("__");
+      styles += this.hasSize;
+      return styles;
+    },
+    hasSize() {
+      let sizeClasses = " ";
+      sizeClasses += this.small
+        ? "button--sm"
+        : this.medium
+        ? "button--md"
+        : this.large
+        ? "button--lg"
+        : "";
+      return sizeClasses == " " ? "" : sizeClasses;
     },
   },
 };
@@ -34,10 +59,20 @@ export default {
 </script>
 
 <style lang="scss">
-.button {
+.button--lg {
   font-size: 1.125rem; /* 18px */
   padding: 1em 2.222em; /* 18px 40px  */
+}
+.button--md {
+  font-size: 1rem;
+  padding: 0.75em 2em;
+}
+.button--sm {
+  font-size: 0.875rem;
+  padding: 1.714em 0.643em;
+}
 
+.button {
   color: inherit;
   background: inherit;
 

@@ -8,8 +8,8 @@
     <header-navigation class="header__navigation" />
 
     <div class="header__actions">
-      <Button variation="brand empty borderless">Register</Button>
-      <Button variation="brand">Login</Button>
+      <Button medium variation="brand empty borderless">Register</Button>
+      <Button medium variation="brand">Login</Button>
     </div>
   </header>
 </template>
@@ -34,11 +34,12 @@ export default {
 @import "../scss/_mixins.scss";
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 1.375rem 1.5rem;
   font-size: 1.125rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   .hamburgerButton {
     border: none;
