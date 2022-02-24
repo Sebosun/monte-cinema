@@ -7,12 +7,12 @@
       >
     </div>
     <movie-card class="soon__movies">
-      <div>
-        <h2>Predator</h2>
-        <div>1h 30 min</div>
+      <div class="soon__movies__data">
+        <h2 class="font--bold">Predator</h2>
+        <div class="font--bold">1h 30 min</div>
       </div>
       <img src="../assets/arnie.png" alt="arnie" />
-      <div>Action</div>
+      <div class="soon__movies__genres">Action</div>
     </movie-card>
   </section>
 </template>
@@ -49,6 +49,26 @@ export default { components: { UiButton, MovieCard } };
     h2 {
       margin: 0;
       padding: 0;
+      font-size: 36px;
+      line-height: 42px;
+    }
+    img {
+      height: 100%;
+      object-fit: cover;
+    }
+    &__data {
+      div {
+        color: var(--color-secondary);
+      }
+    }
+    &__genres {
+      font-size: 14px;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 24px;
+      max-width: fit-content;
+      color: var(--color-red);
+      background: var(--color-rose);
     }
   }
 }
