@@ -64,18 +64,16 @@ export default {
 
     &__navigation {
       display: block;
-      ul {
-        list-style-type: none;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        gap: 0.125rem;
-      }
     }
 
     &__actions {
       display: flex;
       flex-flow: wrap;
+    }
+  }
+  @media (min-width: 1200px) {
+    &__navigation {
+      max-width: 35%;
     }
   }
 }

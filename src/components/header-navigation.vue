@@ -8,7 +8,14 @@
   </nav>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+ul {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 0.125rem;
+}
 li {
   color: var(--color-secondary);
 }
