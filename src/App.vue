@@ -3,9 +3,10 @@
     <Header />
     <h1 class="title">Welcome to the best Cinema in Monterail</h1>
     <br />
-    <Button variation="brand">Hello Vue</Button>
-    <Button variation="brand empty">Hello Vue</Button>
-    <Button variation="brand empty borderless">Hello Vue</Button>
+    <Button small variation="brand">Hello Vue</Button>
+    <Button medium variation="brand empty">Hello Vue</Button>
+    <Button large variation="primary">Hello Vue</Button>
+    <Button large variation="primary selected">Hello Vue</Button>
     <MovieCard />
     <div class="background--rose">:)</div>
   </div>
@@ -29,7 +30,6 @@ export default {
 <style lang="scss">
 @import "./normalize.css";
 @import "./variables.css";
-
 @import "./scss/_mixins.scss";
 @import url("https://fonts.googleapis.com/css2?family=Eczar:wght@600&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;700&display=swap");
 

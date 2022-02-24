@@ -15,6 +15,7 @@
 </template>
 
 <script>
+/* TODO Hover effects */
 import MonteCinemaLogo from "../assets/monte cinema.svg";
 import HamburgerMenu from "../assets/navigation-menu 1.svg";
 import HeaderNavigation from "./header-navigation.vue";
