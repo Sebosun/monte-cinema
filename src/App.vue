@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Header />
     <h1 class="title">Welcome to the best Cinema in Monterail</h1>
     <br />
     <Button variation="brand">Hello Vue</Button>
@@ -13,12 +14,14 @@
 <script>
 import Button from "./components/UI/Button.vue";
 import MovieCard from "./components/UI/MovieCard.vue";
+import Header from "./components/Header.vue";
 
 export default {
   name: "App",
   components: {
     Button,
     MovieCard,
+    Header,
   },
 };
 </script>
