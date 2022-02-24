@@ -1,19 +1,17 @@
 <template>
   <div id="app">
     <main-header />
-    <hero-section />
+    <main class="main">
+      <hero-section class="background--rose" />
+    </main>
     <br />
-    <ui-button small variation="brand">Hello Vue</ui-button>
-    <ui-button medium variation="brand empty">Hello Vue</ui-button>
-    <ui-button large variation="primary">Hello Vue</ui-button>
-    <ui-button large variation="primary selected">Hello Vue</ui-button>
     <movie-card />
     <div class="background--rose">:)</div>
   </div>
 </template>
 
 <script>
-import UiButton from "./components/UI/UiButton";
+/* import UiButton from "./components/UI/UiButton"; */
 import MovieCard from "./components/UI/MovieCard";
 import MainHeader from "./components/MainHeader";
 import HeroSection from "./components/HeroSection";
@@ -21,7 +19,7 @@ import HeroSection from "./components/HeroSection";
 export default {
   name: "App",
   components: {
-    UiButton,
+    /* UiButton, */
     MovieCard,
     MainHeader,
     HeroSection,
@@ -43,12 +41,13 @@ export default {
   background-color: var(--color-rose);
 }
 
-.title {
+.font--header {
   font-family: Eczar;
-  font-size: 5rem;
   font-weight: 600;
-  line-height: 82px;
-  letter-spacing: -0.01em;
+}
+.font--paragraph {
+  font-family: Roboto Mono;
+  font-weight: 400;
 }
 
 #app {

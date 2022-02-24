@@ -65,7 +65,7 @@ export default {
 }
 .button--md {
   font-size: 1rem;
-  padding: 0.75em 2em;
+  padding: 0.95em 2em;
 }
 .button--sm {
   font-size: 0.875rem;
