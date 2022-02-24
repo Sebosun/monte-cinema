@@ -29,6 +29,8 @@ export default {
 <style lang="scss">
 @import "./normalize.css";
 @import "./variables.css";
+
+@import "./scss/_mixins.scss";
 @import url("https://fonts.googleapis.com/css2?family=Eczar:wght@600&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;700&display=swap");
 
 :root {

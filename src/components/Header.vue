@@ -31,6 +31,8 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../scss/_mixins.scss";
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -57,7 +59,7 @@ export default {
     display: none;
   }
 
-  @media (min-width: 840px) {
+  @include media-md {
     & .hamburgerButton {
       display: none;
     }
@@ -71,7 +73,7 @@ export default {
       flex-flow: wrap;
     }
   }
-  @media (min-width: 1200px) {
+  @include media-lg {
     &__navigation {
       max-width: 35%;
     }
