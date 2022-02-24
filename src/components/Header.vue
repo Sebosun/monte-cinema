@@ -1,18 +1,26 @@
 TODO: Get vue svg loader to load svgs
 <template>
-  <header>
-    <monteCinema />
+  <header class="header">
+    <MonteCinemaLogo />
+    <HamburgerMenu />
   </header>
 </template>
 
 <script>
-import monteCinema from "../assets/monte cinema.svg";
+import MonteCinemaLogo from "../assets/monte cinema.svg";
+import HamburgerMenu from "../assets/navigation-menu 1.svg";
+
 export default {
   components: {
-    monteCinema,
+    MonteCinemaLogo,
+    HamburgerMenu,
   },
 };
 </script>
 
-<style>
+<style lang="scss">
+.header {
+  display: flex;
+  justify-content: space-around;
+}
 </style>
