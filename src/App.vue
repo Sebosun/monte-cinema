@@ -11,7 +11,6 @@
 </template>
 
 <script>
-/* import UiButton from "./components/UI/UiButton"; */
 import MovieCard from "./components/UI/MovieCard";
 import MainHeader from "./components/MainHeader";
 import HeroSection from "./components/HeroSection";
@@ -19,7 +18,6 @@ import HeroSection from "./components/HeroSection";
 export default {
   name: "App",
   components: {
-    /* UiButton, */
     MovieCard,
     MainHeader,
     HeroSection,
@@ -37,6 +35,12 @@ export default {
   font-family: "Roboto", sans-serif;
 }
 
+@include media-md {
+  #app {
+    margin-inline: 48px;
+  }
+}
+
 .background--rose {
   background-color: var(--color-rose);
 }
@@ -48,9 +52,5 @@ export default {
 .font--paragraph {
   font-family: Roboto Mono;
   font-weight: 400;
-}
-
-#app {
-  color: #2c3e50;
 }
 </style>

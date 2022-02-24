@@ -35,7 +35,7 @@ export default {
 @import "../scss/_mixins.scss";
 
 .header {
-  padding: 1.375rem 1.5rem;
+  padding: 1.375rem 0;
   font-size: 1.125rem;
 
   display: flex;
