@@ -1,28 +1,30 @@
 <template>
   <div id="app">
-    <Header />
-    <h1 class="title">Welcome to the best Cinema in Monterail</h1>
+    <main-header />
+    <hero-section />
     <br />
-    <Button small variation="brand">Hello Vue</Button>
-    <Button medium variation="brand empty">Hello Vue</Button>
-    <Button large variation="primary">Hello Vue</Button>
-    <Button large variation="primary selected">Hello Vue</Button>
-    <MovieCard />
+    <ui-button small variation="brand">Hello Vue</ui-button>
+    <ui-button medium variation="brand empty">Hello Vue</ui-button>
+    <ui-button large variation="primary">Hello Vue</ui-button>
+    <ui-button large variation="primary selected">Hello Vue</ui-button>
+    <movie-card />
     <div class="background--rose">:)</div>
   </div>
 </template>
 
 <script>
-import Button from "./components/UI/Button.vue";
-import MovieCard from "./components/UI/MovieCard.vue";
-import Header from "./components/Header.vue";
+import UiButton from "./components/UI/UiButton";
+import MovieCard from "./components/UI/MovieCard";
+import MainHeader from "./components/MainHeader";
+import HeroSection from "./components/HeroSection";
 
 export default {
   name: "App",
   components: {
-    Button,
+    UiButton,
     MovieCard,
-    Header,
+    MainHeader,
+    HeroSection,
   },
 };
 </script>

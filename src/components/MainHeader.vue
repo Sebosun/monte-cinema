@@ -1,15 +1,15 @@
 <template>
   <header class="header">
-    <MonteCinemaLogo />
+    <monte-cinema-logo />
     <button class="hamburgerButton">
-      <HamburgerMenu />
+      <hamburger-menu />
     </button>
 
     <header-navigation class="header__navigation" />
 
     <div class="header__actions">
-      <Button medium variation="brand empty borderless">Register</Button>
-      <Button medium variation="brand">Login</Button>
+      <ui-button medium variation="brand empty borderless">Register</ui-button>
+      <ui-button medium variation="brand">Login</ui-button>
     </div>
   </header>
 </template>
@@ -18,14 +18,14 @@
 /* TODO Hover effects */
 import MonteCinemaLogo from "../assets/monte cinema.svg";
 import HamburgerMenu from "../assets/navigation-menu 1.svg";
-import HeaderNavigation from "./header-navigation.vue";
-import Button from "./UI/Button.vue";
+import HeaderNavigation from "./HeaderNavigation";
+import UiButton from "./UI/UiButton";
 
 export default {
   components: {
     MonteCinemaLogo,
     HamburgerMenu,
-    Button,
+    UiButton,
     HeaderNavigation,
   },
 };
