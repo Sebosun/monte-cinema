@@ -1,4 +1,3 @@
-TODO: Get vue svg loader to load svgs
 <template>
   <header class="header">
     <MonteCinemaLogo />
