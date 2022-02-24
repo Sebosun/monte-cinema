@@ -2,7 +2,8 @@
   <div id="app">
     <main-header />
     <main class="main">
-      <hero-section class="background--rose" />
+      <hero-section />
+      <soon-section />
     </main>
     <br />
     <movie-card />
@@ -14,6 +15,7 @@
 import MovieCard from "./components/UI/MovieCard";
 import MainHeader from "./components/MainHeader";
 import HeroSection from "./components/HeroSection";
+import SoonSection from "./components/SoonSection.vue";
 
 export default {
   name: "App",
@@ -21,6 +23,7 @@ export default {
     MovieCard,
     MainHeader,
     HeroSection,
+    SoonSection,
   },
 };
 </script>
@@ -52,5 +55,8 @@ export default {
 .font--paragraph {
   font-family: Roboto Mono;
   font-weight: 400;
+}
+.font--bold {
+  font-weight: bold;
 }
 </style>

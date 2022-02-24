@@ -11,7 +11,7 @@ export default {
 
 <template>
   <section class="hero">
-    <div class="hero__wrapper">
+    <div class="hero__wrapper background--rose">
       <h1 class="hero__wrapper__title font--header">
         Welcome to the best Cinema in Monterail
       </h1>
@@ -21,7 +21,7 @@ export default {
       </p>
       <ui-button medium variation="brand">Book a ticket</ui-button>
     </div>
-    <img src="../assets/hero_img.png" alt="cinema" />
+    <img src="../assets/hero_image.jpg" alt="cinema" />
   </section>
 </template>
 
@@ -79,12 +79,14 @@ export default {
   @include media-lg {
     display: grid;
     padding-right: 0px;
-    grid-template-columns: 68% 40%;
+    grid-template-columns: minmax(880px, 60%) 40%;
     overflow: hidden;
     img {
       display: block;
       object-fit: cover;
       height: 100%;
+      max-width: 100%;
+      object-position: center;
     }
   }
 }
