@@ -7,7 +7,6 @@
     </main>
     <br />
     <movie-card />
-    <div class="background--rose">:)</div>
   </div>
 </template>
 
@@ -29,13 +28,14 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./normalize.css";
-@import "./variables.css";
+@import "./styles/normalize.css";
+@import "./styles/variables.css";
 @import "./scss/_mixins.scss";
 @import url("https://fonts.googleapis.com/css2?family=Eczar:wght@600&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;700&display=swap");
 
 :root {
   font-family: "Roboto", sans-serif;
+  background-color: var(--color-background);
 }
 
 @include media-md {
