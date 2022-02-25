@@ -19,7 +19,7 @@ export default {
         Best movies, best experiences, best people. <br />
         And all that doesn't exist. Yikes.
       </p>
-      <ui-button medium variation="brand">Book a ticket</ui-button>
+      <ui-button medium colors="brand">Book a ticket</ui-button>
     </div>
     <img src="../assets/hero_image.jpg" alt="cinema" />
   </section>
@@ -27,14 +27,17 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/mixins.scss";
+
 .hero {
   &__wrapper {
     padding: 40px 32px;
     text-align: center;
-    display: flex;
     gap: 40px;
-    justify-content: center;
+
+    display: flex;
     flex-direction: column;
+
+    justify-content: center;
     align-content: center;
 
     &__title {
@@ -77,15 +80,16 @@ export default {
   }
 
   @include media-lg {
-    display: grid;
-    padding-right: 0px;
-    grid-template-columns: minmax(880px, 60%) 40%;
     overflow: hidden;
+    padding-right: 0px;
+    display: grid;
+    grid-template-columns: minmax(880px, 60%) 40%;
+
     img {
       display: block;
-      object-fit: cover;
       height: 100%;
       max-width: 100%;
+      object-fit: cover;
       object-position: center;
     }
   }

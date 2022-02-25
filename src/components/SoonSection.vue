@@ -2,7 +2,7 @@
   <section class="soon">
     <div class="soon__top">
       <h2 class="font--paragraph font--bold">Soon</h2>
-      <ui-button class="font--bold" large variation="brand empty borderless"
+      <ui-button class="font--bold" empty borderless colors="brand"
         >See All</ui-button
       >
     </div>
@@ -23,9 +23,10 @@ import UiButton from "./UI/UiButton.vue";
 export default { components: { UiButton, MovieCard } };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .soon {
   padding-inline: 24px;
+
   &__top {
     display: flex;
     justify-content: space-between;
@@ -35,9 +36,9 @@ export default { components: { UiButton, MovieCard } };
       letter-spacing: 0.015em;
       text-transform: uppercase;
     }
+
     button {
       font-size: 22px;
-      padding: 0;
       text-transform: uppercase;
     }
   }

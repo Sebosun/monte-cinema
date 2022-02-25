@@ -8,8 +8,8 @@
     <header-navigation class="header__navigation" />
 
     <div class="header__actions">
-      <ui-button medium variation="brand empty borderless">Register</ui-button>
-      <ui-button medium variation="brand">Login</ui-button>
+      <ui-button medium borderless empty colors="brand">Register</ui-button>
+      <ui-button medium colors="brand">Log in</ui-button>
     </div>
   </header>
 </template>
