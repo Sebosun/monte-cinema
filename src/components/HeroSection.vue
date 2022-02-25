@@ -16,7 +16,8 @@ export default {
         Welcome to the best Cinema in Monterail
       </h1>
       <p class="font--paragraph">
-        Best movies, best experiences, best people. <br />
+        Best movies, best experiences, best people.
+        <br class="hero__wrapper__break" />
         And all that doesn't exist. Yikes.
       </p>
       <ui-button medium variation="brand">Book a ticket</ui-button>
@@ -36,6 +37,10 @@ export default {
     justify-content: center;
     flex-direction: column;
     align-content: center;
+
+    &__break {
+      display: none;
+    }
 
     &__title {
       font-size: 3rem;
@@ -66,6 +71,9 @@ export default {
       }
       p {
         white-space: pre-line;
+      }
+      &__break {
+        display: block;
       }
       button {
         max-width: fit-content;
