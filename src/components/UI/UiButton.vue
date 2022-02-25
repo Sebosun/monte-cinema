@@ -1,5 +1,5 @@
 <template>
-  <button :class="[componentClasses, whichBrandColor]">
+  <button :class="[buttonUtililityClasses, buttonColors]">
     <slot />
   </button>
 </template>
@@ -33,11 +33,9 @@ export default {
     },
   },
   computed: {
-    componentClasses() {
+    buttonUtililityClasses() {
       return [
         "button",
-        { button__primary: this.colors === "primary" },
-        { "button__primary--selected": this.colors === "primary selected" },
         { "button--sm": this.small },
         { "button--md": this.medium },
         { "button--lg": this.large },
@@ -45,13 +43,15 @@ export default {
         { "button--borderless": this.borderless },
       ];
     },
-    // making sure we're still using brand color even if background is empty
-    whichBrandColor() {
-      if (this.colors === "brand" && this.empty) {
-        return "button--brand-font";
-      } else {
-        return "button__brand";
+    // making sure we're using appropriate colors as a text color
+    // if background is empty
+    buttonColors() {
+      if (this.colors === "brand") {
+        return this.empty ? "button--brand-font" : "button__brand";
+      } else if (this.colors === "primary") {
+        return this.empty ? "button--primary-font" : "button__primary";
       }
+      return "";
     },
   },
 };
@@ -61,6 +61,7 @@ export default {
 .button {
   color: inherit;
   background: inherit;
+  padding: 0; /* normalize css gives some padding by default */
 
   border: solid;
   border-radius: 999px;
@@ -73,18 +74,24 @@ export default {
     cursor: pointer;
   }
 
-  &--lg {
-    font-size: 1.125rem; /* 18px */
-    padding: 1em 2.222em; /* 18px 40px  */
-  }
-  &--md {
-    font-size: 1rem;
-    padding: 0.95em 2em;
-  }
+  /* sizes */
+
   &--sm {
     font-size: 0.875rem;
     padding: 0.643em 1.714em;
   }
+
+  &--md {
+    font-size: 1rem;
+    padding: 0.95em 2em;
+  }
+
+  &--lg {
+    font-size: 1.125rem; /* 18px */
+    padding: 1em 2.222em; /* 18px 40px  */
+  }
+
+  /* utility classes */
 
   &--empty {
     background: var(--color-background);
@@ -94,8 +101,14 @@ export default {
     border: 0;
   }
 
+  /* Colors */
+
   &--brand-font {
     color: var(--color-brand);
+  }
+
+  &--primary-font {
+    color: var(--color-primary);
   }
 
   &__brand {
@@ -105,14 +118,9 @@ export default {
   }
 
   &__primary {
-    color: var(--color-primary);
+    color: var(--color-background);
+    background-color: var(--color-primary);
     border-color: var(--color-primary);
-    background-color: var(--color-background);
-    &--selected {
-      color: var(--color-background);
-      background-color: var(--color-primary);
-      border-color: var(--color-primary);
-    }
   }
 }
 </style>
