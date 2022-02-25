@@ -1,11 +1,13 @@
 <template>
-  <button v-bind:class="applyClass"><slot></slot></button>
+  <button :class="[buttonUtililityClasses, buttonColors]">
+    <slot />
+  </button>
 </template>
 
 <script>
 export default {
   props: {
-    variation: {
+    colors: {
       type: String,
       required: true,
     },
@@ -21,60 +23,45 @@ export default {
       type: Boolean,
       default: false,
     },
+    empty: {
+      type: Boolean,
+      default: false,
+    },
+    borderless: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
-    applyClass() {
-      let styles = "button button__";
-      const variationTrimmed = this.variation.trim();
-      styles += variationTrimmed.split(" ").join("__");
-      styles += this.hasSize;
-      return styles;
+    buttonUtililityClasses() {
+      return [
+        "button",
+        { "button--sm": this.small },
+        { "button--md": this.medium },
+        { "button--lg": this.large },
+        { "button--empty": this.empty },
+        { "button--borderless": this.borderless },
+      ];
     },
-    hasSize() {
-      let sizeClasses = " ";
-      sizeClasses += this.small
-        ? "button--sm"
-        : this.medium
-        ? "button--md"
-        : this.large
-        ? "button--lg"
-        : "";
-      return sizeClasses == " " ? "" : sizeClasses;
+    // making sure we're using appropriate colors as a text color
+    // if background is empty
+    buttonColors() {
+      if (this.colors === "brand") {
+        return this.empty ? "button--brand-font" : "button__brand";
+      } else if (this.colors === "primary") {
+        return this.empty ? "button--primary-font" : "button__primary";
+      }
+      return "";
     },
   },
 };
-
-/* <Button class="brand">Book a ticket</button> */
-/* <Button class="brand empty"> */
-/*   Book a ticket */
-/* </Button> */
-/* <Button class="brand empty borderless"> */
-/*   Book a ticket */
-/* </Button> */
-/* <Button variation="button primary">Book a ticket</button> */
-/* <Button variation="button primary  selected">Book a ticket</button> */
-
-/* TODO: arrow versions for each of the buttons */
-/* TODO : use separate class for font sizes*/
 </script>
 
-<style lang="scss">
-.button--lg {
-  font-size: 1.125rem; /* 18px */
-  padding: 1em 2.222em; /* 18px 40px  */
-}
-.button--md {
-  font-size: 1rem;
-  padding: 0.95em 2em;
-}
-.button--sm {
-  font-size: 0.875rem;
-  padding: 0.643em 1.714em;
-}
-
+<style lang="scss" scoped>
 .button {
   color: inherit;
   background: inherit;
+  padding: 0; /* normalize css gives some padding by default */
 
   border: solid;
   border-radius: 999px;
@@ -87,28 +74,53 @@ export default {
     cursor: pointer;
   }
 
+  /* sizes */
+
+  &--sm {
+    font-size: 0.875rem;
+    padding: 0.643em 1.714em;
+  }
+
+  &--md {
+    font-size: 1rem;
+    padding: 0.95em 2em;
+  }
+
+  &--lg {
+    font-size: 1.125rem; /* 18px */
+    padding: 1em 2.222em; /* 18px 40px  */
+  }
+
+  /* utility classes */
+
+  &--empty {
+    background: var(--color-background);
+  }
+
+  &--borderless {
+    border: 0;
+  }
+
+  /* Colors */
+
+  &--brand-font {
+    color: var(--color-brand);
+  }
+
+  &--primary-font {
+    color: var(--color-primary);
+  }
+
   &__brand {
-    color: white;
+    color: var(--color-background);
     background: var(--color-brand);
     border-color: var(--color-brand);
-    &__empty {
-      background: inherit;
-      color: var(--color-brand);
-      &__borderless {
-        color: var(--color-brand);
-        border: 0;
-      }
-    }
   }
 
   &__primary {
-    color: var(--color-primary);
+    color: var(--color-background);
+    background-color: var(--color-primary);
     border-color: var(--color-primary);
-    &__selected {
-      color: white;
-      background-color: var(--color-primary);
-      border-color: var(--color-primary);
-    }
   }
 }
 </style>
