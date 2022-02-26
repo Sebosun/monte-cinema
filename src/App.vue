@@ -7,6 +7,7 @@
     </main>
     <br />
     <movie-card />
+    <Screenings />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import MovieCard from "./components/UI/MovieCard";
 import MainHeader from "./components/MainHeader";
 import HeroSection from "./components/HeroSection";
 import SoonSection from "./components/SoonSection.vue";
+import Screenings from "./components/Screenings.vue";
 
 export default {
   name: "App",
@@ -23,6 +25,7 @@ export default {
     MainHeader,
     HeroSection,
     SoonSection,
+    Screenings,
   },
 };
 </script>
