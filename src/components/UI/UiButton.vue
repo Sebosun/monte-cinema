@@ -7,6 +7,7 @@
 <script>
 export default {
   props: {
+    //TODO: replace colors with color since it can be confusing
     colors: {
       type: String,
       required: true,
