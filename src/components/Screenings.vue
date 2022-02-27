@@ -8,6 +8,7 @@ export default {
     return {
       posts: null,
       loading: true,
+      selected: "",
     };
   },
   async created() {
@@ -16,6 +17,7 @@ export default {
     this.loading = false;
   },
   methods: {
+    //todo error handling
     async fetchData() {
       const data = await fetch("http://localhost:3000/movies");
       let dataJson = await data.json();
@@ -28,30 +30,79 @@ export default {
       return `${hours}h ${minutes}`;
     },
   },
+  computed: {
+    genres() {
+      if (this.posts) {
+        const genres = this.posts.reduce((uniqueGenres, currentMovie) => {
+          !uniqueGenres.includes(currentMovie.genre.name) &&
+            uniqueGenres.push(currentMovie.genre);
+          return uniqueGenres;
+        }, []);
+        return genres;
+      } else {
+        return [];
+      }
+    },
+    filterPosts() {
+      const filterPosts = this.posts.filter(
+        (item) => item.genre.name === this.selected
+      );
+      return this.selected != "" ? filterPosts : this.posts;
+    },
+  },
 };
 </script>
 
 <template>
   <section class="screenings">
     <div v-if="loading">Loading...</div>
-    <movie-card
-      v-else
-      v-for="post in posts"
-      :key="post.id"
-      class="screenings__movie"
-    >
-      <img :src="post.poster_url" :alt="post.title" />
-      <div class="screenings__card">
-        <h2>{{ post.title }}</h2>
-        <div class="screenings__info">
-          <tags class="screenings__info--name">{{ post.genre.name }}</tags>
-          <div class="screenings__info--len">
-            {{ movieLength(post.length) }} min
+    <div v-else class="screenings__wrapper">
+      <div class="screenings__top">
+        <div>
+          <h1>Screenings:</h1>
+          <h2>Friday 11/02/2022</h2>
+        </div>
+        <div class="screenings__filters">
+          <div>
+            <div>Day</div>
+            <ui-button small colors="primary">Today</ui-button>
+            <ui-button small empty colors="primary">Sat</ui-button>
+            <ui-button small empty colors="primary">Sun</ui-button>
+            <ui-button small empty colors="primary">Mon</ui-button>
+          </div>
+          <div>
+            <div>Movie</div>
+            <select v-model="selected">
+              <option disabled default value="">All movies</option>
+              <option
+                v-for="genre in genres"
+                :value="genre.name"
+                :key="genre.id"
+              >
+                {{ genre.name }}
+              </option>
+            </select>
           </div>
         </div>
-        <ui-button empty small colors="brand">21:45</ui-button>
       </div>
-    </movie-card>
+      <movie-card
+        v-for="post in filterPosts"
+        :key="post.id"
+        class="screenings__movie"
+      >
+        <img :src="post.poster_url" :alt="post.title" />
+        <div class="screenings__card">
+          <h2>{{ post.title }}</h2>
+          <div class="screenings__info">
+            <tags class="screenings__info--name">{{ post.genre.name }}</tags>
+            <div class="screenings__info--len">
+              {{ movieLength(post.length) }} min
+            </div>
+          </div>
+          <ui-button empty small colors="brand">21:45</ui-button>
+        </div>
+      </movie-card>
+    </div>
   </section>
 </template>
 
