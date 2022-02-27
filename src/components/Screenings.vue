@@ -1,9 +1,8 @@
 <script>
-import MovieCard from "./UI/MovieCard.vue";
-import Tags from "./UI/Tags.vue";
+import DisplayMovies from "./DisplayMovies.vue";
 import UiButton from "./UI/UiButton.vue";
 export default {
-  components: { MovieCard, UiButton, Tags },
+  components: { UiButton, DisplayMovies },
   data() {
     return {
       posts: null,
@@ -24,11 +23,6 @@ export default {
       return dataJson;
     },
     // Returns date in H:MM or H:0M
-    movieLength(length) {
-      const hours = Math.floor(length / 60);
-      const minutes = `0${length % 60}`.slice(-2);
-      return `${hours}h ${minutes}`;
-    },
   },
   computed: {
     genres() {
@@ -43,11 +37,12 @@ export default {
         return [];
       }
     },
-    filterPosts() {
-      const filterPosts = this.posts.filter(
+    filterMovies() {
+      const filterMovies = this.posts.filter(
         (item) => item.genre.name === this.selected
       );
-      return this.selected != "" ? filterPosts : this.posts;
+      // making sure something is actually selected
+      return this.selected != "" ? filterMovies : this.posts;
     },
   },
 };
@@ -73,7 +68,7 @@ export default {
           <div>
             <div>Movie</div>
             <select v-model="selected">
-              <option disabled default value="">All movies</option>
+              <option value="">All movies</option>
               <option
                 v-for="genre in genres"
                 :value="genre.name"
@@ -85,28 +80,18 @@ export default {
           </div>
         </div>
       </div>
-      <movie-card
-        v-for="post in filterPosts"
-        :key="post.id"
+      <!-- TODO: separate component -->
+      <display-movies
+        v-for="movie in filterMovies"
         class="screenings__movie"
-      >
-        <img :src="post.poster_url" :alt="post.title" />
-        <div class="screenings__card">
-          <h2>{{ post.title }}</h2>
-          <div class="screenings__info">
-            <tags class="screenings__info--name">{{ post.genre.name }}</tags>
-            <div class="screenings__info--len">
-              {{ movieLength(post.length) }} min
-            </div>
-          </div>
-          <ui-button empty small colors="brand">21:45</ui-button>
-        </div>
-      </movie-card>
+        :key="movie.id"
+        :movie="movie"
+      />
     </div>
   </section>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .screenings {
   display: grid;
   grid-template-rows: repeat(auto-fit, 1fr);
@@ -116,34 +101,6 @@ export default {
     display: grid;
     grid-template-columns: 98px 1fr; //gotta try minmax here
     gap: 40px;
-    img {
-      height: max(132px);
-      max-width: 100%;
-      object-fit: cover;
-    }
-  }
-  &__card {
-    display: flex;
-    flex-direction: column;
-    h2 {
-      margin: 0;
-      padding: 0;
-    }
-    button {
-      max-width: min-content;
-      margin-top: auto;
-    }
-  }
-
-  &__info {
-    display: flex;
-    align-items: center;
-    margin-top: 8px;
-    gap: 20px;
-    &--len {
-      font-size: 14px;
-      color: var(--color-secondary);
-    }
   }
 }
 </style>
