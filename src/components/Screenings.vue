@@ -1,4 +1,6 @@
 <script>
+/* TODO - Calendar*/
+/* TODO - Gaps*/
 import DisplayMovies from "./DisplayMovies.vue";
 import UiButton from "./UI/UiButton.vue";
 export default {
@@ -16,26 +18,21 @@ export default {
     this.loading = false;
   },
   methods: {
-    //todo error handling
+    //TODO error handling
     async fetchData() {
       const data = await fetch("http://localhost:3000/movies");
       let dataJson = await data.json();
       return dataJson;
     },
-    // Returns date in H:MM or H:0M
   },
   computed: {
     genres() {
-      if (this.posts) {
-        const genres = this.posts.reduce((uniqueGenres, currentMovie) => {
-          !uniqueGenres.includes(currentMovie.genre.name) &&
-            uniqueGenres.push(currentMovie.genre);
-          return uniqueGenres;
-        }, []);
-        return genres;
-      } else {
-        return [];
-      }
+      const genres = this.posts.reduce((uniqueGenres, currentMovie) => {
+        !uniqueGenres.includes(currentMovie.genre.name) &&
+          uniqueGenres.push(currentMovie.genre);
+        return uniqueGenres;
+      }, []);
+      return genres;
     },
     filterMovies() {
       const filterMovies = this.posts.filter(
@@ -53,20 +50,23 @@ export default {
     <div v-if="loading">Loading...</div>
     <div v-else class="screenings__wrapper">
       <div class="screenings__top">
-        <div>
+        <div class="screenings__top--headers font--header">
           <h1>Screenings:</h1>
           <h2>Friday 11/02/2022</h2>
         </div>
         <div class="screenings__filters">
-          <div>
-            <div>Day</div>
-            <ui-button small colors="primary">Today</ui-button>
-            <ui-button small empty colors="primary">Sat</ui-button>
-            <ui-button small empty colors="primary">Sun</ui-button>
-            <ui-button small empty colors="primary">Mon</ui-button>
+          <div class="screenings__filters--days">
+            <div class="font--label">Day</div>
+            <div class="screenings__buttons">
+              <ui-button medium colors="primary">Today</ui-button>
+              <ui-button medium empty colors="primary">Sat</ui-button>
+              <ui-button medium empty colors="primary">Sun</ui-button>
+              <ui-button medium empty colors="primary">Mon</ui-button>
+            </div>
           </div>
-          <div>
-            <div>Movie</div>
+
+          <div class="screenings__filters--genres">
+            <div class="font--label">Movie</div>
             <select v-model="selected">
               <option value="">All movies</option>
               <option
@@ -80,7 +80,6 @@ export default {
           </div>
         </div>
       </div>
-      <!-- TODO: separate component -->
       <display-movies
         v-for="movie in filterMovies"
         class="screenings__movie"
@@ -93,14 +92,68 @@ export default {
 
 <style lang="scss">
 .screenings {
-  display: grid;
-  grid-template-rows: repeat(auto-fit, 1fr);
-  gap: 40px;
+  margin-top: 32px;
+  &__top {
+    &--headers {
+      margin-bottom: 32px;
+      h1 {
+        padding: 0;
+        margin: 0;
+        font-weight: 600;
+        font-size: 64px;
+        line-height: 102%;
+        letter-spacing: -0.01em;
+      }
+      h2 {
+        color: var(--color-secondary);
+        padding: 0;
+        margin: 0;
+        font-weight: 600;
+        font-size: 64px;
+        line-height: 102%;
+        letter-spacing: -0.01em;
+      }
+    }
+  }
   &__movie {
     padding: 40px;
     display: grid;
     grid-template-columns: 98px 1fr; //gotta try minmax here
     gap: 40px;
+  }
+
+  &__filters {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-around;
+    gap: 40px;
+    align-items: center;
+    margin-bottom: 98px;
+
+    .font--label {
+      margin-bottom: 12px;
+    }
+
+    &--days {
+      .button + .button {
+        margin-left: 10px;
+      }
+      .screenings__buttons {
+        font-size: 1rem;
+      }
+    }
+    &--genres {
+      flex: 1;
+      max-width: 100%;
+      select {
+        width: 100%;
+        align-self: stretch;
+        background-color: #f7f7f7;
+        border: 0;
+        padding: 17.5px 0 17.5px 24px;
+        margin-right: auto;
+      }
+    }
   }
 }
 </style>

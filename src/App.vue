@@ -62,4 +62,12 @@ export default {
 .font--bold {
   font-weight: bold;
 }
+.font--label {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--color-red);
+  font-family: Roboto Mono;
+  font-weight: 700;
+  line-height: 18.46px;
+}
 </style>

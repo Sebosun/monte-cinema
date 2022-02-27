@@ -70,6 +70,7 @@ export default {
   font-family: Roboto Mono;
   font-weight: 500;
   letter-spacing: 0.015em;
+  border-width: 2px;
 
   &:hover {
     cursor: pointer;
@@ -115,13 +116,13 @@ export default {
   &__brand {
     color: var(--color-background);
     background: var(--color-brand);
-    border-color: var(--color-brand);
+    border: var(--color-brand);
   }
 
   &__primary {
     color: var(--color-background);
     background-color: var(--color-primary);
-    border-color: var(--color-primary);
+    border: var(--color-primary);
   }
 }
 </style>
