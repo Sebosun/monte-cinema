@@ -6,7 +6,7 @@ export default {
     };
   },
   props: {
-    movieId: {
+    id: {
       type: Number,
       required: true,
     },
@@ -17,7 +17,7 @@ export default {
   methods: {
     //todo error handling lol
     async fetchData() {
-      const data = await fetch(`http://localhost:3000/movies/${this.movieId}`);
+      const data = await fetch(`http://localhost:3000/movies/${this.id}`);
       let dataJson = await data.json();
       return dataJson;
     },
@@ -28,7 +28,7 @@ export default {
 <template>
   <div>
     <h1>Movies :)</h1>
-    <p>{{ movieId }}</p>
+    <p>{{ id }}</p>
     <div v-if="movie">
       {{ JSON.stringify(movie) }}
     </div>
