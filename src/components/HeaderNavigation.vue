@@ -2,17 +2,17 @@
   <nav>
     <ul>
       <li>
-        <router-link to="/movies">
+        <router-link :to="{ name: 'Movies' }">
           <div class="nav__hover">Movies</div></router-link
         >
       </li>
       <li>
-        <router-link to="/screenings">
+        <router-link :to="{ name: 'Screenings' }">
           <div class="nav__hover">Screenings</div></router-link
         >
       </li>
       <li>
-        <router-link to="/contact">
+        <router-link :to="{ name: 'Contact' }">
           <div class="nav__hover">Contact Us</div></router-link
         >
       </li>
@@ -25,7 +25,7 @@
   .nav__hover {
     cursor: pointer;
     font-weight: 700;
-    color: var(--color-brand);
+    color: var(--color-primary);
 
     &::before {
       opacity: 1;
@@ -59,18 +59,19 @@ ul {
     display: block;
     position: absolute;
     height: 5px;
-    width: 135px;
-    left: 19px;
+    width: 100%;
+    left: 0;
     right: 0;
-    bottom: -47px;
+    bottom: -50px;
     background: var(--color-brand);
     opacity: 0;
     transition: opacity 300ms ease-in-out;
   }
+
   &:hover {
     cursor: pointer;
     font-weight: 700;
-    color: var(--color-brand);
+    color: var(--color-primary);
 
     &::before {
       opacity: 1;
