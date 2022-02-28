@@ -3,7 +3,7 @@
     <ul>
       <li>
         <router-link class="router-link-active" to="/contact">
-          Contact Us
+          Movies
         </router-link>
       </li>
       <li>
