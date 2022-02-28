@@ -1,5 +1,6 @@
 import VueRouter from "vue-router";
 import HomePage from "@/views/HomePage.vue";
+import NotFoundPage from "@/views/NotFoundPage.vue";
 
 const routes = [
   {
@@ -8,8 +9,13 @@ const routes = [
     component: HomePage,
   },
   {
+    path: "/404",
+    name: "Not Found",
+    component: NotFoundPage,
+  },
+  {
     path: "*",
-    redirect: "/",
+    redirect: "/404",
   },
 ];
 
