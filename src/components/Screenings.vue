@@ -142,7 +142,7 @@ export default {
       margin-left: 0.625rem;
     }
 
-    &__days .screenings__buttons {
+    &__days &__buttons {
       font-size: 1rem;
       padding: 0.75rem 0;
       display: flex;
