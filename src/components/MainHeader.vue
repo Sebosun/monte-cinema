@@ -36,6 +36,7 @@ export default {
 
 .header {
   padding: 2.0625rem 1.5rem;
+
   font-size: 1.125rem;
 
   display: flex;
