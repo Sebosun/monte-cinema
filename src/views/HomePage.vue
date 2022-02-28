@@ -1,29 +1,34 @@
 <script>
 import MovieCard from "@/components/UI/MovieCard";
-import MainHeader from "@/components/MainHeader";
 import HeroSection from "@/components/HeroSection";
 import SoonSection from "@/components/SoonSection.vue";
+import Screenings from "@/components/Screenings.vue";
 
 export default {
-  name: "App",
+  name: "Home",
+  props: ["genre", "query"],
+  created() {
+    console.log(this.genre);
+    console.log(this.query);
+  },
   components: {
     MovieCard,
-    MainHeader,
     HeroSection,
     SoonSection,
+    Screenings,
   },
 };
 </script>
 
 <template>
   <div>
-    <main-header />
     <main class="main">
       <hero-section />
       <soon-section />
     </main>
     <br />
     <movie-card />
+    <screenings />
   </div>
 </template>
 

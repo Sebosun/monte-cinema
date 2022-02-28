@@ -1,32 +1,14 @@
 <template>
   <div id="app">
     <main-header />
-    <main class="main">
-      <hero-section />
-      <soon-section />
-    </main>
-    <br />
-    <movie-card />
-    <Screenings />
+    <router-view />
   </div>
 </template>
 
 <script>
-import MovieCard from "./components/UI/MovieCard";
-import MainHeader from "./components/MainHeader";
-import HeroSection from "./components/HeroSection";
-import SoonSection from "./components/SoonSection.vue";
-import Screenings from "./components/Screenings.vue";
-
+import MainHeader from "./components/MainHeader.vue";
 export default {
-  name: "App",
-  components: {
-    MovieCard,
-    MainHeader,
-    HeroSection,
-    SoonSection,
-    Screenings,
-  },
+  components: { MainHeader },
 };
 </script>
 
@@ -69,5 +51,4 @@ export default {
   font-weight: 700;
   line-height: 18.46px;
 }
-
 </style>
