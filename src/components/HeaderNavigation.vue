@@ -2,19 +2,19 @@
   <nav>
     <ul>
       <li>
-        <router-link class="router-link-active" to="/contact">
-          Movies
-        </router-link>
-      </li>
-      <li>
-        <router-link class="router-link-active" to="/screenings"
-          >Screenings</router-link
+        <router-link to="/movies">
+          <div class="nav__hover">Movies</div></router-link
         >
       </li>
       <li>
-        <router-link class="router-link-active" to="/contact-us">
-          Contact Us
-        </router-link>
+        <router-link to="/screenings">
+          <div class="nav__hover">Screenings</div></router-link
+        >
+      </li>
+      <li>
+        <router-link to="/contact">
+          <div class="nav__hover">Contact Us</div></router-link
+        >
       </li>
     </ul>
   </nav>
@@ -22,6 +22,18 @@
 
 <style lang="scss" scoped>
 .router-link-active {
+  .nav__hover {
+    cursor: pointer;
+    font-weight: 700;
+    color: var(--color-brand);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+a {
   text-decoration: none;
   color: inherit;
 }
@@ -35,7 +47,7 @@ ul {
   gap: 0.125rem;
 }
 
-li {
+.nav__hover {
   position: relative;
   transition: color 300ms ease-in-out;
   color: var(--color-secondary);
@@ -55,7 +67,6 @@ li {
     opacity: 0;
     transition: opacity 300ms ease-in-out;
   }
-
   &:hover {
     cursor: pointer;
     font-weight: 700;
