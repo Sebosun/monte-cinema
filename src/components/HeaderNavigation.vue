@@ -26,18 +26,31 @@
   color: inherit;
 }
 
-a {
+ul {
+  padding: 0;
+  list-style-type: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: stretch;
+  gap: 0.125rem;
+}
+
+li {
   position: relative;
   transition: color 300ms ease-in-out;
+  color: var(--color-secondary);
+  justify-self: stretch;
+  text-align: center;
+
   &::before {
     content: "";
     display: block;
     position: absolute;
     height: 5px;
     width: 135px;
-    left: -20px;
+    left: 19px;
     right: 0;
-    bottom: -48px;
+    bottom: -47px;
     background: var(--color-brand);
     opacity: 0;
     transition: opacity 300ms ease-in-out;
@@ -52,16 +65,5 @@ a {
       opacity: 1;
     }
   }
-}
-
-ul {
-  list-style-type: none;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 0.125rem;
-}
-li {
-  color: var(--color-secondary);
 }
 </style>
