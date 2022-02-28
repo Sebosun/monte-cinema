@@ -1,6 +1,7 @@
 <template>
   <section class="soon">
     <div class="soon__top">
+
       <h2 class="font--paragraph font--bold soon__show--sm">Soon</h2>
       <h2 class="font--paragraph font--bold soon__show--md">
         Soon in the cinema
@@ -36,6 +37,7 @@
         <div class="soon__movies__genres">Action</div>
       </movie-card>
     </div>
+
   </section>
 </template>
 
@@ -50,7 +52,6 @@ export default { components: { UiButton, MovieCard } };
 
 .soon {
   padding-inline: 24px;
-
   &__top {
     display: flex;
     justify-content: space-between;
@@ -92,26 +93,22 @@ export default { components: { UiButton, MovieCard } };
     &:last-of-type {
       display: none;
     }
-
     h2 {
       margin: 0;
       padding: 0;
       font-size: 36px;
       line-height: 42px;
     }
-
     img {
       height: auto;
       max-width: 100%;
       object-fit: cover;
     }
-
     &__data {
       div {
         color: var(--color-secondary);
       }
     }
-
     &__genres {
       font-size: 14px;
       font-weight: bold;
@@ -122,7 +119,6 @@ export default { components: { UiButton, MovieCard } };
       background: var(--color-rose);
     }
   }
-
   @include media-md {
     padding-inline: 0;
 
