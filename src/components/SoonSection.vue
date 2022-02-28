@@ -27,6 +27,14 @@
         <img src="../assets/arnie.png" alt="arnie" />
         <div class="soon__movies__genres">Action</div>
       </movie-card>
+      <movie-card class="soon__movies">
+        <div class="soon__movies__data">
+          <h2 class="font--bold">Predator</h2>
+          <div class="font--bold">1h 30 min</div>
+        </div>
+        <img src="../assets/arnie.png" alt="arnie" />
+        <div class="soon__movies__genres">Action</div>
+      </movie-card>
     </div>
   </section>
 </template>
@@ -81,6 +89,10 @@ export default { components: { UiButton, MovieCard } };
     flex: 1;
     flex-direction: column;
 
+    &:last-of-type {
+      display: none;
+    }
+
     h2 {
       margin: 0;
       padding: 0;
@@ -89,7 +101,8 @@ export default { components: { UiButton, MovieCard } };
     }
 
     img {
-      height: 100%;
+      height: auto;
+      max-width: 100%;
       object-fit: cover;
     }
 
@@ -112,6 +125,58 @@ export default { components: { UiButton, MovieCard } };
 
   @include media-md {
     padding-inline: 0;
+
+    &__top {
+      display: flex;
+      justify-content: space-between;
+
+      h2 {
+        font-size: 22px;
+        line-height: 170%;
+        letter-spacing: 0.015em;
+        text-transform: uppercase;
+      }
+
+      button {
+        font-size: 22px;
+        text-transform: uppercase;
+      }
+    }
+
+    &__show {
+      &--sm {
+        display: none;
+      }
+      &--md {
+        display: block;
+      }
+    }
+
+    &__wrapper {
+      display: flex;
+      flex-direction: row;
+
+      gap: 20px;
+    }
+
+    &__movies {
+      flex: 1;
+    }
+  }
+
+  @include media-lg {
+    &__wrapper {
+      display: grid;
+      max-width: 100%;
+    }
+
+    &__movies {
+      &:last-of-type {
+        display: flex;
+      }
+    }
+    padding-inline: 0;
+
     &__top {
       display: flex;
       justify-content: space-between;
