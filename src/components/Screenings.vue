@@ -94,155 +94,124 @@ export default {
 </template>
 
 <style lang="scss">
-@include media-sm {
-  .screenings {
-    margin-top: 5.5rem;
+.screenings {
+  margin-top: 5.5rem;
 
-    &__headers {
-      margin-inline: 1.5rem;
-      margin-bottom: 2rem;
-    }
+  &__headers {
+    margin-inline: 1.5rem;
+    margin-bottom: 2rem;
+  }
 
-    &__headers h1 {
-      padding: 0;
-      margin: 0;
-      font-size: 3rem;
-      font-weight: 600;
-      line-height: 102%;
-      letter-spacing: -0.01em;
-    }
+  &__headers h1 {
+    padding: 0;
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 102%;
+    letter-spacing: -0.01em;
+  }
 
-    &__headers h2 {
-      color: var(--color-secondary);
-      padding: 0;
-      margin: 0;
-      font-size: 3rem;
-      font-weight: 600;
-      line-height: 102%;
-    }
+  &__headers h2 {
+    color: var(--color-secondary);
+    padding: 0;
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 600;
+    line-height: 102%;
+  }
 
-    &__filters {
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-      margin-left: 1.5rem;
-      margin-bottom: 6.125rem;
-    }
+  &__filters {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    margin-left: 1.5rem;
+    margin-bottom: 6.125rem;
+  }
 
-    &__filters .font--label {
-      margin-bottom: 0.75rem;
-    }
+  &__filters .font--label {
+    margin-bottom: 0.75rem;
+  }
 
-    &__days {
-      display: flex;
-      flex-direction: column;
-    }
+  &__days {
+    display: flex;
+    flex-direction: column;
+  }
 
-    &__days .button + .button {
-      margin-left: 0.625rem;
-    }
+  &__buttons .button + .button {
+    margin-left: 0.625rem;
+  }
 
-    &__days &__buttons {
-      font-size: 1rem;
-      padding: 0.75rem 0;
-      display: flex;
-      overflow: auto;
-    }
+  &__days &__buttons {
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    display: flex;
+    overflow: auto;
+  }
 
-    &__buttons button {
-      font-size: 0.875rem;
-      padding: 0.5625rem 1.5rem;
-    }
+  &__buttons button {
+    font-size: 0.875rem;
+    padding: 0.5625rem 1.5rem;
+  }
 
-    &__days .screenings__buttons:last-child {
-      padding-right: 0.625rem;
-    }
+  &__days .screenings__buttons:last-child {
+    padding-right: 0.625rem;
+  }
 
-    &__genres {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-    }
+  &__genres {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 
-    &__genres select {
-      width: min(calc(100% - 1.5rem), 29.25rem);
-      margin-right: 1.5rem;
-      padding: 1.094rem 1.5rem 1.094rem 1.5rem;
+  &__genres select {
+    width: min(calc(100% - 1.5rem), 29.25rem);
+    margin-right: 1.5rem;
+    padding: 1.094rem 1.5rem 1.094rem 1.5rem;
 
-      border: 0;
-      background-color: #f7f7f7;
-    }
+    border: 0;
+    background-color: #f7f7f7;
   }
 }
 
 @include media-md {
   .screenings {
-    margin-top: 2rem;
-
-    &__headers {
-      margin-bottom: 2rem;
+    &__headers h2 {
+      font-size: 64px;
     }
 
     &__headers h1 {
-      padding: 0;
-      margin: 0;
-      font-weight: 600;
-      font-size: 4rem;
-      line-height: 102%;
-      letter-spacing: -0.01em;
-    }
-
-    &__headers h2 {
-      color: var(--color-secondary);
-      padding: 0;
-      margin: 0;
-      font-weight: 600;
-      font-size: 4rem;
-      line-height: 102%;
-      letter-spacing: -0.01em;
+      font-size: 64px;
     }
 
     &__filters {
       display: flex;
-      align-items: stretch;
-      justify-content: space-around;
-      gap: 2.5rem;
+      flex-direction: row;
       align-items: center;
-      margin-bottom: 6.125rem;
+    }
+    // select children starting from 5 +
+    &__buttons .button:nth-child(n + 5) {
+      display: none;
     }
 
-    &__filters .font--label {
-      margin-bottom: 0.75rem;
-    }
-
-    &__days .button + .button {
-      margin-left: 0.625rem;
-    }
-
-    &__days .screenings__buttons {
-      font-size: 1rem;
+    &__buttons button {
+      padding: 19px 40px;
+      font-size: 18px;
     }
 
     &__genres {
-      flex: 1;
-      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-self: stretch;
+      justify-content: space-between;
+    }
+
+    &__genres .font--label {
+      font-size: 14px;
+      justify-self: flex-start;
     }
 
     &__genres select {
-      width: 100%;
-      align-self: stretch;
-      background-color: #f7f7f7;
-      border: 0;
-      padding: 1.094rem 0 1.094rem 1.5rem;
-      margin-right: auto;
-    }
-
-    &__movie {
-      padding: 2.5rem;
-
-      display: grid;
-      grid-template-columns: 6.125rem 1fr; //gotta try minmax here
-      gap: 2.5rem;
+      margin: 12px 0;
     }
   }
 }
