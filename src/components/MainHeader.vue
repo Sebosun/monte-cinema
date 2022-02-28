@@ -1,6 +1,8 @@
 <template>
   <header class="header">
-    <monte-cinema-logo />
+    <router-link to="/">
+      <monte-cinema-logo />
+    </router-link>
     <button class="hamburgerButton">
       <hamburger-menu />
     </button>
@@ -80,7 +82,7 @@ export default {
   }
   @include media-lg {
     &__navigation {
-      max-width: 35%;
+      max-width: 500px;
     }
   }
 }
