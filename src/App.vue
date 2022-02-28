@@ -7,6 +7,7 @@
     </main>
     <br />
     <movie-card />
+    <Screenings />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import MovieCard from "./components/UI/MovieCard";
 import MainHeader from "./components/MainHeader";
 import HeroSection from "./components/HeroSection";
 import SoonSection from "./components/SoonSection.vue";
+import Screenings from "./components/Screenings.vue";
 
 export default {
   name: "App",
@@ -23,6 +25,7 @@ export default {
     MainHeader,
     HeroSection,
     SoonSection,
+    Screenings,
   },
 };
 </script>
@@ -30,7 +33,6 @@ export default {
 <style lang="scss">
 @import "./styles/normalize.css";
 @import "./styles/variables.css";
-@import "./scss/_mixins.scss";
 @import url("https://fonts.googleapis.com/css2?family=Eczar:wght@600&family=Roboto+Mono:wght@400;500&family=Roboto:wght@400;700&display=swap");
 
 :root {
@@ -59,4 +61,13 @@ export default {
 .font--bold {
   font-weight: bold;
 }
+.font--label {
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--color-red);
+  font-family: Roboto Mono;
+  font-weight: 700;
+  line-height: 18.46px;
+}
+
 </style>

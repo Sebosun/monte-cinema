@@ -1,7 +1,6 @@
 <template>
   <section class="soon">
     <div class="soon__top">
-
       <h2 class="font--paragraph font--bold soon__show--sm">Soon</h2>
       <h2 class="font--paragraph font--bold soon__show--md">
         Soon in the cinema
@@ -28,6 +27,7 @@
         <img src="../assets/arnie.png" alt="arnie" />
         <div class="soon__movies__genres">Action</div>
       </movie-card>
+
       <movie-card class="soon__movies">
         <div class="soon__movies__data">
           <h2 class="font--bold">Predator</h2>
@@ -37,7 +37,6 @@
         <div class="soon__movies__genres">Action</div>
       </movie-card>
     </div>
-
   </section>
 </template>
 
@@ -99,6 +98,7 @@ export default { components: { UiButton, MovieCard } };
       font-size: 36px;
       line-height: 42px;
     }
+
     img {
       height: auto;
       max-width: 100%;
@@ -109,6 +109,7 @@ export default { components: { UiButton, MovieCard } };
         color: var(--color-secondary);
       }
     }
+
     &__genres {
       font-size: 14px;
       font-weight: bold;

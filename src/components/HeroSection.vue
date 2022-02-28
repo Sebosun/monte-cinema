@@ -31,9 +31,9 @@ export default {
 
 .hero {
   &__wrapper {
-    padding: 40px 32px;
+    padding: 2.5rem 2rem;
     text-align: center;
-    gap: 40px;
+    gap: 2.5rem;
 
     display: flex;
     flex-direction: column;
@@ -47,13 +47,13 @@ export default {
 
     &__title {
       font-size: 3rem;
-      line-height: 49px;
+      line-height: 3.0625rem;
       letter-spacing: -0.01em;
       margin: 0;
     }
     p {
       margin: 0;
-      font-size: 22px;
+      font-size: 1.375rem;
       line-height: 37.4px;
     }
   }
@@ -65,10 +65,10 @@ export default {
   @include media-md {
     &__wrapper {
       text-align: left;
-      padding: 80px;
-      gap: 41px;
+      padding: 5rem;
+      gap: 2.5625rem;
       &__title {
-        font-size: 80px;
+        font-size: 5rem;
         line-height: 102%;
         letter-spacing: 0.03em;
       }
@@ -80,22 +80,25 @@ export default {
       }
       button {
         max-width: fit-content;
-        font-size: 18px;
-        padding: 19px 40px;
-        margin-left: -4px;
+        font-size: 1.125rem;
+        padding: 1.1875rem 2.5rem;
+        margin-left: -0.25rem;
       }
     }
   }
 
   @include media-lg {
+    overflow: hidden;
+    padding-right: 0rem;
     display: grid;
-    padding-right: 0px;
     grid-template-columns: minmax(880px, 60%) 40%;
+
     img {
       display: block;
       height: 100%;
       max-width: 100%;
       object-fit: cover;
+      object-position: center;
     }
   }
 }

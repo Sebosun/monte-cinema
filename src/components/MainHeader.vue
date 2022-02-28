@@ -35,7 +35,8 @@ export default {
 @import "../scss/_mixins.scss";
 
 .header {
-  padding: 33px 24px;
+  padding: 2.0625rem 1.5rem;
+
   font-size: 1.125rem;
 
   display: flex;
@@ -62,7 +63,7 @@ export default {
   }
 
   @include media-md {
-    padding: 29px 0;
+    padding: 1.8125rem 0;
     & .hamburgerButton {
       display: none;
     }
