@@ -22,6 +22,7 @@ import HeaderNavigation from "./HeaderNavigation";
 import UiButton from "./UI/UiButton";
 
 export default {
+  name: "MainHeader",
   components: {
     MonteCinemaLogo,
     HamburgerMenu,

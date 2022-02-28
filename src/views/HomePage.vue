@@ -5,7 +5,12 @@ import SoonSection from "@/components/SoonSection.vue";
 import Screenings from "@/components/Screenings.vue";
 
 export default {
-  name: "App",
+  name: "Home",
+  props: ["genre", "query"],
+  created() {
+    console.log(this.genre);
+    console.log(this.query);
+  },
   components: {
     MovieCard,
     HeroSection,
