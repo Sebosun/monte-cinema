@@ -49,11 +49,11 @@ export default {
 
 <style scoped lang="scss">
 .display-movies {
-  padding: 32px 16px;
+  padding: 2rem 1rem;
 
   &__wrapper {
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 0.625rem;
+    margin-bottom: 1rem;
   }
 
   &__fill {
@@ -62,12 +62,12 @@ export default {
     align-items: center;
     overflow: hidden;
     float: left;
-    margin-right: 10px;
+    margin-right: 0.625rem;
   }
 
   &__fill img {
-    max-height: 68px;
-    min-width: 68px;
+    max-height: 4.25rem;
+    min-width: 4.25rem;
     object-fit: cover;
     object-position: center;
 
@@ -80,9 +80,9 @@ export default {
   }
 
   &__card h2 {
-    font-size: 24px;
+    font-size: 1.5rem;
     margin: 0;
-    padding-bottom: 8px;
+    padding-bottom: 0.5rem;
 
     white-space: nowrap;
     display: flex;
@@ -90,16 +90,16 @@ export default {
   }
 
   &__info {
-    margin-bottom: 8px;
+    margin-bottom: 0.5rem;
 
     display: flex;
-    gap: 20px;
+    gap: 1.25rem;
     align-items: center;
   }
 
   &__buttons {
     width: 100%;
-    padding: 10px 0;
+    padding: 0.625rem 0;
     max-width: min-content;
     margin: 0;
     display: flex;
@@ -107,22 +107,22 @@ export default {
   }
 
   &__buttons button {
-    padding: 5px 16px;
+    padding: 0.3125rem 1rem;
   }
 
   &__buttons button + button {
-    margin-left: 8px;
+    margin-left: 0.5rem;
   }
 
   &__info &__info--len {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--color-secondary);
   }
 }
 
 @include media-md {
   img {
-    max-height: 132px;
+    max-height: 8.25rem;
     max-width: 100%;
     object-fit: cover;
   }
@@ -144,16 +144,16 @@ export default {
     }
 
     &__info {
-      margin-top: 8px;
-      margin-bottom: 8px;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
 
       display: flex;
-      gap: 20px;
+      gap: 1.25rem;
       align-items: center;
     }
 
     &__info &__info--len {
-      font-size: 14px;
+      font-size: 0.875rem;
       color: var(--color-secondary);
     }
   }

@@ -8,10 +8,10 @@
 
 <style lang="scss" scoped>
 .tag {
-  padding: 8px 16px;
-  border-radius: 24px;
+  padding: 0.5rem 1rem;
+  border-radius: 1.5rem;
 
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
   max-width: fit-content;
 

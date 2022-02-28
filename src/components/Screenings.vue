@@ -233,7 +233,7 @@ export default {
       align-self: stretch;
       background-color: #f7f7f7;
       border: 0;
-      padding: 1.094rem 17.5px 0 1.094rem 1.5rem;
+      padding: 1.094rem 0 1.094rem 1.5rem;
       margin-right: auto;
     }
 
