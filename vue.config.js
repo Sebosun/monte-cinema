@@ -11,4 +11,11 @@ module.exports = {
       .use("vue-svg-loader")
       .loader("vue-svg-loader");
   },
+  css: {
+    loaderOptions: {
+      scss: {
+        additionalData: `@import "@/scss/_mixins.scss";`,
+      },
+    },
+  },
 };

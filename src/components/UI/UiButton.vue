@@ -7,6 +7,7 @@
 <script>
 export default {
   props: {
+    //TODO: replace colors with color since it can be confusing
     colors: {
       type: String,
       required: true,
@@ -69,6 +70,7 @@ export default {
   font-family: Roboto Mono;
   font-weight: 500;
   letter-spacing: 0.015em;
+  border-width: 2px;
 
   &:hover {
     cursor: pointer;
@@ -121,6 +123,6 @@ export default {
     color: var(--color-background);
     background-color: var(--color-primary);
     border-color: var(--color-primary);
-  }
+    }
 }
 </style>
