@@ -101,7 +101,7 @@ export default {
     width: 100%;
     padding: 10px 0;
     max-width: min-content;
-    margin-top: auto;
+    margin: 0;
     display: flex;
     overflow-x: auto;
   }

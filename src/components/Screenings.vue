@@ -86,7 +86,6 @@ export default {
       </div>
       <display-movies
         v-for="movie in filterMovies"
-        class="screenings__movie"
         :key="movie.id"
         :movie="movie"
       />
@@ -97,17 +96,17 @@ export default {
 <style lang="scss">
 @include media-sm {
   .screenings {
-    margin-top: 88px;
+    margin-top: 5.5rem;
 
     &__headers {
-      margin-inline: 24px;
-      margin-bottom: 32px;
+      margin-inline: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     &__headers h1 {
       padding: 0;
       margin: 0;
-      font-size: 48px;
+      font-size: 3rem;
       font-weight: 600;
       line-height: 102%;
       letter-spacing: -0.01em;
@@ -117,7 +116,7 @@ export default {
       color: var(--color-secondary);
       padding: 0;
       margin: 0;
-      font-size: 48px;
+      font-size: 3rem;
       font-weight: 600;
       line-height: 102%;
     }
@@ -125,24 +124,13 @@ export default {
     &__filters {
       display: flex;
       flex-direction: column;
-      gap: 40px;
-      margin-left: 24px;
-      margin-bottom: 98px;
+      gap: 2.5rem;
+      margin-left: 1.5rem;
+      margin-bottom: 6.125rem;
     }
 
     &__filters .font--label {
-      margin-bottom: 12px;
-    }
-
-    &__filters .screenings__buttons {
-      display: flex;
-      padding: 12px 0;
-      overflow: auto;
-    }
-
-    &__filters button {
-      font-size: 14px;
-      padding: 9px 24px;
+      margin-bottom: 0.75rem;
     }
 
     &__days {
@@ -151,15 +139,23 @@ export default {
     }
 
     &__days .button + .button {
-      margin-left: 10px;
+      margin-left: 0.625rem;
     }
 
     &__days .screenings__buttons {
       font-size: 1rem;
+      padding: 0.75rem 0;
+      display: flex;
+      overflow: auto;
+    }
+
+    &__buttons button {
+      font-size: 0.875rem;
+      padding: 0.5625rem 1.5rem;
     }
 
     &__days .screenings__buttons:last-child {
-      padding-right: 10px;
+      padding-right: 0.625rem;
     }
 
     &__genres {
@@ -169,39 +165,29 @@ export default {
     }
 
     &__genres select {
-      margin-right: 24px;
-      padding: 17.5px 24px 17.5px 24px;
-      width: min(calc(100% - 24px), 24rem);
+      width: min(calc(100% - 1.5rem), 29.25rem);
+      margin-right: 1.5rem;
+      padding: 1.094rem 1.5rem 1.094rem 1.5rem;
 
       border: 0;
       background-color: #f7f7f7;
-
-      justify-self: center;
-      align-self: center;
-    }
-
-    &__movie {
-      padding: 40px;
-      display: grid;
-      grid-template-columns: 98px 1fr; //gotta try minmax here
-      gap: 40px;
     }
   }
 }
 
 @include media-md {
   .screenings {
-    margin-top: 32px;
+    margin-top: 2rem;
 
     &__headers {
-      margin-bottom: 32px;
+      margin-bottom: 2rem;
     }
 
     &__headers h1 {
       padding: 0;
       margin: 0;
       font-weight: 600;
-      font-size: 64px;
+      font-size: 4rem;
       line-height: 102%;
       letter-spacing: -0.01em;
     }
@@ -211,7 +197,7 @@ export default {
       padding: 0;
       margin: 0;
       font-weight: 600;
-      font-size: 64px;
+      font-size: 4rem;
       line-height: 102%;
       letter-spacing: -0.01em;
     }
@@ -220,17 +206,17 @@ export default {
       display: flex;
       align-items: stretch;
       justify-content: space-around;
-      gap: 40px;
+      gap: 2.5rem;
       align-items: center;
-      margin-bottom: 98px;
+      margin-bottom: 6.125rem;
     }
 
     &__filters .font--label {
-      margin-bottom: 12px;
+      margin-bottom: 0.75rem;
     }
 
     &__days .button + .button {
-      margin-left: 10px;
+      margin-left: 0.625rem;
     }
 
     &__days .screenings__buttons {
@@ -247,15 +233,16 @@ export default {
       align-self: stretch;
       background-color: #f7f7f7;
       border: 0;
-      padding: 17.5px 0 17.5px 24px;
+      padding: 1.094rem 17.5px 0 1.094rem 1.5rem;
       margin-right: auto;
     }
 
     &__movie {
-      padding: 40px;
+      padding: 2.5rem;
+
       display: grid;
-      grid-template-columns: 98px 1fr; //gotta try minmax here
-      gap: 40px;
+      grid-template-columns: 6.125rem 1fr; //gotta try minmax here
+      gap: 2.5rem;
     }
   }
 }
