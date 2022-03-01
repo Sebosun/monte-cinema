@@ -1,36 +1,50 @@
 <script>
+import axios from "axios";
+import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 export default {
+  components: { ErrorMessage },
   data() {
     return {
       movie: null,
+      loading: true,
+      error: { status: false, message: "" },
     };
   },
   props: {
     id: {
-      type: Number,
+      type: String,
       required: true,
     },
   },
   async created() {
-    this.movie = await this.fetchData();
+    try {
+      const getMovie = await axios.get(
+        `http://localhost:3000/movies/${this.id}`
+      );
+      this.movie = getMovie.data;
+    } catch (err) {
+      this.error = {
+        status: true,
+        message: "Unable to fetch movie. Please try again later.",
+      };
+    }
+    this.loading = false;
   },
-  methods: {
-    //todo error handling lol
-    async fetchData() {
-      const data = await fetch(`http://localhost:3000/movies/${this.id}`);
-      let dataJson = await data.json();
-      return dataJson;
-    },
-  },
+  methods: {},
 };
 </script>
 
 <template>
   <div>
-    <h1>Movies :)</h1>
-    <p>{{ id }}</p>
-    <div v-if="movie">
-      {{ JSON.stringify(movie) }}
+    <div v-if="loading">Loading....</div>
+    <div v-else-if="error.status">
+      <error-message>{{ error.message }}</error-message>
+    </div>
+    <div v-else>
+      <p>{{ id }}</p>
+      <pre v-if="movie">
+        {{ movie }}
+      </pre>
     </div>
   </div>
 </template>

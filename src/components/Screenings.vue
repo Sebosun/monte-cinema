@@ -1,28 +1,53 @@
 <script>
+import axios from "axios";
 /* TODO - Calendar*/
 /* TODO - Gaps*/
 import DisplayMovies from "./DisplayMovies.vue";
 import UiButton from "./UI/UiButton.vue";
+import ErrorMessage from "./UI/ErrorMessage.vue";
 export default {
-  components: { UiButton, DisplayMovies },
+  components: { UiButton, DisplayMovies, ErrorMessage },
   data() {
     return {
       posts: null,
       loading: true,
+      error: { status: false, message: "" },
       selected: "",
     };
   },
   async created() {
-    const data = await this.fetchData();
-    this.posts = data;
-    this.loading = false;
+    this.getSeances();
+    try {
+      const getMovies = await axios("http://localhost:3000/movies");
+      this.loading = false;
+      this.posts = getMovies.data;
+    } catch (err) {
+      this.loading = false;
+      this.error = {
+        status: true,
+        message: "Request failed. Please try again later.",
+      };
+    }
   },
   methods: {
-    //TODO error handling
-    async fetchData() {
-      const data = await fetch("http://localhost:3000/movies");
-      let dataJson = await data.json();
-      return dataJson;
+    async getSeances() {
+      const fetchSeances = await axios("http://localhost:3000/seances");
+      const seancesByMovie = fetchSeances.data.reduce(
+        (seancesGroupedByMovieID, curSeance) => {
+          // if key doesnt exist in the array, create an empty obj in that space
+          if (!seancesGroupedByMovieID[curSeance.movie]) {
+            seancesGroupedByMovieID[curSeance.movie] = [];
+          }
+
+          seancesGroupedByMovieID[curSeance.movie].push({
+            datetime: curSeance.datetime,
+            hall: curSeance.datetime,
+          });
+          return seancesGroupedByMovieID;
+        },
+        {}
+      );
+      console.log(seancesByMovie);
     },
   },
   computed: {
@@ -39,7 +64,7 @@ export default {
         (item) => item.genre.name === this.selected
       );
       // making sure something is actually selected
-      return this.selected != "" ? filterMovies : this.posts;
+      return this.selected == "" ? this.posts : filterMovies;
     },
   },
 };
@@ -47,7 +72,10 @@ export default {
 
 <template>
   <section class="screenings">
-    <div v-if="loading">Loading...</div>
+    <div v-if="loading" class="screenings__loading">Loading...</div>
+    <div v-else-if="error.status" class="screenings__error">
+      <error-message>{{ error.message }}</error-message>
+    </div>
     <div v-else class="screenings__wrapper">
       <div class="screenings__top">
         <div class="screenings__headers font--header">
@@ -96,6 +124,12 @@ export default {
 <style lang="scss">
 .screenings {
   margin-top: 5.5rem;
+
+  &__loading {
+    text-align: center;
+    margin-inline: auto;
+    margin-bottom: 5rem;
+  }
 
   &__headers {
     margin-inline: 1.5rem;
