@@ -1,4 +1,5 @@
 <script>
+// TODO calendar but thats at some other point
 import MovieCard from "./UI/MovieCard.vue";
 import Tags from "./UI/Tags.vue";
 import UiButton from "./UI/UiButton.vue";
@@ -35,9 +36,17 @@ export default {
             {{ movieLength(movie.length) }} min
           </div>
         </div>
+
+        <div class="display-movies__buttons--md-screen">
+          <ui-button empty colors="brand">21:45</ui-button>
+          <ui-button empty colors="brand">21:45</ui-button>
+          <ui-button empty colors="brand">21:45</ui-button>
+          <ui-button empty colors="brand">21:45</ui-button>
+          <ui-button empty colors="brand">21:45</ui-button>
+        </div>
       </div>
     </div>
-    <div class="display-movies__buttons">
+    <div class="display-movies__buttons--sm-screen">
       <ui-button empty colors="brand">21:45</ui-button>
       <ui-button empty colors="brand">21:45</ui-button>
       <ui-button empty colors="brand">21:45</ui-button>
@@ -52,7 +61,6 @@ export default {
   padding: 2rem 1rem;
 
   &__wrapper {
-    gap: 0.625rem;
     margin-bottom: 1rem;
   }
 
@@ -91,13 +99,12 @@ export default {
 
   &__info {
     margin-bottom: 0.5rem;
-
     display: flex;
     gap: 1.25rem;
     align-items: center;
   }
 
-  &__buttons {
+  &__buttons--sm-screen {
     width: 100%;
     padding: 0.625rem 0;
     max-width: min-content;
@@ -106,11 +113,15 @@ export default {
     overflow-x: auto;
   }
 
-  &__buttons button {
+  &__buttons--md-screen {
+    display: none;
+  }
+
+  &__buttons--sm-screen button {
     padding: 0.3125rem 1rem;
   }
 
-  &__buttons button + button {
+  &__buttons--sm-screen button + button {
     margin-left: 0.5rem;
   }
 
@@ -118,43 +129,46 @@ export default {
     font-size: 0.875rem;
     color: var(--color-secondary);
   }
-}
 
-@include media-md {
-  img {
-    max-height: 8.25rem;
-    max-width: 100%;
-    object-fit: cover;
-  }
+  @include media-md {
+    padding: 40px;
+    margin-bottom: 1rem;
 
-  .display-movies {
-    &__card {
-      display: flex;
-      flex-direction: column;
+    &__wrapper {
+      display: grid;
+      gap: 40px;
+      grid-template-columns: minmax(100px, 10%) 90%;
+      margin: 0;
     }
 
     &__card h2 {
+      font-size: 24px;
+    }
+
+    &__fill {
+      float: none;
+      justify-content: center;
+      height: 100%;
+    }
+
+    &__fill img {
+      max-height: 100%;
+      max-width: 100%;
       margin: 0;
-      padding: 0;
     }
 
-    &__card button {
-      max-width: min-content;
+    &__buttons--sm-screen {
+      display: none;
+    }
+
+    &__buttons--md-screen {
       margin-top: auto;
-    }
-
-    &__info {
-      margin-top: 0.5rem;
-      margin-bottom: 0.5rem;
-
       display: flex;
-      gap: 1.25rem;
-      align-items: center;
+      gap: 8px;
+      flex-direction: row;
     }
-
-    &__info &__info--len {
-      font-size: 0.875rem;
-      color: var(--color-secondary);
+    &__buttons--md-screen button {
+      padding: 12px 32px;
     }
   }
 }
