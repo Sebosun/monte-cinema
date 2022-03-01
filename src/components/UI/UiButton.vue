@@ -62,7 +62,6 @@ export default {
 .button {
   color: inherit;
   background: inherit;
-  padding: 0; /* normalize css gives some padding by default */
 
   border: solid;
   border-radius: 999px;
@@ -123,6 +122,6 @@ export default {
     color: var(--color-background);
     background-color: var(--color-primary);
     border-color: var(--color-primary);
-    }
+  }
 }
 </style>
