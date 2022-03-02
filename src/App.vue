@@ -28,6 +28,12 @@ export default {
   }
 }
 
+/* just so i dont have to do this in every component */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .background--rose {
   background-color: var(--color-rose);
 }

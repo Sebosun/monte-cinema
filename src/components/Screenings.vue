@@ -100,7 +100,7 @@ export default {
           <div class="screenings__genres">
             <div class="font--label">Movie</div>
             <select v-model="selected">
-              <option value="">All movies</option>
+              <option selected value="">All movies</option>
               <option
                 v-for="genre in genres"
                 :value="genre.name"

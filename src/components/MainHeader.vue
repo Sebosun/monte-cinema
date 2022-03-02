@@ -10,8 +10,12 @@
     <header-navigation class="header__navigation" />
 
     <div class="header__actions">
-      <ui-button medium borderless empty colors="brand">Register</ui-button>
-      <ui-button medium colors="brand">Log in</ui-button>
+      <ui-button medium borderless empty colors="brand">
+        <router-link :to="{ name: 'Register' }"> Register </router-link>
+      </ui-button>
+      <ui-button medium colors="brand">
+        <router-link :to="{ name: 'Login' }">Login</router-link>
+      </ui-button>
     </div>
   </header>
 </template>
