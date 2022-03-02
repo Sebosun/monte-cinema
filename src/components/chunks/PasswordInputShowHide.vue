@@ -27,8 +27,8 @@ export default {
 </script>
 
 <template>
-  <label class="password-input font--label" for="password"
-    >Password
+  <li>
+    <label class="password-input font--label" for="password">Password</label>
     <input
       name="password"
       required
@@ -40,21 +40,22 @@ export default {
     <div class="password-input__svg" @click.prevent="togglePassword">
       <eye-svg />
     </div>
-  </label>
+  </li>
 </template>
 
 <style scoped lang="scss">
-.password-input {
+.password-input__svg {
   display: flex;
   gap: 5px;
   flex-direction: column;
   position: relative;
   font: inherit;
 
-  &__svg {
+  cursor: pointer;
+  & svg {
     position: absolute;
-    top: 42%;
-    right: max(3%);
+    bottom: 11px;
+    right: 3%;
 
     border: 0;
     background: inherit;
