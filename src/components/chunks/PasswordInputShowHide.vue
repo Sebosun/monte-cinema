@@ -31,14 +31,15 @@ export default {
     >Password
     <input
       name="password"
+      required
       :value="value"
       :type="passwordInputType"
       @input="$emit('input', $event.target.value)"
       placeholder="Enter your password"
     />
-    <button empty colors="primary" @click.prevent="togglePassword">
+    <div class="password-input__svg" @click.prevent="togglePassword">
       <eye-svg />
-    </button>
+    </div>
   </label>
 </template>
 
@@ -49,19 +50,19 @@ export default {
   flex-direction: column;
   position: relative;
   font: inherit;
-}
 
-button {
-  position: absolute;
-  top: 42%;
-  right: max(3%);
+  &__svg {
+    position: absolute;
+    top: 42%;
+    right: max(3%);
 
-  border: 0;
-  background: inherit;
-  & svg:hover,
-  & svg:focus {
-    cursor: pointer;
-    fill: var(--color-background);
+    border: 0;
+    background: inherit;
+    & svg:hover,
+    & svg:focus {
+      cursor: pointer;
+      fill: var(--color-background);
+    }
   }
 }
 </style>

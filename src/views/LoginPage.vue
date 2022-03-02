@@ -27,6 +27,7 @@ export default {
           <li>
             <label class="font--label" for="email">Email </label>
             <input
+              required
               name="email"
               type="email"
               v-model="email"
@@ -38,10 +39,10 @@ export default {
           </li>
         </ul>
         <ui-button medium colors="brand">Log in</ui-button>
+        <ui-button medium empty borderless colors="brand">
+          <router-link :to="{ name: 'Register' }">Register instead</router-link>
+        </ui-button>
       </form>
-      <ui-button medium empty borderless colors="brand"
-        >Register instead</ui-button
-      >
       <p class="login-page__forgot">
         Forgot your password?
         <router-link :to="{ name: 'Register' }">Reset it now</router-link>
@@ -121,6 +122,13 @@ export default {
     &:hover,
     &:focus {
       font-weight: bold;
+    }
+  }
+  @include media-md {
+    &__wrapper {
+      box-shadow: 0px 4px 22px rgba(52, 53, 65, 0.15);
+      border-radius: 24px;
+      padding: 64px;
     }
   }
 }
