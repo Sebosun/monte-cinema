@@ -1,4 +1,5 @@
 <script>
+import EyeSvg from "../../assets/eye.svg";
 export default {
   props: {
     value: {
@@ -21,6 +22,7 @@ export default {
       return this.isPasswordShown ? "text" : "password";
     },
   },
+  components: { EyeSvg },
 };
 </script>
 
@@ -34,7 +36,9 @@ export default {
       @input="$emit('input', $event.target.value)"
       placeholder="******"
     />
-    <button empty colors="primary" @click.prevent="togglePassword">Show</button>
+    <button empty colors="primary" @click.prevent="togglePassword">
+      <eye-svg />
+    </button>
   </label>
 </template>
 
@@ -43,5 +47,20 @@ export default {
   display: flex;
   gap: 5px;
   flex-direction: column;
+  position: relative;
+}
+
+button {
+  position: absolute;
+  top: 42%;
+  right: max(3%);
+
+  border: 0;
+  background: inherit;
+  & svg:hover,
+  & svg:focus {
+    cursor: pointer;
+    fill: var(--color-background);
+  }
 }
 </style>
