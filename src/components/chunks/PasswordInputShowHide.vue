@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <label for="password"
+  <label class="password-input font--label" for="password"
     >Password
     <input
       name="password"
@@ -38,4 +38,10 @@ export default {
   </label>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.password-input {
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
+</style>

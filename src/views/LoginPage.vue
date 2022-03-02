@@ -19,27 +19,37 @@ export default {
 
 <template>
   <div class="login-page">
-    <form @submit.prevent="submitForm" class="login-page__form">
-      <ul>
-        <li>
-          <label for="email">Email </label>
-          <input
-            name="email"
-            type="email"
-            v-model="email"
-            placeholder="Something ending with @monterail.com"
-          />
-        </li>
-        <li>
-          <password-input-show-hide v-model="password" />
-        </li>
-      </ul>
-      <ui-button colors="brand">Confirm</ui-button>
-    </form>
+    <h1 class="font--header">Hi There!</h1>
+    <h2 class="font--header">Care to log in?</h2>
+    <div class="login-page__wrapper">
+      <form @submit.prevent="submitForm" class="login-page__form">
+        <ul>
+          <li>
+            <label class="font--label" for="email">Email </label>
+            <input
+              name="email"
+              type="email"
+              v-model="email"
+              placeholder="Something ending with @monterail.com"
+            />
+          </li>
+          <li>
+            <password-input-show-hide v-model="password" />
+          </li>
+        </ul>
+        <ui-button small colors="brand">Log in</ui-button>
+      </form>
+      <ui-button small empty borderless colors="brand"
+        >Register instead</ui-button
+      >
+      <p class="login-page__forgot">
+        Forgot your password? <a href="#">Reset it now</a>
+      </p>
+    </div>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 li {
   list-style-type: none;
 }
@@ -47,11 +57,63 @@ label {
   display: block;
 }
 
-.login-page {
-  margin: 0;
+h1 {
+  font-size: 40px;
+  text-align: center;
+
   padding: 0;
+  margin: 0;
+}
+h2 {
+  font-size: 40px;
+  text-align: center;
+
+  padding: 0;
+  margin: 0;
+  color: var(--color-secondary);
+}
+
+.login-page {
+  margin: 64px 0;
+  margin-inline: auto;
+  max-width: 600px;
+  padding: 0;
+
+  &__wrapper {
+    max-width: 600px;
+    margin-inline: auto;
+  }
+
   &__form label {
     margin: 10px 0;
+    max-width: 100%;
+  }
+  & ul {
+    padding: 0;
+  }
+  & li {
+    display: flex;
+    justify-content: center;
+    margin-inline: auto;
+    flex-direction: column;
+  }
+  &__form {
+    margin-inline: 24px;
+  }
+
+  & input {
+    background-color: #f7f7f7;
+    border: 0;
+    padding: 17.5px 24px;
+    max-width: 100%;
+  }
+
+  & .button {
+    width: 100%;
+  }
+
+  &__forgot {
+    text-align: center;
   }
 }
 </style>
