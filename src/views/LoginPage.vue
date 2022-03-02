@@ -19,9 +19,9 @@ export default {
 
 <template>
   <div class="login-page">
-    <h1 class="font--header">Hi There!</h1>
-    <h2 class="font--header">Care to log in?</h2>
     <div class="login-page__wrapper">
+      <h1 class="font--header">Hi There!</h1>
+      <h2 class="font--header">Care to log in?</h2>
       <form @submit.prevent="submitForm" class="login-page__form">
         <ul>
           <li>
@@ -66,7 +66,8 @@ export default {
   max-width: 600px;
   padding: 0;
 
-  h1 {
+  h1,
+  h2 {
     font-size: 40px;
     text-align: center;
 
@@ -75,11 +76,6 @@ export default {
   }
 
   h2 {
-    font-size: 40px;
-    text-align: center;
-
-    padding: 0;
-    margin: 0;
     color: var(--color-secondary);
   }
 
@@ -146,10 +142,6 @@ export default {
     padding: 0.95em 2em;
   }
 
-  &__forgot {
-    text-align: center;
-  }
-
   a {
     color: var(--color-brand);
     &:hover,
@@ -158,11 +150,27 @@ export default {
     }
   }
 
+  &__forgot {
+    text-align: center;
+
+    font-size: 16px;
+    line-height: 170%;
+
+    letter-spacing: 0.04em;
+    color: #343541;
+  }
+
   @include media-md {
+    h1,
+    h2 {
+      font-size: 80px;
+      text-align: left;
+    }
     &__form {
       box-shadow: 0px 4px 22px rgba(52, 53, 65, 0.15);
       border-radius: 24px;
       padding: 64px;
+      margin: 40px 0;
     }
 
     &__form li {
@@ -176,11 +184,15 @@ export default {
     }
 
     &__buttons .button {
-      font-size: 1rem;
+      font-size: 18px;
       padding: 0.95em 2em;
       &:last-child {
+        margin-right: 10px;
         padding: 0;
       }
+    }
+    &__forgot {
+      text-align: left;
     }
   }
 }
