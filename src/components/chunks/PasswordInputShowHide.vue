@@ -34,7 +34,7 @@ export default {
       :value="value"
       :type="passwordInputType"
       @input="$emit('input', $event.target.value)"
-      placeholder="******"
+      placeholder="Enter your password"
     />
     <button empty colors="primary" @click.prevent="togglePassword">
       <eye-svg />
@@ -48,6 +48,7 @@ export default {
   gap: 5px;
   flex-direction: column;
   position: relative;
+  font: inherit;
 }
 
 button {

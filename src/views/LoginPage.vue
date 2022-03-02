@@ -37,51 +37,53 @@ export default {
             <password-input-show-hide v-model="password" />
           </li>
         </ul>
-        <ui-button small colors="brand">Log in</ui-button>
+        <ui-button medium colors="brand">Log in</ui-button>
       </form>
-      <ui-button small empty borderless colors="brand"
+      <ui-button medium empty borderless colors="brand"
         >Register instead</ui-button
       >
       <p class="login-page__forgot">
-        Forgot your password? <a href="#">Reset it now</a>
+        Forgot your password?
+        <router-link :to="{ name: 'Register' }">Reset it now</router-link>
       </p>
     </div>
   </div>
 </template>
 
 <style lang="scss">
-li {
-  list-style-type: none;
-}
-label {
-  display: block;
-}
-
-h1 {
-  font-size: 40px;
-  text-align: center;
-
-  padding: 0;
-  margin: 0;
-}
-h2 {
-  font-size: 40px;
-  text-align: center;
-
-  padding: 0;
-  margin: 0;
-  color: var(--color-secondary);
-}
-
 .login-page {
   margin: 64px 0;
   margin-inline: auto;
   max-width: 600px;
   padding: 0;
 
+  h1 {
+    font-size: 40px;
+    text-align: center;
+
+    padding: 0;
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 40px;
+    text-align: center;
+
+    padding: 0;
+    margin: 0;
+    color: var(--color-secondary);
+  }
+
+  li {
+    list-style-type: none;
+  }
+  label {
+    display: block;
+  }
+
   &__wrapper {
     max-width: 600px;
-    margin-inline: auto;
+    margin: 48px 24px 12px;
   }
 
   &__form label {
@@ -91,14 +93,12 @@ h2 {
   & ul {
     padding: 0;
   }
+
   & li {
     display: flex;
     justify-content: center;
     margin-inline: auto;
     flex-direction: column;
-  }
-  &__form {
-    margin-inline: 24px;
   }
 
   & input {
@@ -114,6 +114,14 @@ h2 {
 
   &__forgot {
     text-align: center;
+  }
+
+  a {
+    color: var(--color-brand);
+    &:hover,
+    &:focus {
+      font-weight: bold;
+    }
   }
 }
 </style>
