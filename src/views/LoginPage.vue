@@ -34,14 +34,22 @@ export default {
               placeholder="Something ending with @monterail.com"
             />
           </li>
-          <li>
-            <password-input-show-hide v-model="password" />
-          </li>
+          <password-input-show-hide v-model="password" />
         </ul>
-        <ui-button medium colors="brand">Log in</ui-button>
-        <ui-button medium empty borderless colors="brand">
-          <router-link :to="{ name: 'Register' }">Register instead</router-link>
-        </ui-button>
+
+        <div class="login-page__buttons">
+          <ui-button colors="brand">Log in</ui-button>
+          <ui-button
+            class="login-page__buttons--register"
+            empty
+            borderless
+            colors="brand"
+          >
+            <router-link :to="{ name: 'Register' }"
+              >Register instead</router-link
+            >
+          </ui-button>
+        </div>
       </form>
       <p class="login-page__forgot">
         Forgot your password?
@@ -91,7 +99,9 @@ export default {
     margin: 10px 0;
     max-width: 100%;
   }
+
   & ul {
+    margin: 0;
     padding: 0;
   }
 
@@ -107,10 +117,33 @@ export default {
     border: 0;
     padding: 17.5px 24px;
     max-width: 100%;
+
+    border-radius: 8px;
+
+    &:hover {
+      background-color: #eaeaea;
+    }
+
+    &::placeholder {
+      color: var(--color-secondary);
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      outline: solid 2px #2f80ed;
+      background-color: #ebf3fe;
+    }
+  }
+
+  &__buttons {
+    margin: 67px 0;
   }
 
   & .button {
     width: 100%;
+    font-size: 1rem;
+    padding: 0.95em 2em;
   }
 
   &__forgot {
@@ -124,11 +157,30 @@ export default {
       font-weight: bold;
     }
   }
+
   @include media-md {
-    &__wrapper {
+    &__form {
       box-shadow: 0px 4px 22px rgba(52, 53, 65, 0.15);
       border-radius: 24px;
       padding: 64px;
+    }
+
+    &__form li {
+      padding: 10px 0;
+    }
+
+    &__buttons {
+      display: flex;
+      flex-direction: row-reverse;
+      margin: 40px 0 0;
+    }
+
+    &__buttons .button {
+      font-size: 1rem;
+      padding: 0.95em 2em;
+      &:last-child {
+        padding: 0;
+      }
     }
   }
 }
