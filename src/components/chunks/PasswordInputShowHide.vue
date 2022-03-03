@@ -27,8 +27,8 @@ export default {
 </script>
 
 <template>
-  <li>
-    <label class="password-input font--label" for="password">Password</label>
+  <label class="password-input font--label" for="password"
+    >Password
     <input
       name="password"
       required
@@ -37,32 +37,40 @@ export default {
       @input="$emit('input', $event.target.value)"
       placeholder="Enter your password"
     />
-    <div class="password-input__svg" @click.prevent="togglePassword">
+    <div
+      role="button"
+      class="password-input__svg"
+      title="show password"
+      @click.prevent="togglePassword"
+    >
       <eye-svg />
     </div>
-  </li>
+  </label>
 </template>
 
 <style scoped lang="scss">
-.password-input__svg {
+.password-input {
   display: flex;
-  gap: 5px;
   flex-direction: column;
-  position: relative;
-  font: inherit;
+  gap: 10px;
+  &__svg {
+    position: relative;
+    font: inherit;
+    gap: 5px;
 
-  cursor: pointer;
-  & svg {
-    position: absolute;
-    bottom: 11px;
-    right: 3%;
+    cursor: pointer;
+    svg {
+      position: absolute;
+      bottom: 20px;
+      right: 3%;
 
-    border: 0;
-    background: inherit;
-    & svg:hover,
-    & svg:focus {
-      cursor: pointer;
-      fill: var(--color-background);
+      border: 0;
+      background: inherit;
+      &:hover,
+      &:focus {
+        cursor: pointer;
+        fill: var(--color-background);
+      }
     }
   }
 }

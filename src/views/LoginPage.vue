@@ -1,6 +1,7 @@
 <script>
 import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
+import AuthHeader from "../components/AuthHeader.vue";
 export default {
   data() {
     return {
@@ -13,48 +14,53 @@ export default {
       console.log(this.email, this.password);
     },
   },
-  components: { UiButton, PasswordInputShowHide },
+  components: { UiButton, PasswordInputShowHide, AuthHeader },
 };
 </script>
 
 <template>
-  <div class="login-page">
-    <div class="login-page__wrapper">
-      <h1 class="font--header">Hi There!</h1>
-      <h2 class="font--header">Care to log in?</h2>
-      <form @submit.prevent="submitForm" class="login-page__form">
-        <ul>
-          <li>
-            <label class="font--label" for="email">Email </label>
-            <input
-              required
-              name="email"
-              type="email"
-              v-model="email"
-              placeholder="Something ending with @monterail.com"
-            />
-          </li>
-          <password-input-show-hide v-model="password" />
-        </ul>
+  <div>
+    <AuthHeader />
+    <div class="login-page">
+      <div class="login-page__wrapper">
+        <h1 class="font--header">Hi There!</h1>
+        <h2 class="font--header">Care to log in?</h2>
+        <form @submit.prevent="submitForm" class="login-page__form">
+          <ul>
+            <li>
+              <label class="font--label" for="email">Email </label>
+              <input
+                required
+                name="email"
+                type="email"
+                v-model="email"
+                placeholder="Something ending with @monterail.com"
+              />
+            </li>
+            <li>
+              <password-input-show-hide v-model="password" />
+            </li>
+          </ul>
 
-        <div class="login-page__buttons">
-          <ui-button colors="brand">Log in</ui-button>
-          <ui-button
-            class="login-page__buttons--register"
-            empty
-            borderless
-            colors="brand"
-          >
-            <router-link :to="{ name: 'Register' }"
-              >Register instead</router-link
+          <div class="login-page__buttons">
+            <ui-button colors="brand">Log in</ui-button>
+            <ui-button
+              class="login-page__buttons--register"
+              empty
+              borderless
+              colors="brand"
             >
-          </ui-button>
-        </div>
-      </form>
-      <p class="login-page__forgot">
-        Forgot your password?
-        <router-link :to="{ name: 'Register' }">Reset it now</router-link>
-      </p>
+              <router-link :to="{ name: 'Register' }"
+                >Register instead</router-link
+              >
+            </ui-button>
+          </div>
+        </form>
+        <p class="login-page__forgot">
+          Forgot your password?
+          <router-link :to="{ name: 'Register' }">Reset it now</router-link>
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -96,19 +102,19 @@ export default {
     max-width: 100%;
   }
 
-  & ul {
+  ul {
     margin: 0;
     padding: 0;
   }
 
-  & li {
+  li {
     display: flex;
     justify-content: center;
     margin-inline: auto;
     flex-direction: column;
   }
 
-  & input {
+  input {
     background-color: #f7f7f7;
     border: 0;
     padding: 17.5px 24px;
@@ -136,7 +142,7 @@ export default {
     margin: 67px 0;
   }
 
-  & .button {
+  .button {
     width: 100%;
     font-size: 1rem;
     padding: 0.95em 2em;
