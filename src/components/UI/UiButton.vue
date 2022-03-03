@@ -95,7 +95,7 @@ export default {
   /* utility classes */
 
   &--empty {
-    background: var(--color-background);
+    background: inherit;
   }
 
   &--borderless {
