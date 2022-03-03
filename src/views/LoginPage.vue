@@ -2,16 +2,36 @@
 import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
 import AuthHeader from "../components/AuthHeader.vue";
+
+import validateEmail from "@/helpers/validateEmail";
+import validatePassword from "@/helpers/validatePassword";
+
 export default {
   data() {
     return {
       email: "",
       password: "",
+      isEmailTouched: false,
+      isPasswordTouched: false,
     };
   },
   methods: {
     submitForm() {
       console.log(this.email, this.password);
+      console.log(this.isEmailTouched);
+      console.log(this.isPasswordTouched);
+    },
+    touchAll() {
+      this.isEmailTouched = true;
+      this.isPasswordTouched = true;
+    },
+  },
+  computed: {
+    emailError() {
+      return validateEmail(this.email, this.isEmailTouched);
+    },
+    passwordError() {
+      return validatePassword(this.password, this.isPasswordTouched);
     },
   },
   components: { UiButton, PasswordInputShowHide, AuthHeader },
@@ -25,25 +45,34 @@ export default {
       <div class="login-page__wrapper">
         <h1 class="font--header">Hi There!</h1>
         <h2 class="font--header">Care to log in?</h2>
-        <form @submit.prevent="submitForm" class="login-page__form">
+        <form novalidate @submit.prevent="submitForm" class="login-page__form">
           <ul>
             <li>
               <label class="font--label" for="email">Email </label>
               <input
                 required
+                @blur="isEmailTouched = true"
                 name="email"
                 type="email"
                 v-model="email"
-                placeholder="Something ending with @monterail.com"
+                placeholder="example@monterail.com"
               />
+              <div class="login-page__error">{{ emailError }}</div>
             </li>
+
             <li>
-              <password-input-show-hide v-model="password" />
+              <password-input-show-hide
+                @touched="isPasswordTouched = true"
+                v-model="password"
+              />
+              <div class="login-page__error">{{ passwordError }}</div>
             </li>
           </ul>
 
           <div class="login-page__buttons">
-            <ui-button colors="brand">Log in</ui-button>
+            <ui-button :disabled="!isEmailTouched" colors="brand"
+              >Log in</ui-button
+            >
             <ui-button
               class="login-page__buttons--register"
               empty
@@ -56,6 +85,7 @@ export default {
             </ui-button>
           </div>
         </form>
+
         <p class="login-page__forgot">
           Forgot your password?
           <router-link :to="{ name: 'Register' }">Reset it now</router-link>
@@ -85,21 +115,20 @@ export default {
     color: var(--color-secondary);
   }
 
-  li {
-    list-style-type: none;
-  }
-  label {
-    display: block;
-  }
-
   &__wrapper {
     max-width: 600px;
     margin: 48px 24px 12px;
   }
 
   &__form label {
+    display: block;
     margin: 10px 0;
     max-width: 100%;
+  }
+
+  &__error {
+    margin-top: 10px;
+    color: var(--color-error);
   }
 
   ul {
@@ -110,6 +139,7 @@ export default {
   li {
     display: flex;
     justify-content: center;
+    list-style-type: none;
     margin-inline: auto;
     flex-direction: column;
   }
@@ -140,6 +170,12 @@ export default {
 
   &__buttons {
     margin: 67px 0;
+    button {
+      &:disabled {
+        background-color: var(--color-secondary);
+        cursor: not-allowed;
+      }
+    }
   }
 
   .button {

@@ -6,6 +6,9 @@ export default {
       type: String,
       default: "",
     },
+    onBlur: {
+      type: Function,
+    },
   },
   data() {
     return {
@@ -35,16 +38,17 @@ export default {
       :value="value"
       :type="passwordInputType"
       @input="$emit('input', $event.target.value)"
+      @blur="$emit('touched')"
       placeholder="Enter your password"
     />
-    <div
-      role="button"
+    <button
+      type="button"
       class="password-input__svg"
       title="show password"
       @click.prevent="togglePassword"
     >
       <eye-svg />
-    </div>
+    </button>
   </label>
 </template>
 
@@ -54,6 +58,9 @@ export default {
   flex-direction: column;
   gap: 10px;
   &__svg {
+    border: none;
+    padding: 0;
+    background-color: inherit;
     position: relative;
     font: inherit;
     gap: 5px;
