@@ -16,6 +16,7 @@ export default {
     },
   },
 };
+//TODO split into separate components at some point
 </script>
 <template>
   <header class="header">
@@ -29,7 +30,7 @@ export default {
       </button>
     </div>
 
-    <div v-show="isMobileMenuVisible" class="header__navigation--mobile">
+    <div v-if="isMobileMenuVisible" class="header__navigation--mobile">
       <header-navigation />
       <div>
         <router-link :to="{ name: 'Register' }">

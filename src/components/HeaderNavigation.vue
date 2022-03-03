@@ -42,18 +42,12 @@ ul {
   nav {
     background-color: #f7f7f7;
   }
-  a {
-  }
   ul {
     display: flex;
     gap: 20px;
     padding: 20px;
     margin: 0;
     padding-left: 1.5rem;
-    a {
-      margin: 0;
-      padding: 0;
-    }
   }
 }
 
