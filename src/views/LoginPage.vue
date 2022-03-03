@@ -5,7 +5,6 @@ import AuthHeader from "../components/AuthHeader.vue";
 
 import validateEmail from "@/helpers/validateEmail";
 import validatePassword from "@/helpers/validatePassword";
-
 export default {
   data() {
     return {
@@ -87,7 +86,6 @@ export default {
             </ui-button>
           </div>
         </form>
-
         <p class="login-page__forgot">
           Forgot your password?
           <router-link :to="{ name: 'Register' }">Reset it now</router-link>
@@ -149,11 +147,10 @@ export default {
     &:focus,
     &:focus-visible {
       outline: none;
-      border: 2px solid #2f80ed;
+border: 2px solid #2f80ed;
       background-color: #ebf3fe;
     }
   }
-
   &__wrapper {
     max-width: 600px;
     margin: 48px 24px 12px;
@@ -175,7 +172,6 @@ export default {
     margin-top: 10px;
     color: var(--color-error);
   }
-
   &__buttons {
     margin: 67px 0;
   }
@@ -186,7 +182,6 @@ export default {
       cursor: not-allowed;
     }
   }
-
   .button {
     width: 100%;
     font-size: 1rem;
