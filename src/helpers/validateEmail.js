@@ -1,6 +1,5 @@
-export default function validateEmail(email, isEmailTouched) {
+export default function validateEmail(email) {
   const re = email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-  if (!isEmailTouched) return "";
   if (!re) {
     if (!email.includes("@")) return "Email must have a @ sign";
     if (email.split("@")[0] == "") return "The username cannot be empty!";

@@ -1,4 +1,4 @@
-export default function validatePassword(password, isPasswordTouched) {
+export default function validatePassword(password) {
   // Anything with less than eight characters
   // OR anything with no numbers
   // OR or anything with no lowercase or uppercase char
@@ -9,7 +9,6 @@ export default function validatePassword(password, isPasswordTouched) {
   const matchNumbers = password.match(/\d/);
   // checks if there are any letters
   const matchLetters = password.match(/[a-zA-Z]/);
-  if (!isPasswordTouched) return "";
   if (re) {
     if (password.length < 8)
       return "Password must be at least 8 characters long";
