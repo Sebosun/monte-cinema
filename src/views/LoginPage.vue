@@ -17,6 +17,7 @@ export default {
   },
   methods: {
     submitForm() {
+      this.touchAll();
       console.log(this.email, this.password);
       console.log(this.isEmailTouched);
       console.log(this.isPasswordTouched);
@@ -47,7 +48,7 @@ export default {
         <h2 class="font--header">Care to log in?</h2>
         <form novalidate @submit.prevent="submitForm" class="login-page__form">
           <ul>
-            <li>
+            <li :class="{ 'login-page--error': !!emailError }">
               <label class="font--label" for="email">Email </label>
               <input
                 required
@@ -60,7 +61,7 @@ export default {
               <div class="login-page__error">{{ emailError }}</div>
             </li>
 
-            <li>
+            <li :class="{ 'login-page--error': !!passwordError }">
               <password-input-show-hide
                 @touched="isPasswordTouched = true"
                 v-model="password"
@@ -115,22 +116,6 @@ export default {
     color: var(--color-secondary);
   }
 
-  &__wrapper {
-    max-width: 600px;
-    margin: 48px 24px 12px;
-  }
-
-  &__form label {
-    display: block;
-    margin: 10px 0;
-    max-width: 100%;
-  }
-
-  &__error {
-    margin-top: 10px;
-    color: var(--color-error);
-  }
-
   ul {
     margin: 0;
     padding: 0;
@@ -163,18 +148,41 @@ export default {
     &:focus,
     &:focus-visible {
       outline: none;
-      outline: solid 2px #2f80ed;
+      border: 2px solid #2f80ed;
       background-color: #ebf3fe;
     }
   }
 
+  &__wrapper {
+    max-width: 600px;
+    margin: 48px 24px 12px;
+  }
+
+  &--error {
+    input {
+      border: 2px solid red;
+    }
+  }
+
+  &__form label {
+    display: block;
+    margin: 10px 0;
+    max-width: 100%;
+  }
+
+  &__error {
+    margin-top: 10px;
+    color: var(--color-error);
+  }
+
   &__buttons {
     margin: 67px 0;
-    button {
-      &:disabled {
-        background-color: var(--color-secondary);
-        cursor: not-allowed;
-      }
+  }
+
+  &buttons button {
+    &:disabled {
+      background-color: var(--color-secondary);
+      cursor: not-allowed;
     }
   }
 
