@@ -10,29 +10,15 @@
     <header-navigation class="header__navigation" />
 
     <div class="header__actions">
-      <ui-button medium borderless empty colors="brand">Register</ui-button>
-      <ui-button medium colors="brand">Log in</ui-button>
+      <ui-button medium borderless empty colors="brand">
+        <router-link :to="{ name: 'Register' }"> Register </router-link>
+      </ui-button>
+      <ui-button medium colors="brand">
+        <router-link :to="{ name: 'Login' }">Login</router-link>
+      </ui-button>
     </div>
   </header>
 </template>
-
-<script>
-/* TODO Hover effects */
-import MonteCinemaLogo from "../assets/monte cinema.svg";
-import HamburgerMenu from "../assets/navigation-menu 1.svg";
-import HeaderNavigation from "./HeaderNavigation";
-import UiButton from "./UI/UiButton";
-
-export default {
-  name: "MainHeader",
-  components: {
-    MonteCinemaLogo,
-    HamburgerMenu,
-    UiButton,
-    HeaderNavigation,
-  },
-};
-</script>
 
 <style lang="scss">
 @import "../scss/_mixins.scss";

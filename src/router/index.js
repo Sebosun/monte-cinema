@@ -1,15 +1,13 @@
 import VueRouter from "vue-router";
 
-import HomePage from "@/views/HomePage.vue";
-import NotFoundPage from "@/views/NotFoundPage.vue";
-import MoviesPage from "@/views/MoviesPage.vue";
-import MovieDetailsPage from "@/views/MovieDetailsPage.vue";
-import NestedPage from "@/views/NestedPage.vue";
+import HomePage from "@/views/HomePage";
+import NotFoundPage from "@/views/NotFoundPage";
+import MoviesPage from "@/views/MoviesPage";
+import MovieDetailsPage from "@/views/MovieDetailsPage";
 import ContactPage from "@/views/ContactPage";
 import ScreeningsPage from "@/views/ScreeningsPage";
-
-import MainHeader from "@/components/MainHeader";
-import HeroSection from "@/components/HeroSection";
+import LoginPage from "@/views/LoginPage";
+import RegisterPage from "@/views/RegisterPage";
 
 const routes = [
   { path: "/", name: "Home", component: HomePage },
@@ -35,21 +33,14 @@ const routes = [
     component: ScreeningsPage,
   },
   {
-    path: "/nested",
-    name: "Nested Route",
-    component: NestedPage,
-    children: [
-      {
-        name: "NestedHeader",
-        path: "",
-        component: MainHeader,
-      },
-      {
-        name: "NestedHero",
-        path: "hero",
-        component: HeroSection,
-      },
-    ],
+    path: "/login",
+    name: "Login",
+    component: LoginPage,
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: RegisterPage,
   },
   { path: "/404", name: "NotFound", component: NotFoundPage },
   { path: "*", redirect: "/404" },

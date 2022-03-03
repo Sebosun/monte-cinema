@@ -1,16 +1,8 @@
 <template>
   <div id="app">
-    <main-header />
     <router-view />
   </div>
 </template>
-
-<script>
-import MainHeader from "./components/MainHeader.vue";
-export default {
-  components: { MainHeader },
-};
-</script>
 
 <style lang="scss">
 @import "./styles/normalize.css";
@@ -19,13 +11,18 @@ export default {
 
 :root {
   font-family: "Roboto", sans-serif;
-  background-color: var(--color-background);
 }
 
 @include media-md {
   #app {
     margin-inline: 48px;
   }
+}
+
+/* just so i dont have to do this in every component */
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 .background--rose {
