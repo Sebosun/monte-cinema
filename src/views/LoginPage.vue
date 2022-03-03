@@ -19,8 +19,6 @@ export default {
     submitForm() {
       this.touchAll();
       console.log(this.email, this.password);
-      console.log(this.isEmailTouched);
-      console.log(this.isPasswordTouched);
     },
     touchAll() {
       this.isEmailTouched = true;
@@ -33,6 +31,9 @@ export default {
     },
     passwordError() {
       return validatePassword(this.password, this.isPasswordTouched);
+    },
+    isFormValid() {
+      return !this.emailError && !this.passwordError;
     },
   },
   components: { UiButton, PasswordInputShowHide, AuthHeader },
@@ -71,7 +72,7 @@ export default {
           </ul>
 
           <div class="login-page__buttons">
-            <ui-button :disabled="!isEmailTouched" colors="brand"
+            <ui-button :disabled="!isFormValid" colors="brand"
               >Log in</ui-button
             >
             <ui-button
