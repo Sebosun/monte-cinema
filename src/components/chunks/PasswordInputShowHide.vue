@@ -6,9 +6,6 @@ export default {
       type: String,
       default: "",
     },
-    onBlur: {
-      type: Function,
-    },
   },
   data() {
     return {

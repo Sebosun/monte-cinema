@@ -1,10 +1,9 @@
 <script>
 import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
-import AuthHeader from "../components/AuthHeader.vue";
+import AuthHeader from "@/components/AuthHeader.vue";
 
-import validateEmail from "@/helpers/validateEmail";
-import validatePassword from "@/helpers/validatePassword";
+import FormWrapper from "@/components/UI/FormWrapper.vue";
 
 export default {
   data() {
@@ -27,16 +26,18 @@ export default {
   },
   computed: {
     emailError() {
-      return validateEmail(this.email, this.isEmailTouched);
+      if (!this.isEmailTouched) return "";
+      return this.email.length > 0 ? "" : "Email cannot be empty";
     },
     passwordError() {
-      return validatePassword(this.password, this.isPasswordTouched);
+      if (!this.isPasswordTouched) return "";
+      return this.password.length > 0 ? "" : "Password cannot be empty";
     },
     isFormValid() {
       return !this.emailError && !this.passwordError;
     },
   },
-  components: { UiButton, PasswordInputShowHide, AuthHeader },
+  components: { UiButton, PasswordInputShowHide, AuthHeader, FormWrapper },
 };
 </script>
 
@@ -45,48 +46,54 @@ export default {
     <AuthHeader />
     <div class="login-page">
       <div class="login-page__wrapper">
-        <h1 class="font--header">Hi There!</h1>
-        <h2 class="font--header">Care to log in?</h2>
-        <form novalidate @submit.prevent="submitForm" class="login-page__form">
-          <ul>
-            <li :class="{ 'login-page--error': !!emailError }">
-              <label class="font--label" for="email">Email </label>
-              <input
-                required
-                @blur="isEmailTouched = true"
-                name="email"
-                type="email"
-                v-model="email"
-                placeholder="example@monterail.com"
-              />
-              <div class="login-page__error">{{ emailError }}</div>
-            </li>
+        <FormWrapper>
+          <h1 class="font--header">Hi There!</h1>
+          <h2 class="font--header">Care to log in?</h2>
+          <form
+            novalidate
+            @submit.prevent="submitForm"
+            class="login-page__form"
+          >
+            <ul>
+              <li :class="{ 'login-page--error': !!emailError }">
+                <label class="font--label" for="email">Email </label>
+                <input
+                  required
+                  @blur="isEmailTouched = true"
+                  name="email"
+                  type="email"
+                  v-model="email"
+                  placeholder="example@monterail.com"
+                />
+                <div class="login-page__error">{{ emailError }}</div>
+              </li>
 
-            <li :class="{ 'login-page--error': !!passwordError }">
-              <password-input-show-hide
-                @touched="isPasswordTouched = true"
-                v-model="password"
-              />
-              <div class="login-page__error">{{ passwordError }}</div>
-            </li>
-          </ul>
+              <li :class="{ 'login-page--error': !!passwordError }">
+                <password-input-show-hide
+                  @touched="isPasswordTouched = true"
+                  v-model="password"
+                />
+                <div class="login-page__error">{{ passwordError }}</div>
+              </li>
+            </ul>
 
-          <div class="login-page__buttons">
-            <ui-button :disabled="!isFormValid" colors="brand"
-              >Log in</ui-button
-            >
-            <ui-button
-              class="login-page__buttons--register"
-              empty
-              borderless
-              colors="brand"
-            >
-              <router-link :to="{ name: 'Register' }"
-                >Register instead</router-link
+            <div class="login-page__buttons">
+              <ui-button :disabled="!isFormValid" colors="brand"
+                >Log in</ui-button
               >
-            </ui-button>
-          </div>
-        </form>
+              <ui-button
+                class="login-page__buttons--register"
+                empty
+                borderless
+                colors="brand"
+              >
+                <router-link :to="{ name: 'Register' }"
+                  >Register instead</router-link
+                >
+              </ui-button>
+            </div>
+          </form>
+        </FormWrapper>
 
         <p class="login-page__forgot">
           Forgot your password?
@@ -101,7 +108,7 @@ export default {
 .login-page {
   margin: 64px 0;
   margin-inline: auto;
-  max-width: 600px;
+  max-width: 610px;
   padding: 0;
 
   h1,
@@ -117,58 +124,10 @@ export default {
     color: var(--color-secondary);
   }
 
-  ul {
-    margin: 0;
-    padding: 0;
-  }
-
-  li {
-    display: flex;
-    justify-content: center;
-    list-style-type: none;
-    margin-inline: auto;
-    flex-direction: column;
-  }
-
-  input {
-    background-color: #f7f7f7;
-    border: 0;
-    padding: 17.5px 24px;
-    max-width: 100%;
-
-    border-radius: 8px;
-
-    &:hover {
-      background-color: #eaeaea;
-    }
-
-    &::placeholder {
-      color: var(--color-secondary);
-    }
-
-    &:focus,
-    &:focus-visible {
-      outline: none;
-      border: 2px solid #2f80ed;
-      background-color: #ebf3fe;
-    }
-  }
-
-  &__wrapper {
-    max-width: 600px;
-    margin: 48px 24px 12px;
-  }
-
   &--error {
     input {
       border: 2px solid red;
     }
-  }
-
-  &__form label {
-    display: block;
-    margin: 10px 0;
-    max-width: 100%;
   }
 
   &__error {
@@ -180,25 +139,10 @@ export default {
     margin: 67px 0;
   }
 
-  &buttons button {
-    &:disabled {
-      background-color: var(--color-secondary);
-      cursor: not-allowed;
-    }
-  }
-
-  .button {
+  &__buttons .button {
     width: 100%;
     font-size: 1rem;
     padding: 0.95em 2em;
-  }
-
-  a {
-    color: var(--color-brand);
-    &:hover,
-    &:focus {
-      font-weight: bold;
-    }
   }
 
   &__forgot {
@@ -210,22 +154,22 @@ export default {
     letter-spacing: 0.04em;
     color: #343541;
   }
+  &__forgot a {
+    font-weight: bold;
+    color: var(--color-brand);
+  }
+
+  @include media-sm {
+    &__wrapper {
+      margin: 48px 24px 12px;
+    }
+  }
 
   @include media-md {
     h1,
     h2 {
       font-size: 80px;
       text-align: left;
-    }
-    &__form {
-      box-shadow: 0px 4px 22px rgba(52, 53, 65, 0.15);
-      border-radius: 24px;
-      padding: 64px;
-      margin: 40px 0;
-    }
-
-    &__form li {
-      padding: 10px 0;
     }
 
     &__buttons {
