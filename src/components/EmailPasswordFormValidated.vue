@@ -44,9 +44,9 @@ export default {
 
 <template>
   <div class="register-page__wrapper">
-    <h1 class="font--header">Ahoy you!</h1>
-    <h2 class="font--header">Care to register?</h2>
     <FormWrapper>
+      <h1 class="font--header">Ahoy you!</h1>
+      <h2 class="font--header">Care to register?</h2>
       <form novalidate @submit.prevent="submitForm" class="register-page__form">
         <ul>
           <li :class="{ 'register-page--error': !!emailError }">
@@ -72,7 +72,9 @@ export default {
         </ul>
 
         <div class="register-page__buttons">
-          <ui-button :disabled="!isFormValid" colors="brand">Log in</ui-button>
+          <ui-button :disabled="!isFormValid" colors="brand"
+            >Next Step</ui-button
+          >
           <ui-button
             class="register-page__buttons--register"
             empty
@@ -84,6 +86,7 @@ export default {
         </div>
       </form>
     </FormWrapper>
+
     <p class="register-page__forgot">
       Forgot your password?
       <router-link :to="{ name: 'Register' }">Reset it now</router-link>
@@ -97,6 +100,19 @@ export default {
     input {
       border: 2px solid red;
     }
+  }
+
+  h1,
+  h2 {
+    font-size: 40px;
+    text-align: center;
+
+    padding: 0;
+    margin: 0;
+  }
+
+  h2 {
+    color: var(--color-secondary);
   }
 
   &__error {
@@ -141,6 +157,12 @@ export default {
   }
 
   @include media-md {
+    h1,
+    h2 {
+      font-size: 80px;
+      text-align: left;
+    }
+
     &__buttons {
       display: flex;
       flex-direction: row-reverse;
