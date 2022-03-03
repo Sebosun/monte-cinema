@@ -1,5 +1,5 @@
 <template>
-  <button :class="[buttonUtililityClasses, buttonColors]">
+  <button :disabled="disabled" :class="[buttonUtililityClasses, buttonColors]">
     <slot />
   </button>
 </template>
@@ -7,7 +7,6 @@
 <script>
 export default {
   props: {
-    //TODO: replace colors with color since it can be confusing
     colors: {
       type: String,
       required: true,
@@ -29,6 +28,10 @@ export default {
       default: false,
     },
     borderless: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -76,6 +79,15 @@ export default {
   }
 
   /* sizes */
+
+  &:disabled {
+    background-color: var(--color-secondary);
+    cursor: not-allowed;
+    border: 0;
+    &:hover {
+      opacity: 90%;
+    }
+  }
 
   &--sm {
     font-size: 0.875rem;
