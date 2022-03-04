@@ -1,5 +1,9 @@
 <script>
-export default {};
+export default {
+  async created() {
+    await this.$store.dispatch("getMovies");
+  },
+};
 </script>
 
 <template>
@@ -19,8 +23,8 @@ export default {};
 
 @include media-md {
   #app {
-    padding-inline: 48px;
     max-width: 1440px;
+    padding-inline: 48px;
     margin-inline: auto;
   }
 }
