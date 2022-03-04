@@ -4,25 +4,8 @@
   </div>
 </template>
 
-<script>
-export default {};
-</script>
-
 <style lang="scss">
 .form-wrapper {
-  h1,
-  h2 {
-    font-size: 40px;
-    text-align: center;
-
-    padding: 0;
-    margin: 0;
-  }
-
-  h2 {
-    color: var(--color-secondary);
-  }
-
   ul {
     margin: 0;
     padding: 0;
@@ -67,12 +50,6 @@ export default {};
   }
 
   @include media-md {
-    h1,
-    h2 {
-      font-size: 80px;
-      text-align: left;
-    }
-
     form {
       box-shadow: 0px 4px 22px rgba(52, 53, 65, 0.15);
       border-radius: 24px;
