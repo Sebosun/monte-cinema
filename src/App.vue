@@ -16,6 +16,8 @@
 @include media-md {
   #app {
     margin-inline: 48px;
+    max-width: 1440px;
+    margin-inline: auto;
   }
 }
 

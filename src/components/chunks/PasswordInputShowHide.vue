@@ -35,16 +35,17 @@ export default {
       :value="value"
       :type="passwordInputType"
       @input="$emit('input', $event.target.value)"
+      @blur="$emit('touched')"
       placeholder="Enter your password"
     />
-    <div
-      role="button"
+    <button
+      type="button"
       class="password-input__svg"
       title="show password"
       @click.prevent="togglePassword"
     >
       <eye-svg />
-    </div>
+    </button>
   </label>
 </template>
 
@@ -52,8 +53,13 @@ export default {
 .password-input {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  input {
+    margin-top: 10px;
+  }
   &__svg {
+    border: none;
+    padding: 0;
+    background-color: inherit;
     position: relative;
     font: inherit;
     gap: 5px;
@@ -61,7 +67,7 @@ export default {
     cursor: pointer;
     svg {
       position: absolute;
-      bottom: 20px;
+      bottom: calc(1vh - 2px);
       right: 3%;
 
       border: 0;
