@@ -23,13 +23,15 @@ export default {
     },
     genres() {
       const genres = this.movies.reduce((uniqueGenres, currentMovie) => {
-        const isUnique = uniqueGenres.some((genre) => {
+        //checks if value already exists within uniqueGenres arr
+        const isUnique = !uniqueGenres.some((genre) => {
           return (
             genre.name === currentMovie.genre.name &&
             genre.id === currentMovie.genre.id
           );
         });
-        if (!isUnique) {
+        //if it does not exist, add the genre
+        if (isUnique) {
           uniqueGenres.push({
             id: currentMovie.genre.id,
             name: currentMovie.genre.name,
