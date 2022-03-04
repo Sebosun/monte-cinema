@@ -1,6 +1,5 @@
 <script>
 /* TODO - Calendar*/
-/* TODO - Gaps*/
 import DisplayMovies from "./DisplayMovies.vue";
 import UiButton from "./UI/UiButton.vue";
 import ErrorMessage from "./UI/ErrorMessage.vue";
@@ -12,17 +11,18 @@ export default {
     };
   },
   computed: {
+    /* ...mapGetters(['getLoading', 'getError', 'getMovies']), */
     loading() {
       return this.$store.getters.getLoading;
     },
     error() {
       return this.$store.getters.getError;
     },
-    storeMovies() {
+    movies() {
       return this.$store.getters.getMovies;
     },
     genres() {
-      const genres = this.storeMovies.reduce((uniqueGenres, currentMovie) => {
+      const genres = this.movies.reduce((uniqueGenres, currentMovie) => {
         const isUnique = uniqueGenres.some((genre) => {
           return (
             genre.name === currentMovie.genre.name &&
@@ -40,11 +40,11 @@ export default {
       return genres;
     },
     filterMovies() {
-      const filteredMovies = this.storeMovies.filter(
+      const filteredMovies = this.movies.filter(
         (item) => item.genre.name === this.selected
       );
       // making sure something is actually selected
-      return this.selected == "" ? this.storeMovies : filteredMovies;
+      return this.selected == "" ? this.movies : filteredMovies;
     },
   },
 };
@@ -198,10 +198,10 @@ export default {
     }
 
     &__filters {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
+
     // select children starting from 5 +
     &__buttons .button:nth-child(n + 5) {
       display: none;
@@ -212,11 +212,8 @@ export default {
       font-size: 18px;
     }
 
-    &__genres {
-      display: flex;
-      flex-direction: column;
-      align-self: stretch;
-      justify-content: space-between;
+    &__genres select {
+      width: 100%;
     }
 
     &__genres .font--label {
