@@ -2,9 +2,7 @@
 import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
 import AuthHeader from "@/components/AuthHeader.vue";
-
 import FormWrapper from "@/components/UI/FormWrapper.vue";
-
 export default {
   data() {
     return {
@@ -96,7 +94,6 @@ export default {
             </div>
           </form>
         </FormWrapper>
-
         <p class="login-page__forgot">
           Forgot your password?
           <router-link :to="{ name: 'Register' }">Reset it now</router-link>
@@ -151,7 +148,7 @@ export default {
     font-size: 1rem;
     padding: 0.95em 2em;
   }
-
+  
   &__forgot {
     text-align: center;
 
@@ -161,7 +158,7 @@ export default {
     letter-spacing: 0.04em;
     color: #343541;
   }
-
+  
   &__forgot a {
     font-weight: bold;
     color: var(--color-brand);
@@ -172,7 +169,6 @@ export default {
       margin: 48px 24px 12px;
     }
   }
-
   @include media-md {
     h1,
     h2 {
@@ -180,6 +176,17 @@ export default {
       text-align: left;
     }
 
+    &__form {
+      box-shadow: 0px 4px 22px rgba(52, 53, 65, 0.15);
+      border-radius: 24px;
+      padding: 64px;
+      margin: 40px 0;
+    }
+
+    &__form li {
+      padding: 10px 0;
+    }
+    
     &__buttons {
       display: flex;
       flex-direction: row-reverse;
