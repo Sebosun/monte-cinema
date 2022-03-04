@@ -8,32 +8,33 @@ export default {
   components: { UiButton, DisplayMovies, ErrorMessage },
   data() {
     return {
-      loading: true,
-      error: { status: false, message: "" },
       selected: "",
     };
   },
-  async created() {
-    try {
-      await this.$store.dispatch("getMovies");
-      this.loading = false;
-    } catch (err) {
-      this.loading = false;
-      this.error = {
-        status: true,
-        message: "Request failed. Please try again later.",
-      };
-    }
-  },
-  methods: {},
   computed: {
+    loading() {
+      return this.$store.getters.getLoading;
+    },
+    error() {
+      return this.$store.getters.getError;
+    },
     storeMovies() {
       return this.$store.getters.getMovies;
     },
     genres() {
       const genres = this.storeMovies.reduce((uniqueGenres, currentMovie) => {
-        !uniqueGenres.includes(currentMovie.genre.name) &&
-          uniqueGenres.push(currentMovie.genre);
+        const isUnique = uniqueGenres.some((genre) => {
+          return (
+            genre.name === currentMovie.genre.name &&
+            genre.id === currentMovie.genre.id
+          );
+        });
+        if (!isUnique) {
+          uniqueGenres.push({
+            id: currentMovie.genre.id,
+            name: currentMovie.genre.name,
+          });
+        }
         return uniqueGenres;
       }, []);
       return genres;
@@ -97,7 +98,6 @@ export default {
         :movie="movie"
       />
     </div>
-    {{ storeMovies }}
   </section>
 </template>
 
