@@ -1,5 +1,4 @@
 <script>
-import axios from "axios";
 /* TODO - Calendar*/
 /* TODO - Gaps*/
 import DisplayMovies from "./DisplayMovies.vue";
@@ -9,18 +8,15 @@ export default {
   components: { UiButton, DisplayMovies, ErrorMessage },
   data() {
     return {
-      posts: null,
       loading: true,
       error: { status: false, message: "" },
       selected: "",
     };
   },
   async created() {
-    this.getSeances();
     try {
-      const getMovies = await axios("http://localhost:3000/movies");
+      await this.$store.dispatch("getMovies");
       this.loading = false;
-      this.posts = getMovies.data;
     } catch (err) {
       this.loading = false;
       this.error = {
@@ -29,30 +25,13 @@ export default {
       };
     }
   },
-  methods: {
-    async getSeances() {
-      const fetchSeances = await axios("http://localhost:3000/seances");
-      const seancesByMovie = fetchSeances.data.reduce(
-        (seancesGroupedByMovieID, curSeance) => {
-          // if key doesnt exist in the array, create an empty obj in that space
-          if (!seancesGroupedByMovieID[curSeance.movie]) {
-            seancesGroupedByMovieID[curSeance.movie] = [];
-          }
-
-          seancesGroupedByMovieID[curSeance.movie].push({
-            datetime: curSeance.datetime,
-            hall: curSeance.datetime,
-          });
-          return seancesGroupedByMovieID;
-        },
-        {}
-      );
-      console.log(seancesByMovie);
-    },
-  },
+  methods: {},
   computed: {
+    storeMovies() {
+      return this.$store.getters.getMovies;
+    },
     genres() {
-      const genres = this.posts.reduce((uniqueGenres, currentMovie) => {
+      const genres = this.storeMovies.reduce((uniqueGenres, currentMovie) => {
         !uniqueGenres.includes(currentMovie.genre.name) &&
           uniqueGenres.push(currentMovie.genre);
         return uniqueGenres;
@@ -60,11 +39,11 @@ export default {
       return genres;
     },
     filterMovies() {
-      const filterMovies = this.posts.filter(
+      const filteredMovies = this.storeMovies.filter(
         (item) => item.genre.name === this.selected
       );
       // making sure something is actually selected
-      return this.selected == "" ? this.posts : filterMovies;
+      return this.selected == "" ? this.storeMovies : filteredMovies;
     },
   },
 };
@@ -118,6 +97,7 @@ export default {
         :movie="movie"
       />
     </div>
+    {{ storeMovies }}
   </section>
 </template>
 

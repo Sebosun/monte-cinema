@@ -148,7 +148,7 @@ export default {
     font-size: 1rem;
     padding: 0.95em 2em;
   }
-  
+
   &__forgot {
     text-align: center;
 
@@ -158,7 +158,7 @@ export default {
     letter-spacing: 0.04em;
     color: #343541;
   }
-  
+
   &__forgot a {
     font-weight: bold;
     color: var(--color-brand);
@@ -186,7 +186,7 @@ export default {
     &__form li {
       padding: 10px 0;
     }
-    
+
     &__buttons {
       display: flex;
       flex-direction: row-reverse;
