@@ -7,6 +7,8 @@ import validatePassword from "@/helpers/validatePassword";
 import FormWrapper from "./UI/FormWrapper.vue";
 
 export default {
+  //TODO finish registration and email validation
+  // after submition (since it doesnt double check now ??)
   data() {
     return {
       email: "",
@@ -18,7 +20,10 @@ export default {
   methods: {
     submitForm() {
       this.touchAll();
-      console.log(this.email, this.password);
+      if (this.isFormValid) {
+        console.log("success");
+        this.$emit("submit", { email: this.email, password: this.password });
+      }
     },
     touchAll() {
       this.isEmailTouched = true;
@@ -43,13 +48,15 @@ export default {
 </script>
 
 <template>
-  <div class="register-page__wrapper">
+  <div class="validated-form">
     <FormWrapper>
-      <h1 class="font--header">Ahoy you!</h1>
-      <h2 class="font--header">Care to register?</h2>
-      <form novalidate @submit.prevent="submitForm" class="register-page__form">
+      <form
+        novalidate
+        @submit.prevent="submitForm"
+        class="validated-form__form"
+      >
         <ul>
-          <li :class="{ 'register-page--error': !!emailError }">
+          <li :class="{ 'validated-form__error--input': !!emailError }">
             <label class="font--label" for="email">Email </label>
             <input
               required
@@ -59,24 +66,26 @@ export default {
               v-model="email"
               placeholder="example@monterail.com"
             />
-            <div class="register-page__error">{{ emailError }}</div>
+            <div class="validated-form__error--message">{{ emailError }}</div>
           </li>
 
-          <li :class="{ 'register-page--error': !!passwordError }">
+          <li :class="{ 'validated-form__error--input': !!passwordError }">
             <password-input-show-hide
               @touched="isPasswordTouched = true"
               v-model="password"
             />
-            <div class="register-page__error">{{ passwordError }}</div>
+            <div class="validated-form__error--message">
+              {{ passwordError }}
+            </div>
           </li>
         </ul>
 
-        <div class="register-page__buttons">
+        <div class="validated-form__buttons">
           <ui-button :disabled="!isFormValid" colors="brand"
             >Next Step</ui-button
           >
           <ui-button
-            class="register-page__buttons--register"
+            class="validated-form__buttons--register"
             empty
             borderless
             colors="brand"
@@ -87,7 +96,7 @@ export default {
       </form>
     </FormWrapper>
 
-    <p class="register-page__forgot">
+    <p class="validated-form__forgot">
       Forgot your password?
       <router-link :to="{ name: 'Register' }">Reset it now</router-link>
     </p>
@@ -95,29 +104,15 @@ export default {
 </template>
 
 <style lang="scss">
-.register-page {
-  &--error {
-    input {
+.validated-form {
+  &__error {
+    &--input input {
       border: 2px solid red;
     }
-  }
-
-  h1,
-  h2 {
-    font-size: 40px;
-    text-align: center;
-
-    padding: 0;
-    margin: 0;
-  }
-
-  h2 {
-    color: var(--color-secondary);
-  }
-
-  &__error {
-    margin-top: 10px;
-    color: var(--color-error);
+    &--message {
+      margin-top: 10px;
+      color: var(--color-error);
+    }
   }
 
   &__buttons {
@@ -150,19 +145,16 @@ export default {
     color: #343541;
   }
 
+  &__forgot a {
+    font-weight: bold;
+    color: var(--color-brand);
+  }
+
   @include media-sm {
-    &__wrapper {
-      margin: 48px 24px 12px;
-    }
+    margin: 48px 24px 12px;
   }
 
   @include media-md {
-    h1,
-    h2 {
-      font-size: 80px;
-      text-align: left;
-    }
-
     &__buttons {
       display: flex;
       flex-direction: row-reverse;

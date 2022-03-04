@@ -55,7 +55,7 @@ export default {
             class="login-page__form"
           >
             <ul>
-              <li :class="{ 'login-page--error': !!emailError }">
+              <li :class="{ 'login-page__error--input': !!emailError }">
                 <label class="font--label" for="email">Email </label>
                 <input
                   required
@@ -65,15 +65,17 @@ export default {
                   v-model="email"
                   placeholder="example@monterail.com"
                 />
-                <div class="login-page__error">{{ emailError }}</div>
+                <div class="login-page__error--message">{{ emailError }}</div>
               </li>
 
-              <li :class="{ 'login-page--error': !!passwordError }">
+              <li :class="{ 'login-page__error--input': !!passwordError }">
                 <password-input-show-hide
                   @touched="isPasswordTouched = true"
                   v-model="password"
                 />
-                <div class="login-page__error">{{ passwordError }}</div>
+                <div class="login-page__error--message">
+                  {{ passwordError }}
+                </div>
               </li>
             </ul>
 
@@ -131,8 +133,13 @@ export default {
   }
 
   &__error {
-    margin-top: 10px;
-    color: var(--color-error);
+    &--input input {
+      border: 2px solid red;
+    }
+    &--message {
+      margin-top: 10px;
+      color: var(--color-error);
+    }
   }
 
   &__buttons {
@@ -154,6 +161,7 @@ export default {
     letter-spacing: 0.04em;
     color: #343541;
   }
+
   &__forgot a {
     font-weight: bold;
     color: var(--color-brand);

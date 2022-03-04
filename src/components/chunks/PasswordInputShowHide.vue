@@ -53,7 +53,9 @@ export default {
 .password-input {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  input {
+    margin-top: 10px;
+  }
   &__svg {
     border: none;
     padding: 0;
@@ -65,7 +67,7 @@ export default {
     cursor: pointer;
     svg {
       position: absolute;
-      bottom: 20px;
+      bottom: calc(1vh - 2px);
       right: 3%;
 
       border: 0;
