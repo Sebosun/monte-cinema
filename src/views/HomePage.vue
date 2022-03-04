@@ -8,11 +8,6 @@ import MainHeader from "@/components/MainHeader.vue";
 
 export default {
   name: "Home",
-  props: ["genre", "query"],
-  created() {
-    console.log(this.genre);
-    console.log(this.query);
-  },
   components: {
     MovieCard,
     HeroSection,
