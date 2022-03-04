@@ -1,12 +1,10 @@
 <script>
-import UiButton from "./UI/UiButton.vue";
+import UiButton from "@/components/UI/UiButton.vue";
 export default {
   components: {
     UiButton,
   },
 };
-/* TOOD reccheck image responsivity */
-/* TODO turn pxs into rems */
 </script>
 
 <template>
@@ -22,13 +20,11 @@ export default {
       </p>
       <ui-button medium colors="brand">Book a ticket</ui-button>
     </div>
-    <img src="../assets/hero_image.jpg" alt="cinema" />
+    <img src="@/assets/hero_image.jpg" alt="cinema" />
   </section>
 </template>
 
 <style lang="scss" scoped>
-@import "../scss/mixins.scss";
-
 .hero {
   &__wrapper {
     padding: 2.5rem 2rem;

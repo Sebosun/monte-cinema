@@ -1,8 +1,8 @@
 <script>
-import MonteCinemaLogo from "../assets/monte cinema.svg";
-import HamburgerMenu from "../assets/navigation-menu 1.svg";
-import HeaderNavigation from "../components/HeaderNavigation.vue";
-import UiButton from "./UI/UiButton.vue";
+import MonteCinemaLogo from "@/assets/monte cinema.svg";
+import HamburgerMenu from "@/assets/navigation-menu 1.svg";
+import HeaderNavigation from "@/components/HeaderNavigation.vue";
+import UiButton from "@/components/UI/UiButton.vue";
 export default {
   data() {
     return {
@@ -30,6 +30,8 @@ export default {
       </button>
     </div>
 
+    <header-navigation class="header__navigation--desktop" />
+
     <div v-if="isMobileMenuVisible" class="header__navigation--mobile">
       <header-navigation />
       <div>
@@ -44,8 +46,6 @@ export default {
       </div>
     </div>
 
-    <header-navigation class="header__navigation" />
-
     <div class="header__actions">
       <ui-button medium borderless empty colors="brand">
         <router-link :to="{ name: 'Register' }"> Register </router-link>
@@ -58,8 +58,6 @@ export default {
 </template>
 
 <style lang="scss">
-@import "../scss/_mixins.scss";
-
 .header {
   font-size: 1.125rem;
 
@@ -82,8 +80,9 @@ export default {
     cursor: pointer;
   }
 
-  &__navigation {
-    max-width: 100%;
+  &__navigation--desktop {
+    display: none;
+    max-width: 50%;
     flex-grow: 1;
   }
 
@@ -105,12 +104,6 @@ export default {
     }
   }
 
-  &__navigation {
-    display: none;
-    max-width: 50%;
-    flex-grow: 1;
-  }
-
   &__actions {
     display: none;
   }
@@ -130,7 +123,7 @@ export default {
       display: none;
     }
 
-    &__navigation {
+    &__navigation--desktop {
       display: block;
     }
 

@@ -78,10 +78,11 @@ export default {
             </ul>
 
             <div class="login-page__buttons">
-              <ui-button :disabled="!isFormValid" colors="brand"
-                >Log in</ui-button
+              <UiButton :disabled="!isFormValid" colors="brand"
+                >Log in</UiButton
               >
-              <ui-button
+
+              <UiButton
                 class="login-page__buttons--register"
                 empty
                 borderless
@@ -90,7 +91,7 @@ export default {
                 <router-link :to="{ name: 'Register' }"
                   >Register instead</router-link
                 >
-              </ui-button>
+              </UiButton>
             </div>
           </form>
         </FormWrapper>
@@ -121,12 +122,6 @@ export default {
 
   h2 {
     color: var(--color-secondary);
-  }
-
-  &--error {
-    input {
-      border: 2px solid red;
-    }
   }
 
   &__error {

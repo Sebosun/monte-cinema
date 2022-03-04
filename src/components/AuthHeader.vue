@@ -1,5 +1,5 @@
 <script>
-import MonteCinemaLogo from "../assets/monte cinema.svg";
+import MonteCinemaLogo from "@/assets/monte cinema.svg";
 export default {
   components: { MonteCinemaLogo },
 };

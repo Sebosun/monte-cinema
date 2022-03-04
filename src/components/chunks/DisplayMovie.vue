@@ -1,8 +1,8 @@
 <script>
 // TODO calendar but thats at some other point
-import MovieCard from "./UI/MovieCard.vue";
-import Tags from "./UI/Tags.vue";
-import UiButton from "./UI/UiButton.vue";
+import MovieCard from "@/components/UI/MovieCard.vue";
+import Tags from "@/components/UI/Tags.vue";
+import UiButton from "@/components/UI/UiButton.vue";
 
 export default {
   components: { MovieCard, Tags, UiButton },
@@ -23,7 +23,7 @@ export default {
 </script>
 
 <template>
-  <movie-card class="display-movies">
+  <MovieCard class="display-movies">
     <div class="display-movies__wrapper">
       <div class="display-movies__fill">
         <img :src="movie.poster_url" :alt="movie.title" />
@@ -31,7 +31,7 @@ export default {
       <div class="display-movies__card">
         <h2>{{ movie.title }}</h2>
         <div class="display-movies__info">
-          <tags class="display-movies__info--name">{{ movie.genre.name }}</tags>
+          <Tags class="display-movies__info--name">{{ movie.genre.name }}</Tags>
           <div class="display-movies__info--len">
             {{ movieLength(movie.length) }} min
           </div>
@@ -53,7 +53,7 @@ export default {
       <ui-button empty colors="brand">21:45</ui-button>
       <ui-button empty colors="brand">21:45</ui-button>
     </div>
-  </movie-card>
+  </MovieCard>
 </template>
 
 <style scoped lang="scss">

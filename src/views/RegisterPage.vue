@@ -1,6 +1,6 @@
 <script>
 import AuthHeader from "@/components/AuthHeader.vue";
-import EmailPasswordFormValidated from "@/components/EmailPasswordFormValidated.vue";
+import EmailPasswordFormValidated from "@/components/chunks/EmailPasswordFormValidated.vue";
 export default {
   data() {
     return {

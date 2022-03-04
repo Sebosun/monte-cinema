@@ -1,10 +1,10 @@
 <script>
 /* TODO - Calendar*/
-import DisplayMovies from "./DisplayMovies.vue";
-import UiButton from "./UI/UiButton.vue";
-import ErrorMessage from "./UI/ErrorMessage.vue";
+import DisplayMovie from "@/components/chunks/DisplayMovie.vue";
+import UiButton from "@/components/UI/UiButton.vue";
+import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 export default {
-  components: { UiButton, DisplayMovies, ErrorMessage },
+  components: { UiButton, DisplayMovie, ErrorMessage },
   data() {
     return {
       selected: "",
@@ -56,7 +56,7 @@ export default {
   <section class="screenings">
     <div v-if="loading" class="screenings__loading">Loading...</div>
     <div v-else-if="error.status" class="screenings__error">
-      <error-message>{{ error.message }}</error-message>
+      <ErrorMessage>{{ error.message }}</ErrorMessage>
     </div>
     <div v-else class="screenings__wrapper">
       <div class="screenings__top">
@@ -94,7 +94,7 @@ export default {
           </div>
         </div>
       </div>
-      <display-movies
+      <DisplayMovie
         v-for="movie in filterMovies"
         :key="movie.id"
         :movie="movie"

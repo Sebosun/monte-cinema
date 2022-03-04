@@ -1,5 +1,5 @@
 <script>
-import EyeSvg from "../../assets/eye.svg";
+import EyeSvg from "@/assets/eye.svg";
 export default {
   props: {
     value: {

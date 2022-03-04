@@ -4,7 +4,7 @@ import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue
 
 import validateEmail from "@/helpers/validateEmail";
 import validatePassword from "@/helpers/validatePassword";
-import FormWrapper from "./UI/FormWrapper.vue";
+import FormWrapper from "@/components/UI/FormWrapper.vue";
 
 export default {
   //TODO finish registration and email validation
