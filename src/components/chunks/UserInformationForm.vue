@@ -17,7 +17,13 @@ export default {
   methods: {
     submitForm() {
       this.touchAll();
-      console.log("submitted");
+      if (this.isFormValid) {
+        this.$emit("submit", {
+          firstName: this.name,
+          lastName: this.lastName,
+          birthday: this.birthday,
+        });
+      }
     },
     touchAll() {
       this.isFirstNameTouched = true;
