@@ -1,6 +1,7 @@
 <script>
 import AuthHeader from "@/components/AuthHeader.vue";
 import EmailPasswordFormValidated from "@/components/chunks/EmailPasswordFormValidated.vue";
+import UserInformationForm from "@/components/chunks/UserInformationForm.vue";
 export default {
   data() {
     return {
@@ -15,10 +16,11 @@ export default {
   },
   computed: {
     step() {
-      return this.isValidEmailPassword && this.nextStep ? 1 : 0;
+      /* return this.isValidEmailPassword && this.nextStep ? 1 : 0; */
+      return 1;
     },
   },
-  components: { AuthHeader, EmailPasswordFormValidated },
+  components: { AuthHeader, EmailPasswordFormValidated, UserInformationForm },
 };
 </script>
 
@@ -31,7 +33,11 @@ export default {
         <h2 class="font--header">Care to register?</h2>
         <EmailPasswordFormValidated @submit="saveCredentials" />
       </div>
-      <StepTwo v-if="step === 1" />
+      <div v-if="step === 1">
+        <h1 class="font--header">Great!</h1>
+        <h2 class="font--header">Now your name</h2>
+        <UserInformationForm />
+      </div>
     </div>
   </div>
 </template>
