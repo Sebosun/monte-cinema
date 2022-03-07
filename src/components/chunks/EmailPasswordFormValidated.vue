@@ -36,13 +36,28 @@ export default {
       return validateEmail(this.email, this.isEmailTouched);
     },
     passwordError() {
-      if (!this.isPasswordTouched) return "";
+      if (!this.isPasswordTouched) return false;
       return validatePassword(this.password, this.isPasswordTouched);
     },
     isFormValid() {
       return !this.emailError && !this.passwordError;
     },
+    passwordLength() {
+      if (!this.isPasswordTouched) return "";
+      return this.password.length > 8 ? "positive" : "negative";
+    },
+    passwordDigits() {
+      if (!this.isPasswordTouched) return "";
+      const matchNumbers = this.password.match(/\d/);
+      return matchNumbers ? "positive" : "negative";
+    },
+    passwordLetters() {
+      if (!this.isPasswordTouched) return "";
+      const matchLetters = this.password.match(/[a-zA-Z]/);
+      return matchLetters ? "positive" : "negative";
+    },
   },
+
   components: { UiButton, PasswordInputShowHide, FormWrapper },
 };
 </script>
@@ -69,27 +84,25 @@ export default {
             <div class="validated-form__error--message">{{ emailError }}</div>
           </li>
 
-          <li :class="{ 'validated-form__error--input': !!passwordError }">
+          <li
+            :class="{ 'validated-form__error--input': !!passwordError.valid }"
+          >
             <password-input-show-hide
               @touched="isPasswordTouched = true"
               v-model="password"
             />
-            <div class="validated-form__error--message">
-              {{ passwordError }}
-            </div>
           </li>
         </ul>
 
-        <div class="validated-form__buttons">
+        <p :class="passwordLength">At least 8 characters</p>
+        <p :class="passwordLetters">At least one letter</p>
+        <p :class="passwordDigits">At least one digit</p>
+
+        <div class="action-buttons">
           <ui-button :disabled="!isFormValid" colors="brand"
             >Next Step</ui-button
           >
-          <ui-button
-            class="validated-form__buttons--register"
-            empty
-            borderless
-            colors="brand"
-          >
+          <ui-button empty borderless colors="brand">
             <router-link :to="{ name: 'Login' }">Log in instead</router-link>
           </ui-button>
         </div>
@@ -104,6 +117,14 @@ export default {
 </template>
 
 <style lang="scss">
+.positive {
+  color: #27ae60;
+}
+
+.negative {
+  color: var(--color-error);
+}
+
 .validated-form {
   &__error {
     &--input input {
@@ -113,16 +134,6 @@ export default {
       margin-top: 10px;
       color: var(--color-error);
     }
-  }
-
-  &__buttons {
-    margin: 67px 0;
-  }
-
-  .button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 0.95em 2em;
   }
 
   &__forgot {
@@ -135,6 +146,7 @@ export default {
     color: #343541;
   }
 
+  // TODO clean this
   &__forgot a {
     text-align: center;
 
@@ -150,26 +162,7 @@ export default {
     color: var(--color-brand);
   }
 
-  @include media-sm {
-    margin: 48px 24px 12px;
-  }
-
   @include media-md {
-    &__buttons {
-      display: flex;
-      flex-direction: row-reverse;
-      margin: 40px 0 0;
-    }
-
-    &__buttons .button {
-      font-size: 18px;
-      padding: 0.95em 2em;
-      &:last-child {
-        margin-right: 10px;
-        padding: 0;
-      }
-    }
-
     &__forgot {
       text-align: left;
     }
