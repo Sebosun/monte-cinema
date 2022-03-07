@@ -63,6 +63,7 @@ a {
     justify-content: stretch;
     gap: 0.125rem;
   }
+
   .nav__hover {
     position: relative;
     transition: color 300ms ease-in-out;
