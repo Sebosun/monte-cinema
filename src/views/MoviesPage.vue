@@ -1,9 +1,15 @@
 <script>
 import MainHeader from "@/components/MainHeader.vue";
 import MovieItem from "@/components/chunks/MovieItem.vue";
+import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 
 export default {
   name: "MoviesPage",
+  data() {
+    return {
+      search: "",
+    };
+  },
   computed: {
     loading() {
       return this.$store.getters.getLoading;
@@ -14,30 +20,52 @@ export default {
     movies() {
       return this.$store.getters.getMovies;
     },
+    searchQuery() {
+      let re = new RegExp(this.search, "i");
+      return this.movies.filter((movie) => movie.title.match(re));
+    },
   },
-  components: { MainHeader, MovieItem },
+  components: { MainHeader, MovieItem, LoadingSpinner },
 };
 </script>
 
 <template>
   <div class="movies">
     <main-header />
-    <h1 class="font--header">All the movies</h1>
-    <div v-if="loading" class="screenings__loading">Loading...</div>
-    <div v-else-if="error.status" class="screenings__error">
-      <ErrorMessage>{{ error.message }}</ErrorMessage>
-    </div>
-    <div v-else class="movies__list">
-      <movie-item v-for="movie in movies" :key="movie.id" :movie="movie" />
+    <div class="movies--wrapper">
+      <h1 class="font--header">All the movies</h1>
+      <div class="movies__inputs">
+        <label class="label font--label" for="search">Search</label>
+        <input v-model="search" class="input" name="search" type="text" />
+      </div>
+      <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
+      <div v-else-if="error.status" class="screenings__error">
+        <ErrorMessage>{{ error.message }}</ErrorMessage>
+      </div>
+      <div v-else class="movies__list">
+        <movie-item
+          v-for="movie in searchQuery"
+          :key="movie.id"
+          :movie="movie"
+        />
+      </div>
     </div>
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .movies {
-  margin-inline: 24px;
+  .label {
+    display: block;
+  }
+  .input {
+    @include input;
+  }
 
   @include media-sm {
+    &--wrapper {
+      margin-inline: 24px;
+    }
     &__list {
       display: flex;
       flex-flow: column;
@@ -51,6 +79,7 @@ export default {
       text-align: center;
     }
   }
+
   @include media-md {
     h1 {
       font-size: 80px;

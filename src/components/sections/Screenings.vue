@@ -14,12 +14,10 @@ export default {
   computed: {
     /* ...mapGetters(['getLoading', 'getError', 'getMovies']), */
     loading() {
-      /* return this.$store.getters.getLoading; */
-      return true;
+      return this.$store.getters.getLoading;
     },
     error() {
-      return false;
-      /* return this.$store.getters.getError; */
+      return this.$store.getters.getError;
     },
     movies() {
       return this.$store.getters.getMovies;
