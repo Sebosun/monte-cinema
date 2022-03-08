@@ -1,3 +1,9 @@
+<script>
+import MovieCard from "@/components/UI/MovieCard.vue";
+import UiButton from "@/components/UI/UiButton.vue";
+export default { components: { UiButton, MovieCard } };
+</script>
+
 <template>
   <section class="soon">
     <div class="soon__top">
@@ -16,7 +22,7 @@
           <h2 class="font--bold">Predator</h2>
           <div class="font--bold">1h 30 min</div>
         </div>
-        <img src="../assets/arnie.png" alt="arnie" />
+        <img src="@/assets/arnie.png" alt="arnie" />
         <div class="soon__movies__genres">Action</div>
       </movie-card>
       <movie-card class="soon__movies">
@@ -24,7 +30,7 @@
           <h2 class="font--bold">Predator</h2>
           <div class="font--bold">1h 30 min</div>
         </div>
-        <img src="../assets/arnie.png" alt="arnie" />
+        <img src="@/assets/arnie.png" alt="arnie" />
         <div class="soon__movies__genres">Action</div>
       </movie-card>
 
@@ -33,22 +39,13 @@
           <h2 class="font--bold">Predator</h2>
           <div class="font--bold">1h 30 min</div>
         </div>
-        <img src="../assets/arnie.png" alt="arnie" />
+        <img src="@/assets/arnie.png" alt="arnie" />
         <div class="soon__movies__genres">Action</div>
       </movie-card>
     </div>
   </section>
 </template>
-
-<script>
-import MovieCard from "./UI/MovieCard.vue";
-import UiButton from "./UI/UiButton.vue";
-export default { components: { UiButton, MovieCard } };
-</script>
-
 <style lang="scss" scoped>
-@import "../scss/_mixins.scss";
-
 .soon {
   padding-inline: 24px;
   &__top {

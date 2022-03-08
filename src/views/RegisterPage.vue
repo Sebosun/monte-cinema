@@ -1,6 +1,7 @@
 <script>
 import AuthHeader from "@/components/AuthHeader.vue";
-import EmailPasswordFormValidated from "@/components/EmailPasswordFormValidated.vue";
+import EmailPasswordFormValidated from "@/components/chunks/EmailPasswordFormValidated.vue";
+import UserInformationForm from "@/components/chunks/UserInformationForm.vue";
 export default {
   data() {
     return {
@@ -11,6 +12,11 @@ export default {
   methods: {
     saveCredentials(event) {
       console.log(event);
+      this.nextStep = true;
+    },
+    submitRegistration(event) {
+      console.log("data submitted to the server", event);
+      console.log(this.userCredentials);
     },
   },
   computed: {
@@ -18,7 +24,7 @@ export default {
       return this.isValidEmailPassword && this.nextStep ? 1 : 0;
     },
   },
-  components: { AuthHeader, EmailPasswordFormValidated },
+  components: { AuthHeader, EmailPasswordFormValidated, UserInformationForm },
 };
 </script>
 
@@ -26,12 +32,16 @@ export default {
   <div>
     <AuthHeader />
     <div class="register-page">
-      <div v-if="step === 0">
+      <div v-if="nextStep">
+        <h1 class="font--header">Great!</h1>
+        <h2 class="font--header">Now your name</h2>
+        <UserInformationForm @submit="submitRegistration" />
+      </div>
+      <div v-else>
         <h1 class="font--header">Ahoy you!</h1>
         <h2 class="font--header">Care to register?</h2>
         <EmailPasswordFormValidated @submit="saveCredentials" />
       </div>
-      <StepTwo v-if="step === 1" />
     </div>
   </div>
 </template>

@@ -1,15 +1,23 @@
 <script>
-import MonteCinemaLogo from "../assets/monte cinema.svg";
-import HamburgerMenu from "../assets/navigation-menu 1.svg";
-import HeaderNavigation from "../components/HeaderNavigation.vue";
-import UiButton from "./UI/UiButton.vue";
+import MonteCinemaLogo from "@/assets/monte cinema.svg";
+import HamburgerIcon from "@/assets/navigation-menu 1.svg";
+import HeaderNavigation from "@/components/HeaderNavigation.vue";
+import MobileNavigation from "@/components/chunks/MobileNavigation.vue";
+import HeaderActions from "./chunks/HeaderActions.vue";
+
 export default {
   data() {
     return {
-      isMobileMenuVisible: true,
+      isMobileMenuVisible: false,
     };
   },
-  components: { MonteCinemaLogo, HeaderNavigation, UiButton, HamburgerMenu },
+  components: {
+    MonteCinemaLogo,
+    HeaderNavigation,
+    HamburgerIcon,
+    MobileNavigation,
+    HeaderActions,
+  },
   methods: {
     toggleMobileMenu() {
       this.isMobileMenuVisible = !this.isMobileMenuVisible;
@@ -19,133 +27,81 @@ export default {
 //TODO split into separate components at some point
 </script>
 <template>
-  <header class="header">
-    <div class="header__small">
-      <router-link class="header__logo" to="/">
-        <monte-cinema-logo />
-      </router-link>
-
-      <button @click="toggleMobileMenu" class="hamburgerButton">
-        <hamburger-menu />
-      </button>
-    </div>
-
-    <div v-if="isMobileMenuVisible" class="header__navigation--mobile">
-      <header-navigation />
-      <div>
-        <router-link :to="{ name: 'Register' }">
-          <ui-button small borderless empty colors="brand">
-            Register
-          </ui-button>
+  <header class="main-header">
+    <div class="main-header__mobile">
+      <div class="main-header__mobile--top">
+        <router-link class="main-header__logo" to="/">
+          <MonteCinemaLogo />
         </router-link>
-        <ui-button small colors="brand">
-          <router-link :to="{ name: 'Login' }">Login</router-link>
-        </ui-button>
+
+        <button @click="toggleMobileMenu" class="hamburgerButton">
+          <HamburgerIcon />
+        </button>
       </div>
+
+      <MobileNavigation
+        class="main-header__navigation"
+        v-if="isMobileMenuVisible"
+      />
     </div>
 
-    <header-navigation class="header__navigation" />
-
-    <div class="header__actions">
-      <ui-button medium borderless empty colors="brand">
-        <router-link :to="{ name: 'Register' }"> Register </router-link>
-      </ui-button>
-      <ui-button medium colors="brand">
-        <router-link :to="{ name: 'Login' }">Login</router-link>
-      </ui-button>
+    <div class="main-header__desktop">
+      <router-link class="main-header__logo" to="/">
+        <MonteCinemaLogo />
+      </router-link>
+      <HeaderNavigation class="main-header__nav" />
+      <HeaderActions class="main-header__actions" />
     </div>
   </header>
 </template>
 
-<style lang="scss">
-@import "../scss/_mixins.scss";
-
-.header {
+<style lang="scss" scoped>
+.main-header {
   font-size: 1.125rem;
 
-  &__small {
+  &__mobile--top {
     display: flex;
-    justify-content: space-between;
+    margin: 2.0625rem 1.5rem 2.0625rem 1.5rem;
   }
 
-  a {
-    margin: 2.0625rem 0 2.0625rem 1.5rem;
+  &__desktop {
+    display: none;
   }
 
   .hamburgerButton {
     border: none;
     background-color: inherit;
-    margin-right: 1.5rem;
+    margin-left: auto;
   }
 
   .hamburgerButton:hover {
     cursor: pointer;
   }
 
-  &__navigation {
-    max-width: 100%;
-    flex-grow: 1;
-  }
-
-  &__navigation--mobile {
-    flex-grow: 1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #f7f7f7;
-    padding: 10px 10px 0 0;
-    font-size: 14px;
-    a {
-      margin: 0;
-      padding: 0;
-    }
-    button {
-      background-color: #f7f7f7;
-    }
-  }
-
-  &__navigation {
-    display: none;
-    max-width: 50%;
-    flex-grow: 1;
-  }
-
-  &__actions {
-    display: none;
-  }
-
   @include media-md {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    padding: 1.8125rem 0;
+    &__start {
+      margin: 0;
+    }
 
     a {
       margin: 0;
     }
 
-    & .hamburgerButton {
-      display: none;
-    }
-
-    &__navigation {
-      display: block;
-    }
-
-    &__navigation--mobile {
+    &__mobile {
       display: none;
       flex-grow: 1;
     }
 
-    &__actions {
+    &__desktop {
+      padding: 1.8125rem 0;
       display: flex;
-      flex-flow: wrap;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
     }
-  }
-  @include media-lg {
-    &__navigation {
+
+    &__nav {
+      flex: 1;
       max-width: 500px;
     }
   }

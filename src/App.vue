@@ -1,3 +1,11 @@
+<script>
+export default {
+  async created() {
+    await this.$store.dispatch("getMovies");
+  },
+};
+</script>
+
 <template>
   <div id="app">
     <router-view />
@@ -11,12 +19,17 @@
 
 :root {
   font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 @include media-md {
   #app {
-    margin-inline: 48px;
     max-width: 1440px;
+    padding-inline: 48px;
     margin-inline: auto;
   }
 }

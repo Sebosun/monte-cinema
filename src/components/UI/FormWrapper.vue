@@ -49,6 +49,20 @@
     max-width: 100%;
   }
 
+  .action-buttons {
+    margin: 67px 0;
+  }
+
+  .action-buttons .button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.95em 2em;
+  }
+
+  @include media-sm {
+    margin: 48px 24px 12px;
+  }
+
   @include media-md {
     form {
       box-shadow: 0px 4px 22px rgba(52, 53, 65, 0.15);
@@ -59,6 +73,21 @@
 
     form li {
       padding: 10px 0;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: row-reverse;
+      margin: 40px 0 0;
+    }
+
+    .action-buttons .button {
+      font-size: 18px;
+      padding: 0.95em 2em;
+      &:last-child {
+        margin-right: 10px;
+        padding: 0;
+      }
     }
   }
 }

@@ -63,6 +63,7 @@ a {
     justify-content: stretch;
     gap: 0.125rem;
   }
+
   .nav__hover {
     position: relative;
     transition: color 300ms ease-in-out;
@@ -78,7 +79,7 @@ a {
       width: 100%;
       left: 0;
       right: 0;
-      bottom: calc(1vh - 2px);
+      bottom: -48px;
       background: var(--color-brand);
       opacity: 0;
       transition: opacity 300ms ease-in-out;

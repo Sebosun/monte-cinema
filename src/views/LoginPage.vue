@@ -44,9 +44,9 @@ export default {
     <AuthHeader />
     <div class="login-page">
       <div class="login-page__wrapper">
+        <h1 class="font--header">Hi There!</h1>
+        <h2 class="font--header">Care to log in?</h2>
         <FormWrapper>
-          <h1 class="font--header">Hi There!</h1>
-          <h2 class="font--header">Care to log in?</h2>
           <form
             novalidate
             @submit.prevent="submitForm"
@@ -77,11 +77,12 @@ export default {
               </li>
             </ul>
 
-            <div class="login-page__buttons">
-              <ui-button :disabled="!isFormValid" colors="brand"
-                >Log in</ui-button
+            <div class="action-buttons">
+              <UiButton :disabled="!isFormValid" colors="brand"
+                >Log in</UiButton
               >
-              <ui-button
+
+              <UiButton
                 class="login-page__buttons--register"
                 empty
                 borderless
@@ -90,7 +91,7 @@ export default {
                 <router-link :to="{ name: 'Register' }"
                   >Register instead</router-link
                 >
-              </ui-button>
+              </UiButton>
             </div>
           </form>
         </FormWrapper>
@@ -123,12 +124,6 @@ export default {
     color: var(--color-secondary);
   }
 
-  &--error {
-    input {
-      border: 2px solid red;
-    }
-  }
-
   &__error {
     &--input input {
       border: 2px solid red;
@@ -139,16 +134,6 @@ export default {
     }
   }
 
-  &__buttons {
-    margin: 67px 0;
-  }
-
-  &__buttons .button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 0.95em 2em;
-  }
-  
   &__forgot {
     text-align: center;
 
@@ -158,17 +143,12 @@ export default {
     letter-spacing: 0.04em;
     color: #343541;
   }
-  
+
   &__forgot a {
     font-weight: bold;
     color: var(--color-brand);
   }
 
-  @include media-sm {
-    &__wrapper {
-      margin: 48px 24px 12px;
-    }
-  }
   @include media-md {
     h1,
     h2 {
@@ -176,31 +156,6 @@ export default {
       text-align: left;
     }
 
-    &__form {
-      box-shadow: 0px 4px 22px rgba(52, 53, 65, 0.15);
-      border-radius: 24px;
-      padding: 64px;
-      margin: 40px 0;
-    }
-
-    &__form li {
-      padding: 10px 0;
-    }
-    
-    &__buttons {
-      display: flex;
-      flex-direction: row-reverse;
-      margin: 40px 0 0;
-    }
-
-    &__buttons .button {
-      font-size: 18px;
-      padding: 0.95em 2em;
-      &:last-child {
-        margin-right: 10px;
-        padding: 0;
-      }
-    }
     &__forgot {
       text-align: left;
     }

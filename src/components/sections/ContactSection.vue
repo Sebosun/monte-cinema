@@ -1,7 +1,7 @@
 <script>
-import Location from "../assets/pin-location.svg";
-import Email from "../assets/email.svg";
-import Phone from "../assets/phone.svg";
+import Location from "@/assets/pin-location.svg";
+import Email from "@/assets/email.svg";
+import Phone from "@/assets/phone.svg";
 export default { components: { Location, Email, Phone } };
 </script>
 

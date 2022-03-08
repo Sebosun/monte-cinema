@@ -1,20 +1,13 @@
 <script>
-import MovieCard from "@/components/UI/MovieCard";
-import HeroSection from "@/components/HeroSection";
-import SoonSection from "@/components/SoonSection.vue";
-import Screenings from "@/components/Screenings.vue";
-import ContactSection from "@/components/ContactSection.vue";
+import HeroSection from "@/components/sections/HeroSection";
+import SoonSection from "@/components/sections/SoonSection.vue";
+import Screenings from "@/components/sections/Screenings.vue";
+import ContactSection from "@/components/sections/ContactSection.vue";
 import MainHeader from "@/components/MainHeader.vue";
 
 export default {
   name: "Home",
-  props: ["genre", "query"],
-  created() {
-    console.log(this.genre);
-    console.log(this.query);
-  },
   components: {
-    MovieCard,
     HeroSection,
     SoonSection,
     Screenings,
@@ -26,13 +19,12 @@ export default {
 , MainHeader
 <template>
   <div>
-    <main-header />
+    <MainHeader />
     <main class="main">
-      <hero-section />
-      <soon-section />
-      <movie-card />
-      <screenings />
+      <HeroSection />
+      <SoonSection />
+      <Screenings />
     </main>
-    <contact-section />
+    <ContactSection />
   </div>
 </template>

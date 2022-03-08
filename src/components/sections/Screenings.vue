@@ -1,70 +1,37 @@
 <script>
-import axios from "axios";
 /* TODO - Calendar*/
-/* TODO - Gaps*/
-import DisplayMovies from "./DisplayMovies.vue";
-import UiButton from "./UI/UiButton.vue";
-import ErrorMessage from "./UI/ErrorMessage.vue";
+import DisplayMovie from "@/components/chunks/DisplayMovie.vue";
+import UiButton from "@/components/UI/UiButton.vue";
+import ErrorMessage from "@/components/UI/ErrorMessage.vue";
+import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
+import getGenres from "@/helpers/getGenres";
 export default {
-  components: { UiButton, DisplayMovies, ErrorMessage },
+  components: { UiButton, DisplayMovie, ErrorMessage, LoadingSpinner },
   data() {
     return {
-      posts: null,
-      loading: true,
-      error: { status: false, message: "" },
       selected: "",
     };
   },
-  async created() {
-    this.getSeances();
-    try {
-      const getMovies = await axios("http://localhost:3000/movies");
-      this.loading = false;
-      this.posts = getMovies.data;
-    } catch (err) {
-      this.loading = false;
-      this.error = {
-        status: true,
-        message: "Request failed. Please try again later.",
-      };
-    }
-  },
-  methods: {
-    async getSeances() {
-      const fetchSeances = await axios("http://localhost:3000/seances");
-      const seancesByMovie = fetchSeances.data.reduce(
-        (seancesGroupedByMovieID, curSeance) => {
-          // if key doesnt exist in the array, create an empty obj in that space
-          if (!seancesGroupedByMovieID[curSeance.movie]) {
-            seancesGroupedByMovieID[curSeance.movie] = [];
-          }
-
-          seancesGroupedByMovieID[curSeance.movie].push({
-            datetime: curSeance.datetime,
-            hall: curSeance.datetime,
-          });
-          return seancesGroupedByMovieID;
-        },
-        {}
-      );
-      console.log(seancesByMovie);
-    },
-  },
   computed: {
+    /* ...mapGetters(['getLoading', 'getError', 'getMovies']), */
+    loading() {
+      return this.$store.getters.getLoading;
+    },
+    error() {
+      return this.$store.getters.getError;
+    },
+    movies() {
+      return this.$store.getters.getMovies;
+    },
     genres() {
-      const genres = this.posts.reduce((uniqueGenres, currentMovie) => {
-        !uniqueGenres.includes(currentMovie.genre.name) &&
-          uniqueGenres.push(currentMovie.genre);
-        return uniqueGenres;
-      }, []);
-      return genres;
+      return getGenres(this.movies);
     },
     filterMovies() {
-      const filterMovies = this.posts.filter(
+      const filteredMovies = this.movies.filter(
         (item) => item.genre.name === this.selected
       );
       // making sure something is actually selected
-      return this.selected == "" ? this.posts : filterMovies;
+      return this.selected == "" ? this.movies : filteredMovies;
     },
   },
 };
@@ -72,9 +39,9 @@ export default {
 
 <template>
   <section class="screenings">
-    <div v-if="loading" class="screenings__loading">Loading...</div>
+    <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
     <div v-else-if="error.status" class="screenings__error">
-      <error-message>{{ error.message }}</error-message>
+      <ErrorMessage>{{ error.message }}</ErrorMessage>
     </div>
     <div v-else class="screenings__wrapper">
       <div class="screenings__top">
@@ -98,8 +65,8 @@ export default {
           </div>
 
           <div class="screenings__genres">
-            <div class="font--label">Movie</div>
-            <select v-model="selected">
+            <label for="genres" class="font--label">Movie</label>
+            <select name="genres" v-model="selected">
               <option selected value="">All movies</option>
               <option
                 v-for="genre in genres"
@@ -112,7 +79,7 @@ export default {
           </div>
         </div>
       </div>
-      <display-movies
+      <DisplayMovie
         v-for="movie in filterMovies"
         :key="movie.id"
         :movie="movie"
@@ -218,10 +185,10 @@ export default {
     }
 
     &__filters {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
     }
+
     // select children starting from 5 +
     &__buttons .button:nth-child(n + 5) {
       display: none;
@@ -232,11 +199,8 @@ export default {
       font-size: 18px;
     }
 
-    &__genres {
-      display: flex;
-      flex-direction: column;
-      align-self: stretch;
-      justify-content: space-between;
+    &__genres select {
+      width: 100%;
     }
 
     &__genres .font--label {
