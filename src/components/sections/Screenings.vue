@@ -3,8 +3,9 @@
 import DisplayMovie from "@/components/chunks/DisplayMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
+import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 export default {
-  components: { UiButton, DisplayMovie, ErrorMessage },
+  components: { UiButton, DisplayMovie, ErrorMessage, LoadingSpinner },
   data() {
     return {
       selected: "",
@@ -13,10 +14,12 @@ export default {
   computed: {
     /* ...mapGetters(['getLoading', 'getError', 'getMovies']), */
     loading() {
-      return this.$store.getters.getLoading;
+      /* return this.$store.getters.getLoading; */
+      return true;
     },
     error() {
-      return this.$store.getters.getError;
+      return false;
+      /* return this.$store.getters.getError; */
     },
     movies() {
       return this.$store.getters.getMovies;
@@ -54,7 +57,7 @@ export default {
 
 <template>
   <section class="screenings">
-    <div v-if="loading" class="screenings__loading">Loading...</div>
+    <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
     <div v-else-if="error.status" class="screenings__error">
       <ErrorMessage>{{ error.message }}</ErrorMessage>
     </div>
@@ -220,6 +223,7 @@ export default {
 
     &__genres .font--label {
       font-size: 14px;
+      justify-self: flex-start;
     }
 
     &__genres select {
