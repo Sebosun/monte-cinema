@@ -1,5 +1,4 @@
 <script>
-import MovieCard from "@/components/UI/MovieCard";
 import HeroSection from "@/components/sections/HeroSection";
 import SoonSection from "@/components/sections/SoonSection.vue";
 import Screenings from "@/components/sections/Screenings.vue";
@@ -9,7 +8,6 @@ import MainHeader from "@/components/MainHeader.vue";
 export default {
   name: "Home",
   components: {
-    MovieCard,
     HeroSection,
     SoonSection,
     Screenings,
@@ -25,7 +23,6 @@ export default {
     <main class="main">
       <HeroSection />
       <SoonSection />
-      <MovieCard />
       <Screenings />
     </main>
     <ContactSection />

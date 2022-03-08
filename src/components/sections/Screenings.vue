@@ -220,7 +220,6 @@ export default {
 
     &__genres .font--label {
       font-size: 14px;
-      justify-self: flex-start;
     }
 
     &__genres select {

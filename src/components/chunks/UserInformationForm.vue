@@ -153,7 +153,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     gap: 10px;
     font-size: 18px;
     line-height: 21px;
