@@ -19,6 +19,11 @@ export default {
 
 :root {
   font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 @include media-md {
