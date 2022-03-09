@@ -1,6 +1,7 @@
 <script>
 import Tags from "@/components/UI/Tags.vue";
 import MovieCard from "@/components/UI/MovieCard.vue";
+import movieLengthMinutesToHuman from "@/helpers/movieLengthMinutesToHuman.js";
 export default {
   props: {
     movie: {
@@ -10,9 +11,7 @@ export default {
   },
   methods: {
     movieLength(length) {
-      const hours = Math.floor(length / 60);
-      const minutes = `0${length % 60}`.slice(-2);
-      return `${hours}h ${minutes} min`;
+      return movieLengthMinutesToHuman(length);
     },
   },
   components: { MovieCard, Tags },
@@ -22,9 +21,11 @@ export default {
 <template>
   <movie-card class="movie-item">
     <div class="movie-item__meta">
-      <h2 class="font--bold">
-        {{ movie.title }}
-      </h2>
+      <router-link :to="`movies/${movie.id}`">
+        <h2 class="font--bold">
+          {{ movie.title }}
+        </h2>
+      </router-link>
       <div class="movie-item__length font--bold">
         {{ movieLength(movie.length) }}
       </div>
