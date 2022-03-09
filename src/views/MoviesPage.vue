@@ -47,7 +47,11 @@ export default {
   <div class="movies">
     <main-header />
     <BreadcrumbNavigation>Movies</BreadcrumbNavigation>
-    <div class="movies--wrapper">
+    <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
+    <div v-else-if="error.status" class="screenings__error">
+      <ErrorMessage>{{ error.message }}</ErrorMessage>
+    </div>
+    <div v-else class="movies--wrapper">
       <h1 class="font--header">All the movies</h1>
       <!-- TODO: export this into a separate component -->
       <div class="movies__inputs">
@@ -71,11 +75,7 @@ export default {
           </select>
         </div>
       </div>
-      <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
-      <div v-else-if="error.status" class="screenings__error">
-        <ErrorMessage>{{ error.message }}</ErrorMessage>
-      </div>
-      <div v-else class="movies__list">
+      <div class="movies__list">
         <MovieItem
           v-for="movie in filterMoviesByGenre"
           :key="movie.id"
@@ -86,7 +86,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .movies {
   &__inputs {
     margin-inline: auto;

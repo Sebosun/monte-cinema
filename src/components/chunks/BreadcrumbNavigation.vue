@@ -22,7 +22,7 @@ export default {
 </script>
 
 <template>
-  <div class="breadcrumb-navigation">
+  <nav class="breadcrumb-navigation">
     <router-link :to="backPath">
       <ui-button class="breadcrumb-navigation__button" empty colors="primary">
         <ArrowSVG />
@@ -38,7 +38,7 @@ export default {
         <div>{{ nestedName }}</div>
       </div>
     </div>
-  </div>
+  </nav>
 </template>
 
 <style lang="scss" scoped>
