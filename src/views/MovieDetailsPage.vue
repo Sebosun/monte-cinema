@@ -1,10 +1,10 @@
 <script>
-import axios from "axios";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import MainHeader from "@/components/MainHeader.vue";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
 import Tags from "../components/UI/Tags.vue";
 import movieLengthMinutesToHuman from "@/helpers/movieLengthMinutesToHuman.js";
+import { getOneMovie } from "@/helpers/api/movies";
 export default {
   components: { ErrorMessage, MainHeader, BreadcrumbNavigation, Tags },
   data() {
@@ -22,10 +22,8 @@ export default {
   },
   async created() {
     try {
-      const getMovie = await axios.get(
-        `http://localhost:3000/movies/${this.id}`
-      );
-      this.movie = getMovie.data;
+      const response = await getOneMovie(this.id);
+      this.movie = response.data;
     } catch (err) {
       this.error = {
         status: true,

@@ -16,6 +16,12 @@ export default {
     submitForm() {
       this.touchAll();
       console.log(this.email, this.password);
+      if (this.isFormValid) {
+        this.$store.dispatch("login", {
+          email: this.email,
+          password: this.password,
+        });
+      }
     },
     touchAll() {
       this.isEmailTouched = true;

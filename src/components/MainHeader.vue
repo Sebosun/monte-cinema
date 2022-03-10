@@ -23,6 +23,11 @@ export default {
       this.isMobileMenuVisible = !this.isMobileMenuVisible;
     },
   },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    },
+  },
 };
 //TODO split into separate components at some point
 </script>
@@ -50,7 +55,7 @@ export default {
         <MonteCinemaLogo />
       </router-link>
       <HeaderNavigation class="main-header__nav" />
-      <HeaderActions class="main-header__actions" />
+      <HeaderActions v-if="!isLoggedIn" class="main-header__actions" />
     </div>
   </header>
 </template>
