@@ -72,6 +72,7 @@ export default {
         </div>
       </div>
       <div>Screeningsn</div>
+      <!--TODO: Once the api arrives add the thing-->
     </div>
   </div>
 </template>
@@ -88,13 +89,6 @@ p {
   line-height: 170%;
 }
 .movie-details {
-  &__desc {
-    margin: 64px 0;
-    display: grid;
-    grid-template-columns: minmax(200px, 600px) 1fr;
-    gap: 98px;
-  }
-
   &__meta {
     display: flex;
     flex-flow: column;
@@ -117,17 +111,14 @@ p {
       }
     }
   }
-  &__image {
-    height: 320px;
-    max-width: 100%;
-    overflow: hidden;
 
+  &__image {
+    overflow: hidden;
     img {
-      height: 100%;
+      height: 500px;
       width: 100%;
       object-fit: cover;
       object-position: center;
-      overflow: hidden;
     }
   }
 
@@ -140,10 +131,28 @@ p {
       margin: 0;
     }
   }
+
   @include media-md {
+    p {
+      font-size: 24px;
+      margin-top: auto;
+    }
     h1 {
       font-size: 80px;
       margin: 0;
+    }
+
+    &__desc {
+      margin: 64px 0;
+      display: grid;
+      grid-template-columns: 1fr minmax(340px, 1fr);
+      gap: 28px;
+    }
+  }
+  @include media-lg {
+    &__desc {
+      grid-template-columns: 1fr minmax(600px, 1fr);
+      gap: 70px;
     }
   }
 }
