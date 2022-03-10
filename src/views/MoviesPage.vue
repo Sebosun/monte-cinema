@@ -40,6 +40,7 @@ export default {
     },
   },
   components: { MainHeader, MovieItem, LoadingSpinner, BreadcrumbNavigation },
+
 };
 </script>
 
@@ -109,7 +110,6 @@ export default {
     &--wrapper {
       margin: 40px 24px;
     }
-
     &__list {
       display: flex;
       flex-flow: column;
