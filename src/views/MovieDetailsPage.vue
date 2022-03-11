@@ -2,10 +2,11 @@
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import MainHeader from "@/components/MainHeader.vue";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
-import Tags from "../components/UI/Tags.vue";
-import movieLengthMinutesToHuman from "@/helpers/movieLengthMinutesToHuman.js";
+import Tags from "@/components/UI/Tags.vue";
 import ScreeningsForOneMovie from "@/components/sections/ScreeningsForOneMovie.vue";
+
 import * as moviesApi from "@/helpers/api/movies";
+import movieLengthMinutesToHuman from "@/helpers/movieLengthMinutesToHuman.js";
 
 export default {
   components: {

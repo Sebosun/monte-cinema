@@ -25,8 +25,11 @@ export default {
   methods: {
     dayToHuman(date) {
       var options = { weekday: "long" };
-      const day = new Intl.DateTimeFormat("en-US", options).format(date);
-      return day;
+      const today = new Date().toDateString();
+      console.log(today, date.toDateString());
+      return date.toDateString() === today
+        ? "Today"
+        : new Intl.DateTimeFormat("en-US", options).format(date);
     },
   },
   computed: {
@@ -134,7 +137,7 @@ export default {
   </section>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .screenings {
   margin-top: 5.5rem;
 
@@ -235,10 +238,10 @@ export default {
       grid-template-columns: 1fr 1fr;
     }
 
-    // select children starting from 5 +
-    &__buttons .button:nth-child(n + 5) {
-      display: none;
-    }
+    /* // select children starting from 5 + */
+    /* &__buttons .button:nth-child(n + 5) { */
+    /*   display: none; */
+    /* } */
 
     &__buttons button {
       padding: 19px 40px;

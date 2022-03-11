@@ -5,6 +5,9 @@ import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 import * as moviesApi from "@/helpers/api/movies";
+import CalendarSVG from "@/assets/calendar.svg";
+
+import dateToHumanReadableDay from "@/helpers/dateToHumanReadableDay";
 export default {
   data() {
     return {
@@ -12,10 +15,14 @@ export default {
       selectedDay: new Date(),
       screenings: [],
       loading: true,
-
+      calendarVisible: false,
       error: {
         status: false,
         message: "Something went wrong. Please try again",
+      },
+      calendarDate: "",
+      modelConfig: {
+        type: "Date",
       },
     };
   },
@@ -40,9 +47,7 @@ export default {
   },
   methods: {
     dayToHuman(date) {
-      var options = { weekday: "long" };
-      const day = new Intl.DateTimeFormat("en-US", options).format(date);
-      return day;
+      return dateToHumanReadableDay(date);
     },
     async getSingleSeance(id) {
       const response = await moviesApi.getSeancesByMovieId(id);
@@ -68,19 +73,27 @@ export default {
       const UNIX_ONE_DAY = 24 * 3600 * 1000; //one day
       const today = new Date();
       const datesArr = [today];
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 5; i++) {
         let lastItem = datesArr[datesArr.length - 1];
         datesArr.push(new Date(lastItem.getTime() + UNIX_ONE_DAY));
       }
       return datesArr;
     },
     currentScreeningsText() {
-      return `${this.dayToHuman(
+      var options = { weekday: "long" };
+      const dayStr = new Intl.DateTimeFormat("en-US", options).format(
         this.selectedDay
-      )} ${this.selectedDay.toLocaleDateString("en-UK")}`;
+      );
+      return `${dayStr} ${this.selectedDay.toLocaleDateString("en-UK")}`;
     },
   },
-  components: { UiButton, OneMovieScreening, ErrorMessage, LoadingSpinner },
+  components: {
+    UiButton,
+    OneMovieScreening,
+    ErrorMessage,
+    LoadingSpinner,
+    CalendarSVG,
+  },
 };
 </script>
 
@@ -100,32 +113,53 @@ export default {
         <div class="screenings__filters">
           <div class="screenings__days">
             <div class="font--label">Day</div>
+
             <div class="screenings__buttons">
               <ui-button
                 v-for="(date, index) in switchScreeningsDays"
                 @click="selectedDay = date"
                 :key="index"
                 :empty="!(date.toDateString() === selectedDay.toDateString())"
+                medium
                 colors="primary"
                 >{{ dayToHuman(date) }}</ui-button
               >
+
+              <div class="screenings__calendar">
+                <vc-date-picker v-model="selectedDay">
+                  <template v-slot="{ togglePopover }">
+                    <ui-button
+                      @click="togglePopover()"
+                      v-on="inputEvents"
+                      empty
+                      colors="primary"
+                    >
+                      <CalendarSVG />
+                    </ui-button>
+                  </template>
+                </vc-date-picker>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <OneMovieScreening
-        :screenings="selectedDayScreenings"
-        :key="movie.id"
-        :movie="movie"
-      />
+      <template v-if="selectedDayScreenings.length > 1">
+        <OneMovieScreening
+          :screenings="selectedDayScreenings"
+          :key="movie.id"
+          :movie="movie"
+        />
+      </template>
+      <template v-else>
+        <ErrorMessage>No screenings found for this day.</ErrorMessage>
+      </template>
     </div>
   </section>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .screenings {
-  margin-top: 5.5rem;
-
+  margin: 5.5rem 0;
   &__loading {
     text-align: center;
     margin-inline: auto;
@@ -133,7 +167,6 @@ export default {
   }
 
   &__headers {
-    margin-inline: 1.5rem;
     margin-bottom: 2rem;
   }
 
@@ -159,7 +192,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
-    margin-left: 1.5rem;
     margin-bottom: 6.125rem;
   }
 
@@ -176,7 +208,7 @@ export default {
     margin-left: 0.625rem;
   }
 
-  &__days &__buttons {
+  &__buttons {
     font-size: 1rem;
     padding: 0.75rem 0;
     display: flex;
@@ -185,7 +217,10 @@ export default {
 
   &__buttons button {
     font-size: 0.875rem;
-    padding: 0.5625rem 1.5rem;
+  }
+
+  &__calendar {
+    margin: auto 10px;
   }
 
   &__days .screenings__buttons:last-child {
@@ -223,13 +258,7 @@ export default {
       grid-template-columns: 1fr 1fr;
     }
 
-    // select children starting from 5 +
-    &__buttons .button:nth-child(n + 5) {
-      display: none;
-    }
-
     &__buttons button {
-      padding: 19px 40px;
       font-size: 18px;
     }
 
