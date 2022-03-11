@@ -4,8 +4,8 @@ import MainHeader from "@/components/MainHeader.vue";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
 import Tags from "../components/UI/Tags.vue";
 import movieLengthMinutesToHuman from "@/helpers/movieLengthMinutesToHuman.js";
+import ScreeningsForOneMovie from "@/components/sections/ScreeningsForOneMovie.vue";
 import * as moviesApi from "@/helpers/api/movies";
-import Screenings from "@/components/sections/Screenings.vue";
 
 export default {
   components: {
@@ -13,7 +13,7 @@ export default {
     MainHeader,
     BreadcrumbNavigation,
     Tags,
-    Screenings,
+    ScreeningsForOneMovie,
   },
   data() {
     return {
@@ -32,7 +32,6 @@ export default {
   async created() {
     try {
       const response = await moviesApi.getOneMovie(this.id);
-      this.getSingleSeance();
       this.movie = response.data;
     } catch (err) {
       this.error = {
@@ -41,12 +40,6 @@ export default {
       };
     }
     this.loading = false;
-  },
-  methods: {
-    async getSingleSeance() {
-      const response = await moviesApi.getSeancesByMovieId(this.id);
-      this.screenings = response.data;
-    },
   },
   computed: {
     movieLength() {
@@ -89,7 +82,7 @@ export default {
           <img :src="movie.poster_url" :alt="movie.title" />
         </div>
       </div>
-      <Screenings :movies="movieArray" :screenings="screenings" />
+      <ScreeningsForOneMovie :movie="movie" />
     </div>
   </div>
 </template>
