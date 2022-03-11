@@ -5,4 +5,7 @@ export const getAllMovies = async () => defaultClient.get("/movies");
 
 export const getOneMovie = async (id) => defaultClient.get(`/movies/${id}`);
 
+export const getSeancesByMovieId = async (id) =>
+  defaultClient.get(`/seances?movie_id=${id}`);
+
 export const getUser = async () => defaultClient.get("/user");

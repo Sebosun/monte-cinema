@@ -1,5 +1,5 @@
 import * as authApi from "@/helpers/api/auth";
-import { removeAuthHeader, setAuthHeader } from "@/helpers/api/client";
+import { removeAuthHeader, setAuthHeader } from "@/helpers/api/axiosClient";
 
 const TOKEN_STORAGE_KEY = "auth-token";
 const USER_STORAGE_KEY = "user";

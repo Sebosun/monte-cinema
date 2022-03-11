@@ -6,21 +6,22 @@ import FormWrapper from "@/components/UI/FormWrapper.vue";
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      email: "admin@monterail.com",
+      password: "monterail1",
       isEmailTouched: false,
       isPasswordTouched: false,
     };
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       this.touchAll();
       console.log(this.email, this.password);
       if (this.isFormValid) {
-        this.$store.dispatch("login", {
+        await this.$store.dispatch("login", {
           email: this.email,
           password: this.password,
         });
+        this.$router.push("/");
       }
     },
     touchAll() {
