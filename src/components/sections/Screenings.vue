@@ -1,26 +1,42 @@
 <script>
 /* TODO - Calendar*/
-import DisplayMovie from "@/components/chunks/DisplayMovie.vue";
+import OneMovieScreening from "@/components/chunks/OneMovieScreening.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 import getGenres from "@/helpers/getGenres";
 export default {
-  components: { UiButton, DisplayMovie, ErrorMessage, LoadingSpinner },
   data() {
     return {
       selected: "",
+      selectedDay: new Date(),
     };
   },
+  props: {
+    movies: {
+      type: Array,
+      required: true,
+    },
+    screenings: {
+      type: Array,
+      required: true,
+    },
+  },
+  methods: {
+    dayToHuman(date) {
+      var options = { weekday: "long" };
+      const day = new Intl.DateTimeFormat("en-US", options).format(date);
+      return day;
+    },
+  },
   computed: {
-    /* ...mapGetters(['getLoading', 'getError', 'getMovies']), */
     loading() {
       return this.$store.getters.getLoading;
     },
     error() {
       return this.$store.getters.getError;
     },
-    movies() {
+    allMovies() {
       return this.$store.getters.getMovies;
     },
     genres() {
@@ -33,7 +49,36 @@ export default {
       // making sure something is actually selected
       return this.selected == "" ? this.movies : filteredMovies;
     },
+    currentDayScreenings() {
+      const today = new Date().toDateString();
+      return this.screenings.reduce((todaysScreenings, screening) => {
+        const screeningDate = new Date(screening.datetime);
+        if (screeningDate.toDateString() === today) {
+          todaysScreenings.push({
+            hall: screening.hall,
+            id: screening.id,
+            movie: screening.movie,
+            datetime: screeningDate,
+          });
+        }
+        return todaysScreenings;
+      }, []);
+    },
+    switchScreeningsDays() {
+      const UNIX_ONE_DAY = 100000000; //one day
+      const today = new Date();
+      const datesArr = [today];
+      for (let i = 0; i < 6; i++) {
+        let lastItem = datesArr[datesArr.length - 1];
+        datesArr.push(new Date(lastItem.getTime() + UNIX_ONE_DAY));
+      }
+      return datesArr;
+    },
+    currentScreeningsText() {
+      return this.selectedDay.toDateString();
+    },
   },
+  components: { UiButton, OneMovieScreening, ErrorMessage, LoadingSpinner },
 };
 </script>
 
@@ -47,24 +92,24 @@ export default {
       <div class="screenings__top">
         <div class="screenings__headers font--header">
           <h1>Screenings:</h1>
-          <h2>Friday 11/02/2022</h2>
+          <h2>{{ currentScreeningsText }}</h2>
         </div>
         <div class="screenings__filters">
           <div class="screenings__days">
             <div class="font--label">Day</div>
             <div class="screenings__buttons">
-              <ui-button colors="primary">Today</ui-button>
-              <ui-button empty colors="primary">Sat</ui-button>
-              <ui-button empty colors="primary">Sun</ui-button>
-              <ui-button empty colors="primary">Mon</ui-button>
-              <ui-button empty colors="primary">Today</ui-button>
-              <ui-button empty colors="primary">Sat</ui-button>
-              <ui-button empty colors="primary">Sun</ui-button>
-              <ui-button empty colors="primary">Mon</ui-button>
+              <ui-button
+                v-for="(date, index) in switchScreeningsDays"
+                @click="selectedDay = date"
+                :key="index"
+                :empty="!(date.toDateString() === selectedDay.toDateString())"
+                colors="primary"
+                >{{ dayToHuman(date) }}</ui-button
+              >
             </div>
           </div>
 
-          <div class="screenings__genres">
+          <div v-if="movies.length > 1" class="screenings__genres">
             <label for="genres" class="font--label">Movie</label>
             <select name="genres" v-model="selected">
               <option selected value="">All movies</option>
@@ -79,8 +124,9 @@ export default {
           </div>
         </div>
       </div>
-      <DisplayMovie
+      <OneMovieScreening
         v-for="movie in filterMovies"
+        :screenings="currentDayScreenings"
         :key="movie.id"
         :movie="movie"
       />

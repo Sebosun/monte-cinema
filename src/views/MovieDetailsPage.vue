@@ -4,13 +4,22 @@ import MainHeader from "@/components/MainHeader.vue";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
 import Tags from "../components/UI/Tags.vue";
 import movieLengthMinutesToHuman from "@/helpers/movieLengthMinutesToHuman.js";
-import { getOneMovie } from "@/helpers/api/movies";
+import * as moviesApi from "@/helpers/api/movies";
+import Screenings from "@/components/sections/Screenings.vue";
+
 export default {
-  components: { ErrorMessage, MainHeader, BreadcrumbNavigation, Tags },
+  components: {
+    ErrorMessage,
+    MainHeader,
+    BreadcrumbNavigation,
+    Tags,
+    Screenings,
+  },
   data() {
     return {
       movie: null,
       loading: true,
+      screenings: [],
       error: { status: false, message: "" },
     };
   },
@@ -22,7 +31,8 @@ export default {
   },
   async created() {
     try {
-      const response = await getOneMovie(this.id);
+      const response = await moviesApi.getOneMovie(this.id);
+      this.getSingleSeance();
       this.movie = response.data;
     } catch (err) {
       this.error = {
@@ -32,9 +42,20 @@ export default {
     }
     this.loading = false;
   },
+  methods: {
+    async getSingleSeance() {
+      const response = await moviesApi.getSeancesByMovieId(this.id);
+      this.screenings = response.data;
+    },
+  },
   computed: {
     movieLength() {
       return movieLengthMinutesToHuman(this.movie.length);
+    },
+    movieArray() {
+      const arr = [];
+      arr.push(this.movie);
+      return arr;
     },
   },
 };
@@ -61,16 +82,14 @@ export default {
             <div class="font--bold">R</div>
           </div>
           <p>
-            A team of commandos on a mission in a Central American jungle find
-            themselves hunted by an extraterrestrial warrior
+            {{ movie.description }}
           </p>
         </div>
         <div class="movie-details__image">
           <img :src="movie.poster_url" :alt="movie.title" />
         </div>
       </div>
-      <div>Screeningsn</div>
-      <!--TODO: Once the api arrives add the thing-->
+      <Screenings :movies="movieArray" :screenings="screenings" />
     </div>
   </div>
 </template>
@@ -79,6 +98,11 @@ export default {
 .font--bold {
   color: var(--color-secondary);
 }
+
+h1 {
+  color: var(--color-primary);
+}
+
 p {
   font-family: Roboto Mono;
   font-style: normal;
@@ -86,6 +110,7 @@ p {
   font-size: 22px;
   line-height: 170%;
 }
+
 .movie-details {
   &__meta {
     display: flex;
@@ -112,17 +137,16 @@ p {
 
   &__image {
     overflow: hidden;
-    img {
-      height: 500px;
-      width: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
+    height: 100%;
+    position: relative;
+  }
+  &__image img {
+    position: absolute;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
   }
 
-  h1 {
-    color: var(--color-primary);
-  }
   @include media-sm {
     h1 {
       font-size: 48px;
@@ -133,7 +157,7 @@ p {
   @include media-md {
     p {
       font-size: 24px;
-      margin-top: auto;
+      margin-bottom: auto;
     }
     h1 {
       font-size: 80px;
@@ -144,6 +168,7 @@ p {
       margin: 64px 0;
       display: grid;
       grid-template-columns: 1fr minmax(340px, 1fr);
+      grid-template-rows: 616px;
       gap: 28px;
     }
   }

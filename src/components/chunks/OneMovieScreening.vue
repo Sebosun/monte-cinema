@@ -11,12 +11,21 @@ export default {
       type: Object,
       required: true,
     },
+    screenings: {
+      type: Array,
+      required: true,
+    },
   },
   methods: {
     movieLength(length) {
       const hours = Math.floor(length / 60);
       const minutes = `0${length % 60}`.slice(-2);
       return `${hours}h ${minutes}`;
+    },
+    getScreeningHour(date) {
+      const hours = date.getHours();
+      const minutes = `0${date.getMinutes()}`.slice(-2);
+      return `${hours}:${minutes}`;
     },
   },
 };
@@ -38,20 +47,24 @@ export default {
         </div>
 
         <div class="display-movies__buttons--md-screen">
-          <ui-button empty colors="brand">21:45</ui-button>
-          <ui-button empty colors="brand">21:45</ui-button>
-          <ui-button empty colors="brand">21:45</ui-button>
-          <ui-button empty colors="brand">21:45</ui-button>
-          <ui-button empty colors="brand">21:45</ui-button>
+          <ui-button
+            v-for="screening in screenings"
+            :key="screening.id"
+            empty
+            colors="brand"
+            >{{ getScreeningHour(screening.datetime) }}</ui-button
+          >
         </div>
       </div>
     </div>
     <div class="display-movies__buttons--sm-screen">
-      <ui-button empty colors="brand">21:45</ui-button>
-      <ui-button empty colors="brand">21:45</ui-button>
-      <ui-button empty colors="brand">21:45</ui-button>
-      <ui-button empty colors="brand">21:45</ui-button>
-      <ui-button empty colors="brand">21:45</ui-button>
+      <ui-button
+        v-for="screening in screenings"
+        :key="screening.id"
+        empty
+        colors="brand"
+        >{{ getScreeningHour(screening.datetime) }}</ui-button
+      >
     </div>
   </MovieCard>
 </template>
