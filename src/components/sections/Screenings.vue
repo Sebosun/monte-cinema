@@ -1,6 +1,6 @@
 <script>
 /* TODO - Calendar*/
-import OneMovieScreening from "@/components/chunks/OneMovieScreening.vue";
+import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
@@ -22,16 +22,7 @@ export default {
       required: true,
     },
   },
-  methods: {
-    dayToHuman(date) {
-      var options = { weekday: "long" };
-      const today = new Date().toDateString();
-      console.log(today, date.toDateString());
-      return date.toDateString() === today
-        ? "Today"
-        : new Intl.DateTimeFormat("en-US", options).format(date);
-    },
-  },
+  methods: {},
   computed: {
     loading() {
       return this.$store.getters.getLoading;
@@ -81,7 +72,7 @@ export default {
       return this.selectedDay.toDateString();
     },
   },
-  components: { UiButton, OneMovieScreening, ErrorMessage, LoadingSpinner },
+  components: { UiButton, ListOneMovie, ErrorMessage, LoadingSpinner },
 };
 </script>
 
@@ -127,7 +118,7 @@ export default {
           </div>
         </div>
       </div>
-      <OneMovieScreening
+      <ListOneMovie
         v-for="movie in filterMovies"
         :screenings="currentDayScreenings"
         :key="movie.id"

@@ -107,6 +107,7 @@ p {
 
 .movie-details {
   &__meta {
+    margin-top: 20px;
     display: flex;
     flex-flow: column;
     gap: 32px;
@@ -142,9 +143,24 @@ p {
   }
 
   @include media-sm {
+    &__desc,
+    &__meta {
+      margin-inline: 24px;
+    }
+
     h1 {
       font-size: 48px;
       margin: 0;
+    }
+
+    &__desc {
+      margin: 64px 0;
+      display: grid;
+      grid-template-rows: 1fr minmax(340px, 1fr);
+      .movie-details__image {
+        grid-row: 1;
+      }
+      gap: 28px;
     }
   }
 
@@ -162,7 +178,6 @@ p {
       margin: 64px 0;
       display: grid;
       grid-template-columns: 1fr minmax(340px, 1fr);
-      grid-template-rows: 616px;
       gap: 28px;
     }
   }

@@ -1,6 +1,6 @@
 <script>
 /* TODO - Calendar*/
-import OneMovieScreening from "@/components/chunks/OneMovieScreening.vue";
+import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
@@ -89,7 +89,7 @@ export default {
   },
   components: {
     UiButton,
-    OneMovieScreening,
+    ListOneMovie,
     ErrorMessage,
     LoadingSpinner,
     CalendarSVG,
@@ -120,7 +120,6 @@ export default {
                 @click="selectedDay = date"
                 :key="index"
                 :empty="!(date.toDateString() === selectedDay.toDateString())"
-                medium
                 colors="primary"
                 >{{ dayToHuman(date) }}</ui-button
               >
@@ -128,12 +127,7 @@ export default {
               <div class="screenings__calendar">
                 <vc-date-picker v-model="selectedDay">
                   <template v-slot="{ togglePopover }">
-                    <ui-button
-                      @click="togglePopover()"
-                      v-on="inputEvents"
-                      empty
-                      colors="primary"
-                    >
+                    <ui-button @click="togglePopover()" empty colors="primary">
                       <CalendarSVG />
                     </ui-button>
                   </template>
@@ -144,7 +138,7 @@ export default {
         </div>
       </div>
       <template v-if="selectedDayScreenings.length > 1">
-        <OneMovieScreening
+        <ListOneMovie
           :screenings="selectedDayScreenings"
           :key="movie.id"
           :movie="movie"
@@ -160,6 +154,7 @@ export default {
 <style scoped lang="scss">
 .screenings {
   margin: 5.5rem 0;
+
   &__loading {
     text-align: center;
     margin-inline: auto;
@@ -217,10 +212,23 @@ export default {
 
   &__buttons button {
     font-size: 0.875rem;
+    padding: 19px 40px;
+    @include media-sm {
+      font-size: 14px;
+      padding: 9px 24px;
+    }
   }
 
   &__calendar {
+    display: inline-block;
     margin: auto 10px;
+    button {
+      padding: 12px 16px;
+      @include media-sm {
+        font-size: 14px;
+        padding: 2px 4px;
+      }
+    }
   }
 
   &__days .screenings__buttons:last-child {
@@ -241,18 +249,20 @@ export default {
     border: 0;
     background-color: #f7f7f7;
   }
-}
 
-@include media-md {
-  .screenings {
+  @include media-sm {
+    &__top {
+      margin-left: 24px;
+    }
+  }
+
+  @include media-md {
     &__headers h2 {
       font-size: 64px;
     }
-
     &__headers h1 {
       font-size: 64px;
     }
-
     &__filters {
       display: grid;
       grid-template-columns: 1fr 1fr;
