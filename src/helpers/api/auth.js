@@ -19,4 +19,6 @@ export const login = async (credentials) =>
     },
   });
 
+export const logout = async () => defaultClient.delete("/logout");
+
 export const getUser = async () => defaultClient.get("/user");

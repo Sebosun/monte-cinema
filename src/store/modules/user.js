@@ -3,6 +3,7 @@ import { removeAuthHeader, setAuthHeader } from "@/helpers/api/axiosClient";
 
 const TOKEN_STORAGE_KEY = "auth-token";
 const USER_STORAGE_KEY = "user";
+//TODO error handling + some notification system for error handling
 
 const user = {
   state: {
@@ -35,6 +36,12 @@ const user = {
       setAuthHeader(authHeader);
       commit("setUserData", { authToken, user: response.data });
     },
+    async logout({ commit, getters }) {
+      if (!getters.isLoggedIn) return;
+      await authApi.logout();
+      commit("resetUserData");
+      removeAuthHeader();
+    },
     async register({ commit, dispatch, getters }, credentials) {
       if (getters.isLoggedIn) await dispatch("logout");
       const response = await authApi.register(credentials);
@@ -42,11 +49,6 @@ const user = {
       const authToken = authHeader.slice("Bearer ".length);
       setAuthHeader(authHeader);
       commit("setUserData", { authToken, user: response.data });
-    },
-    async logout({ commit, getters }) {
-      if (!getters.isLoggedIn) return;
-      commit("resetUserData");
-      removeAuthHeader();
     },
     restoreUserData({ commit }) {
       try {

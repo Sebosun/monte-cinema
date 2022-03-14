@@ -1,4 +1,5 @@
 <script>
+/* TODO - Calendar*/
 import * as moviesApi from "@/helpers/api/movies";
 import Screenings from "./Screenings.vue";
 
@@ -40,18 +41,10 @@ export default {
   },
   computed: {
     selectedDayScreenings() {
-      return this.screenings.reduce((todaysScreenings, screening) => {
+      return this.screenings.filter((screening) => {
         const screeningDate = new Date(screening.datetime);
-        if (screeningDate.toDateString() === this.selectedDay.toDateString()) {
-          todaysScreenings.push({
-            hall: screening.hall,
-            id: screening.id,
-            movie: screening.movie,
-            datetime: screeningDate,
-          });
-        }
-        return todaysScreenings;
-      }, []);
+        return screeningDate.toDateString() === this.selectedDay.toDateString();
+      });
     },
     mockMovieAsArray() {
       const arr = [];
