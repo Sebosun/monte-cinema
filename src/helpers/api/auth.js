@@ -1,6 +1,5 @@
 import { defaultClient } from "./axiosClient";
 
-//TODO
 export const register = async (credentials) =>
   defaultClient.post("/register", {
     user: {

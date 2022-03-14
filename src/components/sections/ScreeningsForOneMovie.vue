@@ -8,6 +8,7 @@ import * as moviesApi from "@/helpers/api/movies";
 import CalendarSVG from "@/assets/calendar.svg";
 
 import dateToHumanReadableDay from "@/helpers/dateToHumanReadableDay";
+
 export default {
   data() {
     return {
@@ -119,7 +120,7 @@ export default {
                 v-for="(date, index) in switchScreeningsDays"
                 @click="selectedDay = date"
                 :key="index"
-                :empty="!(date.toDateString() === selectedDay.toDateString())"
+                :empty="date.toDateString() !== selectedDay.toDateString()"
                 colors="primary"
                 >{{ dayToHuman(date) }}</ui-button
               >

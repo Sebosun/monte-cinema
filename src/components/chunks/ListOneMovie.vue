@@ -16,6 +16,15 @@ export default {
       required: true,
     },
   },
+  computed: {
+    screeningsWithDatesObjects() {
+      return this.screenings.map((screening) => {
+        const screeningDate = new Date(screening.datetime);
+        screening.datetime = screeningDate;
+        return screening;
+      });
+    },
+  },
   methods: {
     movieLength(length) {
       const hours = Math.floor(length / 60);
@@ -32,7 +41,7 @@ export default {
 </script>
 
 <template>
-  <MovieCard class="list-one-movie">
+  <MovieCard v-if="screenings.length" class="list-one-movie">
     <div class="list-one-movie__wrapper">
       <div class="list-one-movie__fill">
         <img :src="movie.poster_url" :alt="movie.title" />
@@ -48,7 +57,7 @@ export default {
 
         <div class="list-one-movie__buttons--md-screen">
           <ui-button
-            v-for="screening in screenings"
+            v-for="screening in screeningsWithDatesObjects"
             :key="screening.id"
             empty
             colors="brand"
@@ -59,7 +68,7 @@ export default {
     </div>
     <div class="list-one-movie__buttons--sm-screen">
       <ui-button
-        v-for="screening in screenings"
+        v-for="screening in screeningsWithDatesObjects"
         :key="screening.id"
         empty
         colors="brand"

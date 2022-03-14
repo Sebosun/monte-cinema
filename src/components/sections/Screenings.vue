@@ -5,11 +5,12 @@ import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 import getGenres from "@/helpers/getGenres";
+import dateToHumanReadableDay from "@/helpers/dateToHumanReadableDay";
+
 export default {
   data() {
     return {
       selected: "",
-      selectedDay: new Date(),
     };
   },
   props: {
@@ -17,21 +18,22 @@ export default {
       type: Array,
       required: true,
     },
-    screenings: {
-      type: Array,
+    selectedDay: {
+      type: Date,
       required: true,
     },
   },
-  methods: {},
+  methods: {
+    dayToHuman(day) {
+      return dateToHumanReadableDay(day);
+    },
+  },
   computed: {
     loading() {
-      return this.$store.getters.getLoading;
+      return this.$store.getters.loading;
     },
     error() {
-      return this.$store.getters.getError;
-    },
-    allMovies() {
-      return this.$store.getters.getMovies;
+      return this.$store.getters.error;
     },
     genres() {
       return getGenres(this.movies);
@@ -43,26 +45,11 @@ export default {
       // making sure something is actually selected
       return this.selected == "" ? this.movies : filteredMovies;
     },
-    currentDayScreenings() {
-      const today = new Date().toDateString();
-      return this.screenings.reduce((todaysScreenings, screening) => {
-        const screeningDate = new Date(screening.datetime);
-        if (screeningDate.toDateString() === today) {
-          todaysScreenings.push({
-            hall: screening.hall,
-            id: screening.id,
-            movie: screening.movie,
-            datetime: screeningDate,
-          });
-        }
-        return todaysScreenings;
-      }, []);
-    },
-    switchScreeningsDays() {
-      const UNIX_ONE_DAY = 100000000; //one day
+    datesForDaySwitchingButtons() {
+      const UNIX_ONE_DAY = 24 * 3600 * 1000; //one day
       const today = new Date();
       const datesArr = [today];
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 4; i++) {
         let lastItem = datesArr[datesArr.length - 1];
         datesArr.push(new Date(lastItem.getTime() + UNIX_ONE_DAY));
       }
@@ -79,9 +66,11 @@ export default {
 <template>
   <section class="screenings">
     <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
+
     <div v-else-if="error.status" class="screenings__error">
       <ErrorMessage>{{ error.message }}</ErrorMessage>
     </div>
+
     <div v-else class="screenings__wrapper">
       <div class="screenings__top">
         <div class="screenings__headers font--header">
@@ -93,8 +82,8 @@ export default {
             <div class="font--label">Day</div>
             <div class="screenings__buttons">
               <ui-button
-                v-for="(date, index) in switchScreeningsDays"
-                @click="selectedDay = date"
+                v-for="(date, index) in datesForDaySwitchingButtons"
+                @click="$emit('changeDate', date)"
                 :key="index"
                 :empty="!(date.toDateString() === selectedDay.toDateString())"
                 colors="primary"
@@ -120,7 +109,7 @@ export default {
       </div>
       <ListOneMovie
         v-for="movie in filterMovies"
-        :screenings="currentDayScreenings"
+        :screenings="movie.screenings"
         :key="movie.id"
         :movie="movie"
       />
