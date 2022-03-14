@@ -14,9 +14,9 @@ export default new Vuex.Store({
     error: { status: false, message: "" },
   },
   getters: {
-    getMovies: (state) => state.movies,
-    getLoading: (state) => state.loading,
-    getError: (state) => state.error,
+    allMovies: (state) => state.movies,
+    loading: (state) => state.loading,
+    error: (state) => state.error,
   },
   mutations: {
     toggleLoading(state) {
@@ -33,7 +33,6 @@ export default new Vuex.Store({
     async getMovies({ commit }) {
       try {
         const movies = await moviesApi.getAllMovies();
-        console.log(movies);
         commit("setMovies", movies.data);
       } catch {
         commit("setError", {

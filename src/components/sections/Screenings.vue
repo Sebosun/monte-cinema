@@ -12,7 +12,6 @@ export default {
   data() {
     return {
       selectedGenre: "",
-      calendarDate: "",
       modelConfig: {
         type: "Date",
       },
@@ -33,12 +32,12 @@ export default {
     dayToHuman(day) {
       return dateToHumanReadableDay(day);
     },
-    someMethod(event) {
-      console.log(event);
+    emitDayUpdate(event) {
       this.$emit("changeDate", new Date(event));
     },
   },
   computed: {
+    // TODO Move loading/error states into parent component
     loading() {
       return this.$store.getters.loading;
     },
@@ -66,7 +65,11 @@ export default {
       return datesArr;
     },
     currentScreeningsText() {
-      return this.selectedDay.toDateString();
+      var options = { weekday: "long" };
+      const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
+        this.selectedDay
+      );
+      return `${dayStr} ${this.selectedDay.toLocaleDateString("en-UK")}`;
     },
   },
   components: {
@@ -105,15 +108,15 @@ export default {
                 colors="primary"
                 >{{ dayToHuman(date) }}</ui-button
               >
-            </div>
-            <div class="screenings__calendar">
-              <vc-date-picker :value="selectedDay" @input="someMethod">
-                <template v-slot="{ togglePopover }">
-                  <ui-button @click="togglePopover()" empty colors="primary">
-                    <CalendarSVG />
-                  </ui-button>
-                </template>
-              </vc-date-picker>
+              <div class="screenings__calendar">
+                <vc-date-picker :value="selectedDay" @input="emitDayUpdate">
+                  <template v-slot="{ togglePopover }">
+                    <ui-button @click="togglePopover()" empty colors="primary">
+                      <CalendarSVG />
+                    </ui-button>
+                  </template>
+                </vc-date-picker>
+              </div>
             </div>
           </div>
 
@@ -144,7 +147,7 @@ export default {
 
 <style scoped lang="scss">
 .screenings {
-  margin-top: 5.5rem;
+  margin: 5.5rem 0;
 
   &__loading {
     text-align: center;
@@ -203,9 +206,35 @@ export default {
     overflow: auto;
   }
 
+  &__buttons .button + .button {
+    margin-left: 0.625rem;
+  }
+
+  &__buttons {
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    display: flex;
+    overflow: auto;
+  }
   &__buttons button {
     font-size: 0.875rem;
-    padding: 0.5625rem 1.5rem;
+    padding: 19px 40px;
+    @include media-sm {
+      font-size: 14px;
+      padding: 9px 24px;
+    }
+  }
+
+  &__calendar {
+    display: inline-block;
+    margin: auto 10px;
+    button {
+      padding: 12px 16px;
+      @include media-sm {
+        font-size: 14px;
+        padding: 2px 4px;
+      }
+    }
   }
 
   &__days .screenings__buttons:last-child {
@@ -243,17 +272,16 @@ export default {
       grid-template-columns: 1fr 1fr;
     }
 
-    /* // select children starting from 5 + */
-    /* &__buttons .button:nth-child(n + 5) { */
-    /*   display: none; */
-    /* } */
-
     &__buttons button {
-      padding: 19px 40px;
       font-size: 18px;
     }
 
+    &__genres {
+      justify-content: space-around;
+    }
+
     &__genres select {
+      margin: 0;
       width: 100%;
     }
 

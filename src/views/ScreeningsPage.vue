@@ -12,7 +12,7 @@ export default {
     <MainHeader />
     <BreadcrumbNavigation>Screenings</BreadcrumbNavigation>
     <main>
-      <all-screenings-logic></all-screenings-logic>
+      <AllScreeningsLogic />
     </main>
   </div>
 </template>

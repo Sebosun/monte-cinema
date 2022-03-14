@@ -15,13 +15,13 @@ export default {
   },
   computed: {
     loading() {
-      return this.$store.getters.getLoading;
+      return this.$store.getters.loading;
     },
     error() {
-      return this.$store.getters.getError;
+      return this.$store.getters.error;
     },
     movies() {
-      return this.$store.getters.getMovies;
+      return this.$store.getters.allMovies;
     },
     genres() {
       return getGenres(this.movies);
@@ -40,7 +40,6 @@ export default {
     },
   },
   components: { MainHeader, MovieItem, LoadingSpinner, BreadcrumbNavigation },
-
 };
 </script>
 

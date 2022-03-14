@@ -15,7 +15,6 @@ export default {
   methods: {
     async submitForm() {
       this.touchAll();
-      console.log(this.email, this.password);
       if (this.isFormValid) {
         await this.$store.dispatch("login", {
           email: this.email,
