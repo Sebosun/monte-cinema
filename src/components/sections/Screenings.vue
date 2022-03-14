@@ -26,8 +26,11 @@ export default {
       type: Date,
       required: true,
     },
+    empty: {
+      type: Boolean,
+      default: true,
+    },
   },
-
   methods: {
     dayToHuman(day) {
       return dateToHumanReadableDay(day);
@@ -141,6 +144,9 @@ export default {
         :key="movie.id"
         :movie="movie"
       />
+      <template v-if="empty">
+        <error-message>No screenings found for this day </error-message>
+      </template>
     </div>
   </section>
 </template>

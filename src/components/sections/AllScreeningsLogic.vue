@@ -23,6 +23,9 @@ export default {
         return { ...movie, screenings: screeningsForThisMovie };
       });
     },
+    isTheDayEmpty() {
+      return !(this.screenings > 0);
+    },
   },
   methods: {
     async fetchScreenings(day = this.selectedDay) {
@@ -48,6 +51,7 @@ export default {
     @changeDate="changeDate"
     :movies="moviesArrayWithScreeningDates"
     :selectedDay="selectedDay"
+    :empty="isTheDayEmpty"
   />
 </template>
 
