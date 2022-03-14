@@ -30,6 +30,7 @@ export default {
       this.screenings = response.data;
     },
     changeDate(event) {
+      console.log(event);
       this.selectedDay = event;
     },
   },

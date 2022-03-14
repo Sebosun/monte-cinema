@@ -6,11 +6,16 @@ import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 import getGenres from "@/helpers/getGenres";
 import dateToHumanReadableDay from "@/helpers/dateToHumanReadableDay";
+import CalendarSVG from "@/assets/calendar.svg";
 
 export default {
   data() {
     return {
-      selected: "",
+      selectedGenre: "",
+      calendarDate: "",
+      modelConfig: {
+        type: "Date",
+      },
     };
   },
   props: {
@@ -23,9 +28,14 @@ export default {
       required: true,
     },
   },
+
   methods: {
     dayToHuman(day) {
       return dateToHumanReadableDay(day);
+    },
+    someMethod(event) {
+      console.log(event);
+      this.$emit("changeDate", new Date(event));
     },
   },
   computed: {
@@ -40,10 +50,10 @@ export default {
     },
     filterMovies() {
       const filteredMovies = this.movies.filter(
-        (item) => item.genre.name === this.selected
+        (item) => item.genre.name === this.selectedGenre
       );
       // making sure something is actually selected
-      return this.selected == "" ? this.movies : filteredMovies;
+      return this.selectedGenre == "" ? this.movies : filteredMovies;
     },
     datesForDaySwitchingButtons() {
       const UNIX_ONE_DAY = 24 * 3600 * 1000; //one day
@@ -59,7 +69,13 @@ export default {
       return this.selectedDay.toDateString();
     },
   },
-  components: { UiButton, ListOneMovie, ErrorMessage, LoadingSpinner },
+  components: {
+    UiButton,
+    ListOneMovie,
+    ErrorMessage,
+    LoadingSpinner,
+    CalendarSVG,
+  },
 };
 </script>
 
@@ -90,11 +106,20 @@ export default {
                 >{{ dayToHuman(date) }}</ui-button
               >
             </div>
+            <div class="screenings__calendar">
+              <vc-date-picker :value="selectedDay" @input="someMethod">
+                <template v-slot="{ togglePopover }">
+                  <ui-button @click="togglePopover()" empty colors="primary">
+                    <CalendarSVG />
+                  </ui-button>
+                </template>
+              </vc-date-picker>
+            </div>
           </div>
 
           <div v-if="movies.length > 1" class="screenings__genres">
             <label for="genres" class="font--label">Movie</label>
-            <select name="genres" v-model="selected">
+            <select name="genres" v-model="selectedGenre">
               <option selected value="">All movies</option>
               <option
                 v-for="genre in genres"

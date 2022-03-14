@@ -16,7 +16,6 @@ export default {
       selectedDay: new Date(),
       screenings: [],
       loading: true,
-      calendarVisible: false,
       error: {
         status: false,
         message: "Something went wrong. Please try again",
