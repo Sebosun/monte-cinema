@@ -1,5 +1,4 @@
 <script>
-/* TODO - Calendar*/
 import * as moviesApi from "@/helpers/api/movies";
 import Screenings from "./Screenings.vue";
 
@@ -17,17 +16,8 @@ export default {
     },
   },
   async created() {
-    try {
-      const seances = await this.getSingleSeance(this.movie.id);
-      this.screenings = seances;
-      this.loading = false;
-    } catch {
-      this.loading = false;
-      this.error = {
-        status: true,
-        message: "Something went wrong. Please try again",
-      };
-    }
+    const seances = await this.getSingleSeance(this.movie.id);
+    this.screenings = seances;
   },
   methods: {
     async getSingleSeance(id) {
@@ -35,7 +25,6 @@ export default {
       return response.data;
     },
     changeDate(event) {
-      console.log(event);
       this.selectedDay = event;
     },
   },
@@ -46,10 +35,21 @@ export default {
         return screeningDate.toDateString() === this.selectedDay.toDateString();
       });
     },
+    moviesArrayWithScreeningDates() {
+      return this.allMovies.map((movie) => {
+        const screeningsForThisMovie = this.screenings.filter(
+          (screening) => screening.movie === movie.id
+        );
+        return { ...movie, screenings: screeningsForThisMovie };
+      });
+    },
     mockMovieAsArray() {
       const arr = [];
       arr.push({ ...this.movie, screenings: this.selectedDayScreenings });
       return arr;
+    },
+    isTheDayEmpty() {
+      return this.screenings.length == 0;
     },
   },
   components: {
@@ -62,7 +62,7 @@ export default {
   <Screenings
     :selectedDay="selectedDay"
     :movies="mockMovieAsArray"
-    :empty="selectedDayScreenings.length == 0"
+    :empty="isTheDayEmpty"
     @changeDate="changeDate"
   />
 </template>

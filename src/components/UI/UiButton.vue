@@ -1,14 +1,5 @@
-<template>
-  <button
-    @click="$emit('click')"
-    :disabled="disabled"
-    :class="[buttonUtililityClasses, buttonColors]"
-  >
-    <slot />
-  </button>
-</template>
-
 <script>
+//TODO make accesibility better (ring)
 export default {
   props: {
     colors: {
@@ -64,6 +55,16 @@ export default {
   },
 };
 </script>
+
+<template>
+  <button
+    @click="$emit('click')"
+    :disabled="disabled"
+    :class="[buttonUtililityClasses, buttonColors]"
+  >
+    <slot />
+  </button>
+</template>
 
 <style lang="scss" scoped>
 .button {

@@ -11,22 +11,6 @@ export default {
   async mounted() {
     await this.fetchScreenings();
   },
-  computed: {
-    allMovies() {
-      return this.$store.getters.allMovies;
-    },
-    moviesArrayWithScreeningDates() {
-      return this.allMovies.map((movie) => {
-        const screeningsForThisMovie = this.screenings.filter(
-          (screening) => screening.movie === movie.id
-        );
-        return { ...movie, screenings: screeningsForThisMovie };
-      });
-    },
-    isTheDayEmpty() {
-      return !(this.screenings > 0);
-    },
-  },
   methods: {
     async fetchScreenings(day = this.selectedDay) {
       const response = await moviesApi.getSeancesByDate(day);
@@ -35,6 +19,22 @@ export default {
     changeDate(event) {
       console.log(event);
       this.selectedDay = event;
+    },
+  },
+  computed: {
+    movies() {
+      return this.$store.getters.allMovies;
+    },
+    moviesArrayWithScreeningDates() {
+      return this.movies.map((movie) => {
+        const screeningsForThisMovie = this.screenings.filter(
+          (screening) => screening.movie === movie.id
+        );
+        return { ...movie, screenings: screeningsForThisMovie };
+      });
+    },
+    isTheDayEmpty() {
+      return this.screenings.length == 0;
     },
   },
   watch: {
