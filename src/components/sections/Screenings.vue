@@ -30,6 +30,14 @@ export default {
       type: Boolean,
       default: true,
     },
+    loading: {
+      type: Boolean,
+      default: true,
+    },
+    error: {
+      type: Object,
+      required: true,
+    },
   },
   methods: {
     dayToHuman(day) {
@@ -40,13 +48,6 @@ export default {
     },
   },
   computed: {
-    // TODO Move loading/error states into parent component
-    loading() {
-      return this.$store.getters.loading;
-    },
-    error() {
-      return this.$store.getters.error;
-    },
     genres() {
       return getGenres(this.movies);
     },

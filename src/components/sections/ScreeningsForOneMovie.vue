@@ -7,6 +7,8 @@ export default {
     return {
       screenings: [],
       selectedDay: new Date(),
+      loading: true,
+      error: { status: false, message: "Something went wrong" },
     };
   },
   props: {
@@ -16,13 +18,19 @@ export default {
     },
   },
   async created() {
-    const seances = await this.getSingleSeance(this.movie.id);
-    this.screenings = seances;
+    this.getSingleScreening(this.movie.id);
   },
   methods: {
-    async getSingleSeance(id) {
-      const response = await moviesApi.getSeancesByMovieId(id);
-      return response.data;
+    async getSingleScreening(id) {
+      this.loading = true;
+      try {
+        const response = await moviesApi.getSeancesByMovieId(id);
+        this.screenings = response.data;
+      } catch {
+        this.error = { status: true, message: "Failed to fetch movies" };
+      } finally {
+        this.loading = false;
+      }
     },
     changeDate(event) {
       this.selectedDay = event;
@@ -63,6 +71,8 @@ export default {
     :selectedDay="selectedDay"
     :movies="mockMovieAsArray"
     :empty="isTheDayEmpty"
+    :loading="loading"
+    :error="error"
     @changeDate="changeDate"
   />
 </template>

@@ -22,6 +22,12 @@ export default {
     },
   },
   computed: {
+    loading() {
+      return this.$store.getters.loading;
+    },
+    error() {
+      return this.$store.getters.error;
+    },
     movies() {
       return this.$store.getters.allMovies;
     },
@@ -51,6 +57,8 @@ export default {
     @changeDate="changeDate"
     :movies="moviesArrayWithScreeningDates"
     :selectedDay="selectedDay"
+    :loading="loading"
+    :error="error"
     :empty="isTheDayEmpty"
   />
 </template>
