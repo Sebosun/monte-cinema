@@ -20,8 +20,8 @@ export default {
     screeningsWithDatesObjects() {
       return this.screenings.map((screening) => {
         const screeningDate = new Date(screening.datetime);
-        screening.datetime = screeningDate;
-        return screening;
+
+        return { ...screening, datetime: screeningDate };
       });
     },
   },
@@ -41,7 +41,7 @@ export default {
 </script>
 
 <template>
-  <MovieCard v-if="screenings.length" class="list-one-movie">
+  <MovieCard v-if="screenings.length > 1" class="list-one-movie">
     <div class="list-one-movie__wrapper">
       <div class="list-one-movie__fill">
         <img :src="movie.poster_url" :alt="movie.title" />
