@@ -18,7 +18,7 @@ export default {
       this.touchAll();
       if (this.isFormValid) {
         /* TODO error handling */
-        await this.$store.dispatch("login", {
+        await this.$store.dispatch("user/login", {
           email: this.email,
           password: this.password,
         });
@@ -42,6 +42,9 @@ export default {
     isFormValid() {
       return !this.emailError && !this.passwordError;
     },
+  },
+  metaInfo: {
+    title: "Screenings",
   },
   components: { UiButton, PasswordInputShowHide, AuthHeader, FormWrapper },
 };

@@ -4,12 +4,12 @@ export default {
   components: { UiButton },
   methods: {
     logout() {
-      this.$store.dispatch("logout");
+      this.$store.dispatch("user/logout");
     },
   },
   computed: {
     isLoggedIn() {
-      return this.$store.getters.isLoggedIn;
+      return this.$store.getters["user/isLoggedIn"];
     },
   },
 };

@@ -23,13 +23,16 @@ export default {
         date_of_birth: event.birthday,
       };
 
-      this.$store.dispatch("register", userCreds);
+      this.$store.dispatch("user/register", userCreds);
     },
   },
   computed: {
     step() {
       return this.isValidEmailPassword && this.nextStep ? 1 : 0;
     },
+  },
+  metaInfo: {
+    title: "Registration",
   },
   components: { AuthHeader, EmailPasswordFormValidated, UserInformationForm },
 };
