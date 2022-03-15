@@ -24,7 +24,7 @@ export default {
       <h1 class="font--header">{{ movie.title }}</h1>
       <div class="movie-details__meta--misc">
         <Tags>{{ movie.genre.name }}</Tags>
-        <div class="font--bold">1987</div>
+        <div class="font--bold">{{ movie.release_date.split("-")[0] }}</div>
         <div class="font--bold">{{ movieLength }}</div>
         <div class="font--bold">R</div>
       </div>
