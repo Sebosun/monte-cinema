@@ -78,6 +78,7 @@ export default {
   font-weight: 500;
   letter-spacing: 0.015em;
   border-width: 2px;
+  transition: color 0.2s ease-in-out, background-color 0.3s ease-in-out;
 
   &:hover {
     cursor: pointer;
@@ -123,16 +124,31 @@ export default {
 
   &--brand-font {
     color: var(--color-brand);
+    &:hover {
+      background-color: var(--color-brand);
+      color: var(--color-background);
+    }
   }
 
   &--primary-font {
     color: var(--color-primary);
+    &:hover {
+      background-color: var(--color-primary);
+      color: var(--color-background);
+    }
+    &:hover svg {
+      fill: var(--color-background);
+    }
   }
 
   &__brand {
     color: var(--color-background);
     background: var(--color-brand);
     border-color: var(--color-brand);
+    &:hover {
+      background-color: inherit;
+      color: var(--color-brand);
+    }
   }
 
   &__primary {
