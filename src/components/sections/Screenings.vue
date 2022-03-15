@@ -1,5 +1,4 @@
 <script>
-/* TODO - Calendar*/
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";

@@ -101,9 +101,11 @@ export default {
           <ui-button :disabled="!isFormValid" colors="brand"
             >Next Step</ui-button
           >
-          <ui-button empty borderless colors="brand">
-            <router-link :to="{ name: 'Login' }">Log in instead</router-link>
-          </ui-button>
+          <router-link :to="{ name: 'Login' }">
+            <ui-button empty borderless colors="brand">
+              Log in instead
+            </ui-button>
+          </router-link>
         </div>
       </form>
     </FormWrapper>
@@ -116,15 +118,15 @@ export default {
 </template>
 
 <style lang="scss">
-.positive {
-  color: #27ae60;
-}
-
-.negative {
-  color: var(--color-error);
-}
-
 .validated-form {
+  .positive {
+    color: #27ae60;
+  }
+
+  .negative {
+    color: var(--color-error);
+  }
+
   &__error {
     &--input input {
       border: 2px solid red;
@@ -145,20 +147,10 @@ export default {
     color: #343541;
   }
 
-  // TODO clean this
   &__forgot a {
-    text-align: center;
-
-    font-size: 16px;
-    line-height: 170%;
-
-    letter-spacing: 0.04em;
-    color: #343541;
-  }
-
-  &__forgot a {
-    font-weight: bold;
     color: var(--color-brand);
+    text-align: center;
+    font-weight: bold;
   }
 
   @include media-md {

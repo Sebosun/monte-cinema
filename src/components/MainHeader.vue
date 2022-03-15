@@ -25,7 +25,6 @@ export default {
   },
   computed: {},
 };
-//TODO split into separate components at some point
 </script>
 <template>
   <header class="main-header">

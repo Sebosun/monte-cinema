@@ -59,6 +59,11 @@
     padding: 0.95em 2em;
   }
 
+  .action-buttons a {
+    width: 100%;
+    margin: auto 0;
+  }
+
   @include media-sm {
     margin: 48px 24px 12px;
   }
