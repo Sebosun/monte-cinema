@@ -201,6 +201,18 @@ export default {
     flex-direction: column;
   }
 
+  &__buttons {
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    display: flex;
+    overflow: auto;
+  }
+
+  &__buttons button {
+    font-size: 0.875rem;
+    padding: 19px 40px;
+  }
+
   &__buttons .button + .button {
     margin-left: 0.625rem;
   }
@@ -216,31 +228,13 @@ export default {
     margin-left: 0.625rem;
   }
 
-  &__buttons {
-    font-size: 1rem;
-    padding: 0.75rem 0;
-    display: flex;
-    overflow: auto;
-  }
-  &__buttons button {
-    font-size: 0.875rem;
-    padding: 19px 40px;
-    @include media-sm {
-      font-size: 14px;
-      padding: 9px 24px;
-    }
-  }
-
   &__calendar {
     display: inline-block;
     margin: auto 10px;
-    button {
-      padding: 12px 16px;
-      @include media-sm {
-        font-size: 14px;
-        padding: 2px 4px;
-      }
-    }
+  }
+
+  &__calendar button {
+    padding: 12px 16px;
   }
 
   &__days .screenings__buttons:last-child {
@@ -261,15 +255,25 @@ export default {
     border: 0;
     background-color: #f7f7f7;
   }
-}
 
-@include media-md {
-  .screenings {
-    &__headers h2 {
+  @include media-sm {
+    &__calendar button {
+      font-size: 14px;
+      padding: 2px 4px;
+    }
+
+    &__buttons button {
+      font-size: 14px;
+      padding: 9px 24px;
+    }
+  }
+
+  @include media-md {
+    &__headers h1 {
       font-size: 64px;
     }
 
-    &__headers h1 {
+    &__headers h2 {
       font-size: 64px;
     }
 
@@ -289,15 +293,12 @@ export default {
     &__genres select {
       margin: 0;
       width: 100%;
+      margin: 12px 0;
     }
 
     &__genres .font--label {
       font-size: 14px;
       justify-self: flex-start;
-    }
-
-    &__genres select {
-      margin: 12px 0;
     }
   }
 }
