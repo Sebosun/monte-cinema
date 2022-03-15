@@ -1,14 +1,16 @@
 import Vue from "vue";
-import VCalendar from "v-calendar";
 import router from "@/router";
-
+import store from "./store";
 import App from "./App.vue";
 
 import VueRouter from "vue-router";
-import store from "./store";
+import VCalendar from "v-calendar";
+
+import Meta from "vue-meta";
 
 Vue.config.productionTip = false;
 
+Vue.use(Meta);
 Vue.use(VueRouter);
 Vue.use(VCalendar, {
   componentPrefix: "vc",

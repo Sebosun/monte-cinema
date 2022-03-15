@@ -166,7 +166,7 @@ export default {
     border: 0.55em solid currentColor;
     border-radius: 5.95em;
   }
-  // todo add some real redirection at some point lol
+
   &__privacy span {
     text-decoration: underline;
   }

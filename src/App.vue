@@ -4,7 +4,10 @@ export default {
     this.$store.dispatch("getMovies");
     this.$store.dispatch("restoreUserData");
   },
-  mounted() {},
+  metaInfo: {
+    title: "",
+    titleTemplate: "%s | Monte Cinema",
+  },
 };
 </script>
 

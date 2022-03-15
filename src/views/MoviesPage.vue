@@ -39,6 +39,10 @@ export default {
         : filteredMovies;
     },
   },
+  metaInfo: {
+    title: "All Movies",
+    titleTemplate: "%s | Monte Cinema",
+  },
   components: { MainHeader, MovieItem, LoadingSpinner, BreadcrumbNavigation },
 };
 </script>

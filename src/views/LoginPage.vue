@@ -6,6 +6,7 @@ import FormWrapper from "@/components/UI/FormWrapper.vue";
 export default {
   data() {
     return {
+      /* TODO: remove this at some point */
       email: "admin@monterail.com",
       password: "monterail1",
       isEmailTouched: false,
@@ -16,6 +17,7 @@ export default {
     async submitForm() {
       this.touchAll();
       if (this.isFormValid) {
+        /* TODO error handling */
         await this.$store.dispatch("login", {
           email: this.email,
           password: this.password,
