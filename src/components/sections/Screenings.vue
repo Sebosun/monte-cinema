@@ -153,7 +153,8 @@ export default {
 
 <style scoped lang="scss">
 .screenings {
-  margin: 5.5rem 0;
+  margin-top: 5.5rem;
+  margin-bottom: 10rem;
 
   &__loading {
     text-align: center;
@@ -162,7 +163,6 @@ export default {
   }
 
   &__headers {
-    margin-inline: 1.5rem;
     margin-bottom: 2rem;
   }
 
@@ -188,7 +188,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
-    margin-left: 1.5rem;
     margin-bottom: 6.125rem;
   }
 
@@ -257,6 +256,15 @@ export default {
   }
 
   @include media-sm {
+    &__headers {
+      margin-inline: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    &__filters {
+      margin-left: 1.5rem;
+    }
+
     &__calendar button {
       font-size: 14px;
       padding: 2px 4px;

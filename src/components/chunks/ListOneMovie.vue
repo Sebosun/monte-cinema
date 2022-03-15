@@ -41,7 +41,7 @@ export default {
 </script>
 
 <template>
-  <MovieCard class="list-one-movie">
+  <MovieCard v-if="screenings.length >= 1" class="list-one-movie">
     <div class="list-one-movie__wrapper">
       <div class="list-one-movie__fill">
         <img :src="movie.poster_url" :alt="movie.title" />
@@ -81,7 +81,7 @@ export default {
 <style scoped lang="scss">
 .list-one-movie {
   &__wrapper {
-    margin-bottom: 1rem;
+    margin: 1rem 0;
   }
 
   &__fill {
@@ -112,9 +112,9 @@ export default {
     margin: 0;
     padding-bottom: 0.5rem;
 
-    white-space: nowrap;
     display: flex;
     overflow: auto;
+    white-space: nowrap;
   }
 
   &__info {
@@ -128,7 +128,7 @@ export default {
     width: 100%;
     padding: 0.625rem 0;
     max-width: min-content;
-    margin: 0;
+    margin-top: -20px;
     display: flex;
     overflow-x: auto;
   }
@@ -142,7 +142,7 @@ export default {
   }
 
   &__buttons--sm-screen button + button {
-    margin-left: 0.5rem;
+    margin-inline: 0.5rem;
   }
 
   &__info &__info--len {
@@ -187,6 +187,7 @@ export default {
       gap: 8px;
       flex-direction: row;
     }
+
     &__buttons--md-screen button {
       padding: 12px 32px;
     }
