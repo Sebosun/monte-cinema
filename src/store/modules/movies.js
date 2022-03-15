@@ -4,6 +4,7 @@ const movies = {
   namespaced: true,
   state: {
     movies: [],
+    seances: [],
     loading: true,
     error: { status: false, message: "" },
   },
@@ -11,10 +12,11 @@ const movies = {
     allMovies: (state) => state.movies,
     loading: (state) => state.loading,
     error: (state) => state.error,
+    seances: (state) => state.seances,
   },
   mutations: {
-    toggleLoading(state) {
-      state.loading = !state.loading;
+    toggleLoading(state, payload) {
+      state.loading = payload;
     },
     setError(state, payload) {
       state.error = { status: payload.status, message: payload.message };
@@ -22,10 +24,14 @@ const movies = {
     setMovies(state, payload) {
       state.movies = payload;
     },
+    setSeances(state, payload) {
+      state.seances = payload;
+    },
   },
   actions: {
     async getMovies({ commit }) {
       try {
+        commit("toggleLoading", true);
         const movies = await moviesApi.getAllMovies();
         commit("setMovies", movies.data);
       } catch {
@@ -34,7 +40,21 @@ const movies = {
           message: "Request failed. Please try again later.",
         });
       } finally {
-        commit("toggleLoading");
+        commit("toggleLoading", false);
+      }
+    },
+    async getSeances({ commit }, date = new Date()) {
+      try {
+        commit("toggleLoading", true);
+        const seances = await moviesApi.getSeancesByDate(date);
+        commit("setSeances", seances.data);
+      } catch {
+        commit("setError", {
+          status: true,
+          message: "Request failed. Please try again later.",
+        });
+      } finally {
+        commit("toggleLoading", false);
       }
     },
   },

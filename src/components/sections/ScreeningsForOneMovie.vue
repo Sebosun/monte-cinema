@@ -51,13 +51,13 @@ export default {
         return { ...movie, screenings: screeningsForThisMovie };
       });
     },
-    mockMovieAsArray() {
+    castMovieAsArray() {
       const arr = [];
       arr.push({ ...this.movie, screenings: this.selectedDayScreenings });
       return arr;
     },
     isTheDayEmpty() {
-      return this.screenings.length == 0;
+      return this.selectedDayScreenings.length == 0;
     },
   },
   components: {
@@ -69,7 +69,7 @@ export default {
 <template>
   <Screenings
     :selectedDay="selectedDay"
-    :movies="mockMovieAsArray"
+    :movies="castMovieAsArray"
     :empty="isTheDayEmpty"
     :loading="loading"
     :error="error"

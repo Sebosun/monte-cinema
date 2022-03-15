@@ -87,13 +87,7 @@ export default {
 
 <template>
   <section class="screenings">
-    <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
-
-    <div v-else-if="error.status" class="screenings__error">
-      <ErrorMessage>{{ error.message }}</ErrorMessage>
-    </div>
-
-    <div v-else class="screenings__wrapper">
+    <div class="screenings__wrapper">
       <div class="screenings__top">
         <div class="screenings__headers font--header">
           <h1>Screenings:</h1>
@@ -138,14 +132,20 @@ export default {
           </div>
         </div>
       </div>
-      <ListOneMovie
-        v-for="movie in filterMovies"
-        :screenings="movie.screenings"
-        :key="movie.id"
-        :movie="movie"
-      />
-      <template v-if="empty">
+      <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
+      <div v-else-if="error.status" class="screenings__error">
+        <ErrorMessage>{{ error.message }}</ErrorMessage>
+      </div>
+      <template v-else-if="empty">
         <error-message>No screenings found for this day </error-message>
+      </template>
+      <template v-else>
+        <ListOneMovie
+          v-for="movie in filterMovies"
+          :screenings="movie.screenings"
+          :key="movie.id"
+          :movie="movie"
+        />
       </template>
     </div>
   </section>

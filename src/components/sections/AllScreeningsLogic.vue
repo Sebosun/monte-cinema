@@ -1,10 +1,8 @@
 <script>
 import Screenings from "@/components/sections/Screenings.vue";
-import * as moviesApi from "@/helpers/api/movies";
 export default {
   data() {
     return {
-      screenings: [],
       selectedDay: new Date(),
     };
   },
@@ -13,8 +11,7 @@ export default {
   },
   methods: {
     async fetchScreenings(day = this.selectedDay) {
-      const response = await moviesApi.getSeancesByDate(day);
-      this.screenings = response.data;
+      this.$store.dispatch("movies/getSeances", day);
     },
     changeDate(event) {
       console.log(event);
@@ -30,6 +27,9 @@ export default {
     },
     movies() {
       return this.$store.getters["movies/allMovies"];
+    },
+    screenings() {
+      return this.$store.getters["movies/seances"];
     },
     moviesArrayWithScreeningDates() {
       return this.movies.map((movie) => {

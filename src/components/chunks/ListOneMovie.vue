@@ -41,7 +41,7 @@ export default {
 </script>
 
 <template>
-  <MovieCard v-if="screenings.length > 1" class="list-one-movie">
+  <MovieCard class="list-one-movie">
     <div class="list-one-movie__wrapper">
       <div class="list-one-movie__fill">
         <img :src="movie.poster_url" :alt="movie.title" />

@@ -9,9 +9,8 @@ export const getSeancesByMovieId = async (id) =>
 
 // expects a date object
 export const getSeancesByDate = async (date) => {
-  const response = await defaultClient.get(
-    `/seances?date=${formatDateForFetch(date)}`
-  );
+  const dateFormatted = formatDateForFetch(date);
+  const response = await defaultClient.get(`/seances?date=${dateFormatted}`);
   return response;
 };
 
