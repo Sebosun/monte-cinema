@@ -1,5 +1,4 @@
 <script>
-// TODO calendar but thats at some other point
 import MovieCard from "@/components/UI/MovieCard.vue";
 import Tags from "@/components/UI/Tags.vue";
 import UiButton from "@/components/UI/UiButton.vue";
@@ -32,9 +31,14 @@ export default {
       return `${hours}h ${minutes}`;
     },
     getScreeningHour(date) {
-      const hours = date.getHours();
-      const minutes = `0${date.getMinutes()}`.slice(-2);
-      return `${hours}:${minutes}`;
+      const options = {
+        hour: "numeric",
+        minute: "numeric",
+      };
+      const formattedDate = new Intl.DateTimeFormat("pl-PL", options).format(
+        date
+      );
+      return formattedDate;
     },
   },
 };
