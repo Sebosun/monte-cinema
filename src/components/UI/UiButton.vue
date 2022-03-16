@@ -146,8 +146,8 @@ export default {
     background: var(--color-brand);
     border-color: var(--color-brand);
     &:hover {
-      background-color: inherit;
       color: var(--color-brand);
+      background-color: var(--color-background);
     }
   }
 

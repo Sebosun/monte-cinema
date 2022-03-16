@@ -21,12 +21,12 @@ export default {
       <UiButton @click="logout" medium colors="brand"> Logout </UiButton>
     </template>
     <template v-else>
-      <UiButton medium borderless empty colors="brand">
-        <router-link :to="{ name: 'Register' }"> Register </router-link>
-      </UiButton>
-      <UiButton medium colors="brand">
-        <router-link :to="{ name: 'Login' }">Login</router-link>
-      </UiButton>
+      <router-link :to="{ name: 'Register' }">
+        <UiButton medium borderless empty colors="brand"> Register </UiButton>
+      </router-link>
+      <router-link :to="{ name: 'Login' }">
+        <UiButton medium colors="brand"> Login </UiButton>
+      </router-link>
     </template>
   </div>
 </template>
