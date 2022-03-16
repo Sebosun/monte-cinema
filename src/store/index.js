@@ -5,6 +5,7 @@ import movies from "@/store/modules/movies";
 
 Vue.use(Vuex);
 
+//TODO namespaces
 export default new Vuex.Store({
   modules: { user, movies },
 });

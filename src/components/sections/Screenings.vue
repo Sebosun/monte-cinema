@@ -74,6 +74,30 @@ export default {
       );
       return `${dayStr} ${this.selectedDay.toLocaleDateString("en-UK")}`;
     },
+    datesForDaySwitchingButtons() {
+      const UNIX_ONE_DAY = 24 * 3600 * 1000; //one day
+      const today = new Date();
+      const datesArr = [today];
+      for (let i = 0; i < 4; i++) {
+        let lastItem = datesArr[datesArr.length - 1];
+        datesArr.push(new Date(lastItem.getTime() + UNIX_ONE_DAY));
+      }
+      return datesArr;
+    },
+    currentScreeningsText() {
+      var options = { weekday: "long" };
+      const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
+        this.selectedDay
+      );
+      return `${dayStr} ${this.selectedDay.toLocaleDateString("en-UK")}`;
+    },
+  },
+  components: {
+    UiButton,
+    ListOneMovie,
+    ErrorMessage,
+    LoadingSpinner,
+    CalendarSVG,
   },
   components: {
     UiButton,
@@ -234,6 +258,7 @@ export default {
 
   &__calendar button {
     padding: 12px 16px;
+
   }
 
   &__days .screenings__buttons:last-child {

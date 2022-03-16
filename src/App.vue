@@ -8,6 +8,7 @@ export default {
     title: "",
     titleTemplate: "%s | Monte Cinema",
   },
+  mounted() {},
 };
 </script>
 
