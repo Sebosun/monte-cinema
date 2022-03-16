@@ -58,7 +58,7 @@ export default {
 
 <template>
   <button
-    @click="$emit('click')"
+    @click="$emit('click', $event)"
     :disabled="disabled"
     :class="[buttonUtililityClasses, buttonColors]"
   >
