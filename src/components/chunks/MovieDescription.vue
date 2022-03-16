@@ -85,6 +85,7 @@ p {
     height: 100%;
     position: relative;
   }
+
   &__image img {
     position: absolute;
     width: 100%;
