@@ -34,7 +34,7 @@ const movies = {
         commit("toggleLoading", true);
         const movies = await moviesApi.getAllMovies();
         commit("setMovies", movies.data);
-      } catch {
+      } catch (error) {
         commit("setError", {
           status: true,
           message: "Request failed. Please try again later.",
@@ -46,9 +46,9 @@ const movies = {
     async getSeances({ commit }, date = new Date()) {
       try {
         commit("toggleLoading", true);
-        const seances = await moviesApi.getSeancesByDate(date);
+        const seances = await moviesApi.getSeances({ date });
         commit("setSeances", seances.data);
-      } catch {
+      } catch (error) {
         commit("setError", {
           status: true,
           message: "Request failed. Please try again later.",

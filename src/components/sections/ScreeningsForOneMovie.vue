@@ -24,9 +24,10 @@ export default {
     async getSingleScreening(id) {
       this.loading = true;
       try {
-        const response = await moviesApi.getSeancesByMovieId(id);
+        const response = await moviesApi.getSeances({ id });
         this.screenings = response.data;
-      } catch {
+      } catch (error) {
+        console.error(error);
         this.error = { status: true, message: "Failed to fetch movies" };
       } finally {
         this.loading = false;

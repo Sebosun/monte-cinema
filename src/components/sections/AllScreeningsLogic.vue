@@ -10,8 +10,8 @@ export default {
     await this.fetchScreenings();
   },
   methods: {
-    async fetchScreenings(day = this.selectedDay) {
-      this.$store.dispatch("movies/getSeances", day);
+    async fetchScreenings(date = this.selectedDay) {
+      this.$store.dispatch("movies/getSeances", date);
     },
     changeDate(event) {
       console.log(event);
