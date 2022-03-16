@@ -23,8 +23,6 @@ export const getSeancesByDateID = async (date, id) => {
   return response;
 };
 
-export const getUser = async () => defaultClient.get("/user");
-
 function formatDateForFetch(date) {
   const dateIntl = new Intl.DateTimeFormat("pl-PL").format(date);
   const apiDateFormat = dateIntl.replace("/", "-");
