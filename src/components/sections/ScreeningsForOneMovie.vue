@@ -43,18 +43,8 @@ export default {
         return screeningDate.toDateString() === this.selectedDay.toDateString();
       });
     },
-    moviesArrayWithScreeningDates() {
-      return this.allMovies.map((movie) => {
-        const screeningsForThisMovie = this.screenings.filter(
-          (screening) => screening.movie === movie.id
-        );
-        return { ...movie, screenings: screeningsForThisMovie };
-      });
-    },
     castMovieAsArray() {
-      const arr = [];
-      arr.push({ ...this.movie, screenings: this.selectedDayScreenings });
-      return arr;
+      return [{ ...this.movie, screenings: this.selectedDayScreenings }];
     },
     isTheDayEmpty() {
       return this.selectedDayScreenings.length == 0;
