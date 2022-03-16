@@ -83,15 +83,14 @@
     .action-buttons {
       display: flex;
       flex-direction: row-reverse;
+      gap: 10px;
       margin: 40px 0 0;
     }
 
     .action-buttons .button {
-      font-size: 18px;
       padding: 0.95em 2em;
       &:last-child {
-        margin-right: 10px;
-        padding: 0;
+        padding: 0.95em 1.5em;
       }
     }
   }

@@ -7,8 +7,6 @@ import validatePassword from "@/helpers/validatePassword";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 
 export default {
-  //TODO finish registration and email validation
-  // after submition (since it doesnt double check now ??)
   data() {
     return {
       email: "",

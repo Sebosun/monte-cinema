@@ -1,6 +1,7 @@
 <script>
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 import UiButton from "../UI/UiButton.vue";
+import ErrorMessage from "../UI/ErrorMessage.vue";
 export default {
   data() {
     return {
@@ -13,6 +14,11 @@ export default {
       isBirthdayTouched: false,
       isPrivacyTouched: false,
     };
+  },
+  props: {
+    error: {
+      type: Object,
+    },
   },
   methods: {
     submitForm() {
@@ -58,7 +64,7 @@ export default {
       );
     },
   },
-  components: { FormWrapper, UiButton },
+  components: { FormWrapper, UiButton, ErrorMessage },
 };
 </script>
 
@@ -66,6 +72,7 @@ export default {
   <FormWrapper class="user-info">
     <form @submit.prevent="submitForm" novalidate class="validated-form__form">
       <ul>
+        <error-message v-if="error.status">{{ error.message }}</error-message>
         <li :class="{ 'user-info__error--input': !!firstNameError }">
           <label class="font--label" for="name">First Name</label>
           <input
@@ -124,14 +131,9 @@ export default {
       </ul>
       <div class="action-buttons">
         <UiButton :disabled="!isFormValid" colors="brand">Register</UiButton>
-        <UiButton
-          class="validated-form__buttons--register"
-          empty
-          borderless
-          colors="brand"
-        >
-          <router-link :to="{ name: 'Login' }">Log in instead</router-link>
-        </UiButton>
+        <router-link :to="{ name: 'Login' }">
+          <UiButton empty borderless colors="brand"> Log in instead </UiButton>
+        </router-link>
       </div>
     </form>
   </FormWrapper>
@@ -147,6 +149,11 @@ export default {
       margin-top: 10px;
       color: var(--color-error);
     }
+  }
+
+  .error {
+    margin: 0 0 1rem 0;
+    font-size: 2.125rem;
   }
 
   &__privacy {

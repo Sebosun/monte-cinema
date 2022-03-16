@@ -91,6 +91,8 @@ export default {
     cursor: not-allowed;
     border: 0;
     &:hover {
+      color: white;
+      background: var(--color-secondary);
       opacity: 90%;
     }
   }
@@ -118,6 +120,10 @@ export default {
 
   &--borderless {
     border: 0;
+    &:hover {
+      background-color: transparent;
+      color: var(--color-brand);
+    }
   }
 
   /* Colors */
