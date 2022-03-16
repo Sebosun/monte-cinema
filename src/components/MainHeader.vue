@@ -23,6 +23,7 @@ export default {
       this.isMobileMenuVisible = !this.isMobileMenuVisible;
     },
   },
+  computed: {},
 };
 //TODO split into separate components at some point
 </script>

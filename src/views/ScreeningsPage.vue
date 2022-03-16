@@ -1,17 +1,19 @@
 <script>
 import MainHeader from "@/components/MainHeader.vue";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
-import Screenings from "@/components/sections/Screenings.vue";
+import AllScreeningsLogic from "@/components/sections/AllScreeningsLogic.vue";
 export default {
-  components: { MainHeader, BreadcrumbNavigation, Screenings },
+  components: { MainHeader, BreadcrumbNavigation, AllScreeningsLogic },
 };
 </script>
 
 <template>
   <div class="screenings-page">
-    <main-header />
-    <breadcrumb-navigation>Screenings</breadcrumb-navigation>
-    <screenings />
+    <MainHeader />
+    <BreadcrumbNavigation>Screenings</BreadcrumbNavigation>
+    <main>
+      <AllScreeningsLogic />
+    </main>
   </div>
 </template>
 

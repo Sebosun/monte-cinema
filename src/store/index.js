@@ -1,19 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
+import * as moviesApi from "@/helpers/api/movies";
+import user from "@/store/modules/user";
 
 Vue.use(Vuex);
 
+//TODO namespaces
 export default new Vuex.Store({
+  modules: { user },
   state: {
     movies: [],
     loading: true,
     error: { status: false, message: "" },
   },
   getters: {
-    getMovies: (state) => state.movies,
-    getLoading: (state) => state.loading,
-    getError: (state) => state.error,
+    allMovies: (state) => state.movies,
+    loading: (state) => state.loading,
+    error: (state) => state.error,
   },
   mutations: {
     toggleLoading(state) {
@@ -27,19 +30,18 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async getMovies(state) {
+    async getMovies({ commit }) {
       try {
-        const movies = await axios("http://localhost:3000/movies");
-        state.commit("setMovies", movies.data);
+        const movies = await moviesApi.getAllMovies();
+        commit("setMovies", movies.data);
       } catch {
-        state.commit("setError", {
+        commit("setError", {
           status: true,
           message: "Request failed. Please try again later.",
         });
       } finally {
-        state.commit("toggleLoading");
+        commit("toggleLoading");
       }
     },
   },
-  modules: {},
 });

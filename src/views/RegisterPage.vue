@@ -11,12 +11,19 @@ export default {
   },
   methods: {
     saveCredentials(event) {
-      console.log(event);
+      this.userCredentials = event;
       this.nextStep = true;
     },
     submitRegistration(event) {
-      console.log("data submitted to the server", event);
-      console.log(this.userCredentials);
+      /* console.log("data submitted to the server", event); */
+      const userCreds = {
+        ...this.userCredentials,
+        first_name: event.firstName,
+        last_name: event.lastName,
+        date_of_birth: event.birthday,
+      };
+
+      this.$store.dispatch("register", userCreds);
     },
   },
   computed: {

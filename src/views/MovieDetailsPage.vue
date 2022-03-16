@@ -1,16 +1,25 @@
 <script>
-import axios from "axios";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import MainHeader from "@/components/MainHeader.vue";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
-import Tags from "../components/UI/Tags.vue";
-import movieLengthMinutesToHuman from "@/helpers/movieLengthMinutesToHuman.js";
+import MovieDescription from "@/components/chunks/MovieDescription.vue";
+import ScreeningsForOneMovie from "@/components/sections/ScreeningsForOneMovie.vue";
+
+import * as moviesApi from "@/helpers/api/movies";
+
 export default {
-  components: { ErrorMessage, MainHeader, BreadcrumbNavigation, Tags },
+  components: {
+    ErrorMessage,
+    MainHeader,
+    BreadcrumbNavigation,
+    ScreeningsForOneMovie,
+    MovieDescription,
+  },
   data() {
     return {
       movie: null,
       loading: true,
+      screenings: [],
       error: { status: false, message: "" },
     };
   },
@@ -21,22 +30,20 @@ export default {
     },
   },
   async created() {
-    try {
-      const getMovie = await axios.get(
-        `http://localhost:3000/movies/${this.id}`
-      );
-      this.movie = getMovie.data;
-    } catch (err) {
-      this.error = {
-        status: true,
-        message: "Unable to fetch movie. Please try again later.",
-      };
-    }
-    this.loading = false;
+    this.fetchMovie();
   },
-  computed: {
-    movieLength() {
-      return movieLengthMinutesToHuman(this.movie.length);
+  methods: {
+    async fetchMovie() {
+      try {
+        const response = await moviesApi.getOneMovie(this.id);
+        this.movie = response.data;
+      } catch (err) {
+        this.error = {
+          status: true,
+          message: "Unable to fetch movie. Please try again later.",
+        };
+      }
+      this.loading = false;
     },
   },
 };
@@ -53,107 +60,9 @@ export default {
       <BreadcrumbNavigation :nestedName="movie.title"
         >Movies</BreadcrumbNavigation
       >
-      <div class="movie-details__desc">
-        <div class="movie-details__meta">
-          <h1 class="font--header">{{ movie.title }}</h1>
-          <div class="movie-details__meta--misc">
-            <Tags>{{ movie.genre.name }}</Tags>
-            <div class="font--bold">1987</div>
-            <div class="font--bold">{{ movieLength }}</div>
-            <div class="font--bold">R</div>
-          </div>
-          <p>
-            A team of commandos on a mission in a Central American jungle find
-            themselves hunted by an extraterrestrial warrior
-          </p>
-        </div>
-        <div class="movie-details__image">
-          <img :src="movie.poster_url" :alt="movie.title" />
-        </div>
-      </div>
-      <div>Screeningsn</div>
-      <!--TODO: Once the api arrives add the thing-->
+
+      <MovieDescription :movie="movie" />
+      <ScreeningsForOneMovie :movie="movie" />
     </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.font--bold {
-  color: var(--color-secondary);
-}
-p {
-  font-family: Roboto Mono;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 22px;
-  line-height: 170%;
-}
-.movie-details {
-  &__meta {
-    display: flex;
-    flex-flow: column;
-    gap: 32px;
-    &--misc {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-      /* done just so the dots are evenly spaceed */
-      div {
-        &:nth-child(n + 3) {
-          &:before {
-            padding-inline: 4px;
-            content: "  \2022";
-          }
-        }
-        &:nth-child(n + 2) {
-          margin-right: -4px;
-        }
-      }
-    }
-  }
-
-  &__image {
-    overflow: hidden;
-    img {
-      height: 500px;
-      width: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-  }
-
-  h1 {
-    color: var(--color-primary);
-  }
-  @include media-sm {
-    h1 {
-      font-size: 48px;
-      margin: 0;
-    }
-  }
-
-  @include media-md {
-    p {
-      font-size: 24px;
-      margin-top: auto;
-    }
-    h1 {
-      font-size: 80px;
-      margin: 0;
-    }
-
-    &__desc {
-      margin: 64px 0;
-      display: grid;
-      grid-template-columns: 1fr minmax(340px, 1fr);
-      gap: 28px;
-    }
-  }
-  @include media-lg {
-    &__desc {
-      grid-template-columns: 1fr minmax(600px, 1fr);
-      gap: 70px;
-    }
-  }
-}
-</style>

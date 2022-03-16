@@ -1,8 +1,10 @@
 <script>
 export default {
-  async created() {
-    await this.$store.dispatch("getMovies");
+  created() {
+    this.$store.dispatch("getMovies");
+    this.$store.dispatch("restoreUserData");
   },
+  mounted() {},
 };
 </script>
 

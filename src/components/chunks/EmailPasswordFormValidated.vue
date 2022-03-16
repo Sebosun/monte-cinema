@@ -21,7 +21,6 @@ export default {
     submitForm() {
       this.touchAll();
       if (this.isFormValid) {
-        console.log("success");
         this.$emit("submit", { email: this.email, password: this.password });
       }
     },

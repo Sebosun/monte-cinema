@@ -1,38 +1,87 @@
 <script>
 /* TODO - Calendar*/
-import DisplayMovie from "@/components/chunks/DisplayMovie.vue";
+import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 import getGenres from "@/helpers/getGenres";
+import dateToHumanReadableDay from "@/helpers/dateToHumanReadableDay";
+import CalendarSVG from "@/assets/calendar.svg";
+
 export default {
-  components: { UiButton, DisplayMovie, ErrorMessage, LoadingSpinner },
   data() {
     return {
-      selected: "",
+      selectedGenre: "",
+      modelConfig: {
+        type: "Date",
+      },
     };
   },
+  props: {
+    movies: {
+      type: Array,
+      required: true,
+    },
+    selectedDay: {
+      type: Date,
+      required: true,
+    },
+    empty: {
+      type: Boolean,
+      default: true,
+    },
+    loading: {
+      type: Boolean,
+      default: true,
+    },
+    error: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    dayToHuman(day) {
+      return dateToHumanReadableDay(day);
+    },
+    emitDayUpdate(event) {
+      this.$emit("changeDate", new Date(event));
+    },
+  },
   computed: {
-    /* ...mapGetters(['getLoading', 'getError', 'getMovies']), */
-    loading() {
-      return this.$store.getters.getLoading;
-    },
-    error() {
-      return this.$store.getters.getError;
-    },
-    movies() {
-      return this.$store.getters.getMovies;
-    },
     genres() {
       return getGenres(this.movies);
     },
     filterMovies() {
       const filteredMovies = this.movies.filter(
-        (item) => item.genre.name === this.selected
+        (item) => item.genre.name === this.selectedGenre
       );
       // making sure something is actually selected
-      return this.selected == "" ? this.movies : filteredMovies;
+      return this.selectedGenre == "" ? this.movies : filteredMovies;
     },
+    datesForDaySwitchingButtons() {
+      const UNIX_ONE_DAY = 24 * 3600 * 1000; //one day
+      const today = new Date();
+      const datesArr = [today];
+      for (let i = 0; i < 4; i++) {
+        let lastItem = datesArr[datesArr.length - 1];
+        datesArr.push(new Date(lastItem.getTime() + UNIX_ONE_DAY));
+      }
+      return datesArr;
+    },
+    currentScreeningsText() {
+      var options = { weekday: "long" };
+      const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
+        this.selectedDay
+      );
+      return `${dayStr} ${this.selectedDay.toLocaleDateString("en-UK")}`;
+    },
+  },
+  components: {
+    UiButton,
+    ListOneMovie,
+    ErrorMessage,
+    LoadingSpinner,
+    CalendarSVG,
   },
 };
 </script>
@@ -40,33 +89,44 @@ export default {
 <template>
   <section class="screenings">
     <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
+
     <div v-else-if="error.status" class="screenings__error">
       <ErrorMessage>{{ error.message }}</ErrorMessage>
     </div>
+
     <div v-else class="screenings__wrapper">
       <div class="screenings__top">
         <div class="screenings__headers font--header">
           <h1>Screenings:</h1>
-          <h2>Friday 11/02/2022</h2>
+          <h2>{{ currentScreeningsText }}</h2>
         </div>
         <div class="screenings__filters">
           <div class="screenings__days">
             <div class="font--label">Day</div>
             <div class="screenings__buttons">
-              <ui-button colors="primary">Today</ui-button>
-              <ui-button empty colors="primary">Sat</ui-button>
-              <ui-button empty colors="primary">Sun</ui-button>
-              <ui-button empty colors="primary">Mon</ui-button>
-              <ui-button empty colors="primary">Today</ui-button>
-              <ui-button empty colors="primary">Sat</ui-button>
-              <ui-button empty colors="primary">Sun</ui-button>
-              <ui-button empty colors="primary">Mon</ui-button>
+              <ui-button
+                v-for="(date, index) in datesForDaySwitchingButtons"
+                @click="$emit('changeDate', date)"
+                :key="index"
+                :empty="!(date.toDateString() === selectedDay.toDateString())"
+                colors="primary"
+                >{{ dayToHuman(date) }}</ui-button
+              >
+              <div class="screenings__calendar">
+                <vc-date-picker :value="selectedDay" @input="emitDayUpdate">
+                  <template v-slot="{ togglePopover }">
+                    <ui-button @click="togglePopover()" empty colors="primary">
+                      <CalendarSVG />
+                    </ui-button>
+                  </template>
+                </vc-date-picker>
+              </div>
             </div>
           </div>
 
-          <div class="screenings__genres">
+          <div v-if="movies.length > 1" class="screenings__genres">
             <label for="genres" class="font--label">Movie</label>
-            <select name="genres" v-model="selected">
+            <select name="genres" v-model="selectedGenre">
               <option selected value="">All movies</option>
               <option
                 v-for="genre in genres"
@@ -79,18 +139,22 @@ export default {
           </div>
         </div>
       </div>
-      <DisplayMovie
+      <ListOneMovie
         v-for="movie in filterMovies"
+        :screenings="movie.screenings"
         :key="movie.id"
         :movie="movie"
       />
+      <template v-if="empty">
+        <error-message>No screenings found for this day </error-message>
+      </template>
     </div>
   </section>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .screenings {
-  margin-top: 5.5rem;
+  margin: 5.5rem 0;
 
   &__loading {
     text-align: center;
@@ -149,9 +213,35 @@ export default {
     overflow: auto;
   }
 
+  &__buttons .button + .button {
+    margin-left: 0.625rem;
+  }
+
+  &__buttons {
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    display: flex;
+    overflow: auto;
+  }
   &__buttons button {
     font-size: 0.875rem;
-    padding: 0.5625rem 1.5rem;
+    padding: 19px 40px;
+    @include media-sm {
+      font-size: 14px;
+      padding: 9px 24px;
+    }
+  }
+
+  &__calendar {
+    display: inline-block;
+    margin: auto 10px;
+    button {
+      padding: 12px 16px;
+      @include media-sm {
+        font-size: 14px;
+        padding: 2px 4px;
+      }
+    }
   }
 
   &__days .screenings__buttons:last-child {
@@ -189,17 +279,16 @@ export default {
       grid-template-columns: 1fr 1fr;
     }
 
-    // select children starting from 5 +
-    &__buttons .button:nth-child(n + 5) {
-      display: none;
-    }
-
     &__buttons button {
-      padding: 19px 40px;
       font-size: 18px;
     }
 
+    &__genres {
+      justify-content: space-around;
+    }
+
     &__genres select {
+      margin: 0;
       width: 100%;
     }
 

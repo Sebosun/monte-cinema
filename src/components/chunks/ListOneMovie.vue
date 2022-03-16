@@ -11,6 +11,19 @@ export default {
       type: Object,
       required: true,
     },
+    screenings: {
+      type: Array,
+      required: true,
+    },
+  },
+  computed: {
+    screeningsWithDatesObjects() {
+      return this.screenings.map((screening) => {
+        const screeningDate = new Date(screening.datetime);
+
+        return { ...screening, datetime: screeningDate };
+      });
+    },
   },
   methods: {
     movieLength(length) {
@@ -18,48 +31,55 @@ export default {
       const minutes = `0${length % 60}`.slice(-2);
       return `${hours}h ${minutes}`;
     },
+    getScreeningHour(date) {
+      const hours = date.getHours();
+      const minutes = `0${date.getMinutes()}`.slice(-2);
+      return `${hours}:${minutes}`;
+    },
   },
 };
 </script>
 
 <template>
-  <MovieCard class="display-movies">
-    <div class="display-movies__wrapper">
-      <div class="display-movies__fill">
+  <MovieCard v-if="screenings.length > 1" class="list-one-movie">
+    <div class="list-one-movie__wrapper">
+      <div class="list-one-movie__fill">
         <img :src="movie.poster_url" :alt="movie.title" />
       </div>
-      <div class="display-movies__card">
+      <div class="list-one-movie__card">
         <h2>{{ movie.title }}</h2>
-        <div class="display-movies__info">
-          <Tags class="display-movies__info--name">{{ movie.genre.name }}</Tags>
-          <div class="display-movies__info--len">
+        <div class="list-one-movie__info">
+          <Tags class="list-one-movie__info--name">{{ movie.genre.name }}</Tags>
+          <div class="list-one-movie__info--len">
             {{ movieLength(movie.length) }} min
           </div>
         </div>
 
-        <div class="display-movies__buttons--md-screen">
-          <ui-button empty colors="brand">21:45</ui-button>
-          <ui-button empty colors="brand">21:45</ui-button>
-          <ui-button empty colors="brand">21:45</ui-button>
-          <ui-button empty colors="brand">21:45</ui-button>
-          <ui-button empty colors="brand">21:45</ui-button>
+        <div class="list-one-movie__buttons--md-screen">
+          <ui-button
+            v-for="screening in screeningsWithDatesObjects"
+            :key="screening.id"
+            empty
+            colors="brand"
+            >{{ getScreeningHour(screening.datetime) }}</ui-button
+          >
         </div>
       </div>
     </div>
-    <div class="display-movies__buttons--sm-screen">
-      <ui-button empty colors="brand">21:45</ui-button>
-      <ui-button empty colors="brand">21:45</ui-button>
-      <ui-button empty colors="brand">21:45</ui-button>
-      <ui-button empty colors="brand">21:45</ui-button>
-      <ui-button empty colors="brand">21:45</ui-button>
+    <div class="list-one-movie__buttons--sm-screen">
+      <ui-button
+        v-for="screening in screeningsWithDatesObjects"
+        :key="screening.id"
+        empty
+        colors="brand"
+        >{{ getScreeningHour(screening.datetime) }}</ui-button
+      >
     </div>
   </MovieCard>
 </template>
 
 <style scoped lang="scss">
-.display-movies {
-  padding: 2rem 1rem;
-
+.list-one-movie {
   &__wrapper {
     margin-bottom: 1rem;
   }
@@ -131,7 +151,7 @@ export default {
   }
 
   @include media-md {
-    padding: 40px;
+    padding: 2rem 1rem;
     margin-bottom: 1rem;
 
     &__wrapper {
