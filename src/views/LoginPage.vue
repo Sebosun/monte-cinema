@@ -23,6 +23,7 @@ export default {
             email: this.email,
             password: this.password,
           });
+          this.$router.push("/");
         } catch (error) {
           if (error.response.status === 401) {
             this.error = {
