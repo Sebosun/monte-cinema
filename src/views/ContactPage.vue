@@ -2,8 +2,14 @@
 import MainHeader from "@/components/MainHeader.vue";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
 import ContactCard from "@/components/chunks/ContactCard.vue";
+import SocialMediaIconsList from "@/components/chunks/SocialMediaIconsList.vue";
 export default {
-  components: { MainHeader, BreadcrumbNavigation, ContactCard },
+  components: {
+    MainHeader,
+    BreadcrumbNavigation,
+    ContactCard,
+    SocialMediaIconsList,
+  },
 };
 </script>
 
@@ -11,38 +17,20 @@ export default {
   <div class="contact">
     <MainHeader />
     <BreadcrumbNavigation>Contact us</BreadcrumbNavigation>
-    <div>
-      <h1>Contact us</h1>
+    <main class="contact__content">
+      <h1 class="font--header">Contact us</h1>
       <div class="contact__wrapper">
         <div class="contact__img" />
         <ContactCard class="contact__card" />
-        <ul class="contact__socials">
-          <li>Twitter</li>
-          <li>Facebook</li>
-          <li>LinkedIn</li>
-          <li>Instagram</li>
-          <li>Github</li>
-          <li>Be</li>
-          <li>No Idea</li>
-        </ul>
+        <SocialMediaIconsList />
       </div>
-    </div>
+    </main>
   </div>
 </template>
 
 <style scoped lang="scss">
 .contact {
-  ul {
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
+  margin-bottom: 9rem;
   &__img {
     background-image: url("../assets/MonterailMap.png");
     background-position: center;
@@ -51,29 +39,43 @@ export default {
   }
 
   @include media-sm {
-    &__wrapper {
-      display: flex;
-      flex-direction: column;
+    &__content {
+      margin-inline: 24px;
     }
 
-    margin-inline: 24px;
     h1 {
       font-size: 48px;
+    }
+
+    &__img {
+      border-top-right-radius: 20px;
+      border-top-left-radius: 20px;
+      max-width: 100%;
+      height: 100%;
+    }
+
+    &__wrapper {
+      max-width: 600px;
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
     }
   }
 
   @include media-md {
     max-height: 412px;
+
+    h1 {
+      font-size: 80px;
+      margin: 40px 0 24px;
+    }
+
     &__wrapper {
       background: #f7f7f7;
       display: grid;
-      grid-template-columns: min(40%, 620px) 1fr min(10%, 150px);
+      grid-template-columns: min(40%, 620px) 1fr min(10%, 80px);
     }
 
-    &__socials {
-      flex-flow: column;
-      justify-content: space-around;
-    }
     &__img {
       max-width: 100%;
       height: 100%;

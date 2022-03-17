@@ -1,4 +1,5 @@
 <script>
+//TODO move to ui
 import UiButton from "@/components/UI/UiButton.vue";
 import ArrowSVG from "@/assets/arrow.svg";
 import ArrowRight from "@/assets/arrow-right.svg";
