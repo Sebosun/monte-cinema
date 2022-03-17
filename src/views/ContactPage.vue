@@ -20,7 +20,7 @@ export default {
     <main class="contact__content">
       <h1 class="font--header">Contact us</h1>
       <div class="contact__wrapper">
-        <div class="contact__img" />
+        <div role="img" aria-label="map to monterail" class="contact__img" />
         <ContactCard class="contact__card" />
         <SocialMediaIconsList />
       </div>
