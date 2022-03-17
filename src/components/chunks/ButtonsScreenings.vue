@@ -1,12 +1,14 @@
 <template>
   <div>
-    <ui-button
+    <router-link
       v-for="screening in screeningsWithDates"
       :key="screening.id"
-      empty
-      colors="brand"
-      >{{ getScreeningHour(screening.datetime) }}</ui-button
+      :to="{ name: 'Booking', params: { id: screening.id } }"
     >
+      <ui-button empty colors="brand">
+        {{ getScreeningHour(screening.datetime) }}
+      </ui-button>
+    </router-link>
   </div>
 </template>
 
