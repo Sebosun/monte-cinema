@@ -65,7 +65,6 @@ a {
   text-transform: uppercase;
   color: var(--color-red);
   font-family: Roboto Mono;
-  font-weight: 700;
   line-height: 18.46px;
 }
 </style>

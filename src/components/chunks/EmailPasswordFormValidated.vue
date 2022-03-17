@@ -115,7 +115,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .validated-form {
   .positive {
     color: #27ae60;

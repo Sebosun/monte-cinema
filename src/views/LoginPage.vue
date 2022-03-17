@@ -131,7 +131,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .login-page {
   margin: 64px 0;
   margin-inline: auto;

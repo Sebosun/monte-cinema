@@ -139,7 +139,7 @@ export default {
   </FormWrapper>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .user-info {
   &__error {
     &--input input {

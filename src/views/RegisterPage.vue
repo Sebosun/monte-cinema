@@ -69,7 +69,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .register-page {
   margin: 64px 0;
   margin-inline: auto;
