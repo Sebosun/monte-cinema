@@ -1,10 +1,9 @@
 <script>
 import MovieCard from "@/components/UI/MovieCard.vue";
 import Tags from "@/components/UI/Tags.vue";
-import UiButton from "@/components/UI/UiButton.vue";
+import ButtonsScreenings from "./ButtonsScreenings.vue";
 
 export default {
-  components: { MovieCard, Tags, UiButton },
   props: {
     movie: {
       type: Object,
@@ -16,7 +15,7 @@ export default {
     },
   },
   computed: {
-    screeningsWithDatesObjects() {
+    screeningsWithDates() {
       return this.screenings.map((screening) => {
         const screeningDate = new Date(screening.datetime);
 
@@ -30,17 +29,8 @@ export default {
       const minutes = `0${length % 60}`.slice(-2);
       return `${hours}h ${minutes}`;
     },
-    getScreeningHour(date) {
-      const options = {
-        hour: "numeric",
-        minute: "numeric",
-      };
-      const formattedDate = new Intl.DateTimeFormat("pl-PL", options).format(
-        date
-      );
-      return formattedDate;
-    },
   },
+  components: { MovieCard, Tags, ButtonsScreenings },
 };
 </script>
 
@@ -58,31 +48,20 @@ export default {
             {{ movieLength(movie.length) }} min
           </div>
         </div>
-
-        <div class="list-one-movie__buttons--md-screen">
-          <ui-button
-            v-for="screening in screeningsWithDatesObjects"
-            :key="screening.id"
-            empty
-            colors="brand"
-            >{{ getScreeningHour(screening.datetime) }}</ui-button
-          >
-        </div>
+        <ButtonsScreenings
+          :screeningsWithDates="screeningsWithDates"
+          class="list-one-movie__buttons--md-screen"
+        />
       </div>
     </div>
-    <div class="list-one-movie__buttons--sm-screen">
-      <ui-button
-        v-for="screening in screeningsWithDatesObjects"
-        :key="screening.id"
-        empty
-        colors="brand"
-        >{{ getScreeningHour(screening.datetime) }}</ui-button
-      >
-    </div>
+    <ButtonsScreenings
+      :screeningsWithDates="screeningsWithDates"
+      class="list-one-movie__buttons--sm-screen"
+    />
   </MovieCard>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .list-one-movie {
   &__wrapper {
     margin: 1rem 0;
