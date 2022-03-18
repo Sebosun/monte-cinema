@@ -26,6 +26,13 @@ export default {
 
       try {
         await this.$store.dispatch("user/register", userCreds);
+
+        if (this.$store.getters.redirect) {
+          const redirectPath = this.$store.getters.redirectTo;
+          this.$router.push(redirectPath);
+        } else {
+          this.$router.push("/");
+        }
       } catch (error) {
         this.error = {
           status: true,

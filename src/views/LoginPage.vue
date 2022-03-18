@@ -23,7 +23,13 @@ export default {
             email: this.email,
             password: this.password,
           });
-          this.$router.push("/");
+
+          if (this.$store.getters.redirect) {
+            const redirectPath = this.$store.getters.redirectTo;
+            this.$router.push(redirectPath);
+          } else {
+            this.$router.push("/");
+          }
         } catch (error) {
           if (error.response.status === 401) {
             this.error = {

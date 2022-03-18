@@ -19,5 +19,10 @@ export default new Vuex.Store({
       state.redirect = payload;
     },
   },
-  actions: {},
+  actions: {
+    redirectUserAfterLogin({ commit }, path) {
+      console.log(path);
+      commit("setRedirect", { wasTriggered: true, redirectTo: path });
+    },
+  },
 });

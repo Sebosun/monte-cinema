@@ -11,10 +11,10 @@ export default [
     component: BookingPage,
     props: true,
     beforeEnter(to, from, next) {
-      console.log(store.getters);
       if (store.getters["user/isLoggedIn"]) {
         next();
       } else {
+        store.dispatch("redirectUserAfterLogin", to.fullPath);
         next({
           path: "Login",
           replace: true,
