@@ -9,6 +9,7 @@ import * as moviesApi from "@/helpers/api/movies";
 
 export default {
   name: "MovieDetails",
+
   data() {
     return {
       movie: null,
