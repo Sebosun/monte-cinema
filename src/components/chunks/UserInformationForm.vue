@@ -1,7 +1,7 @@
 <script>
 import FormWrapper from "@/components/UI/FormWrapper.vue";
-import UiButton from "../UI/UiButton.vue";
-import ErrorMessage from "../UI/ErrorMessage.vue";
+import UiButton from "@/components/UI/UiButton.vue";
+import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 export default {
   data() {
     return {
@@ -132,7 +132,9 @@ export default {
       <div class="action-buttons">
         <UiButton :disabled="!isFormValid" colors="brand">Register</UiButton>
         <router-link :to="{ name: 'Login' }">
-          <UiButton empty borderless colors="brand"> Log in instead </UiButton>
+          <UiButton transparent borderless colors="brand">
+            Log in instead
+          </UiButton>
         </router-link>
       </div>
     </form>

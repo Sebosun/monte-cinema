@@ -25,10 +25,14 @@ export default {
 <template>
   <nav class="breadcrumb-navigation">
     <router-link :to="backPath">
-      <ui-button class="breadcrumb-navigation__button" empty colors="primary">
+      <UiButton
+        class="breadcrumb-navigation__button"
+        transparent
+        colors="primary"
+      >
         <ArrowSVG />
         <div class="breadcrumb-navigation__button--text">Back</div>
-      </ui-button>
+      </UiButton>
     </router-link>
     <div class="breadcrumb-navigation__path">
       <div :class="{ focused: !!nestedName }">

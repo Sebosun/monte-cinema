@@ -2,6 +2,10 @@
 import MovieCard from "@/components/UI/MovieCard.vue";
 import Tags from "@/components/UI/Tags.vue";
 import UiButton from "@/components/UI/UiButton.vue";
+import {
+  movieLengthMinutesToHuman,
+  dateToHoursMinutes,
+} from "@/helpers/timeUtils";
 
 export default {
   components: { MovieCard, Tags, UiButton },
@@ -23,22 +27,13 @@ export default {
         return { ...screening, datetime: screeningDate };
       });
     },
+    movieLength() {
+      return movieLengthMinutesToHuman(this.movie.length);
+    },
   },
   methods: {
-    movieLength(length) {
-      const hours = Math.floor(length / 60);
-      const minutes = `0${length % 60}`.slice(-2);
-      return `${hours}h ${minutes}`;
-    },
     getScreeningHour(date) {
-      const options = {
-        hour: "numeric",
-        minute: "numeric",
-      };
-      const formattedDate = new Intl.DateTimeFormat("pl-PL", options).format(
-        date
-      );
-      return formattedDate;
+      return dateToHoursMinutes(date);
     },
   },
 };
@@ -55,28 +50,28 @@ export default {
         <div class="list-one-movie__info">
           <Tags class="list-one-movie__info--name">{{ movie.genre.name }}</Tags>
           <div class="list-one-movie__info--len">
-            {{ movieLength(movie.length) }} min
+            {{ movieLength }}
           </div>
         </div>
 
-        <div class="list-one-movie__buttons--md-screen">
-          <ui-button
+        <div class="list-one-movie__buttons-container--md">
+          <UiButton
             v-for="screening in screeningsWithDatesObjects"
             :key="screening.id"
-            empty
+            transparent
             colors="brand"
-            >{{ getScreeningHour(screening.datetime) }}</ui-button
+            >{{ getScreeningHour(screening.datetime) }}</UiButton
           >
         </div>
       </div>
     </div>
-    <div class="list-one-movie__buttons--sm-screen">
-      <ui-button
+    <div class="list-one-movie__buttons-container--sm">
+      <UiButton
         v-for="screening in screeningsWithDatesObjects"
         :key="screening.id"
-        empty
+        transparent
         colors="brand"
-        >{{ getScreeningHour(screening.datetime) }}</ui-button
+        >{{ getScreeningHour(screening.datetime) }}</UiButton
       >
     </div>
   </MovieCard>
@@ -128,7 +123,7 @@ export default {
     align-items: center;
   }
 
-  &__buttons--sm-screen {
+  &__buttons-container--sm {
     width: 100%;
     padding: 0.625rem 0;
     max-width: min-content;
@@ -137,15 +132,15 @@ export default {
     overflow-x: auto;
   }
 
-  &__buttons--md-screen {
+  &__buttons-container--md {
     display: none;
   }
 
-  &__buttons--sm-screen button {
+  &__buttons-container--sm button {
     padding: 0.3125rem 1rem;
   }
 
-  &__buttons--sm-screen button + button {
+  &__buttons-container--sm button + button {
     margin-inline: 0.5rem;
   }
 
@@ -181,18 +176,18 @@ export default {
       margin: 0;
     }
 
-    &__buttons--sm-screen {
+    &__buttons-container--sm {
       display: none;
     }
 
-    &__buttons--md-screen {
+    &__buttons-container--md {
       margin-top: auto;
       display: flex;
       gap: 8px;
       flex-direction: row;
     }
 
-    &__buttons--md-screen button {
+    &__buttons-container--md button {
       padding: 12px 32px;
     }
   }

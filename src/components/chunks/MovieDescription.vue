@@ -1,6 +1,6 @@
 <script>
 import Tags from "@/components/UI/Tags.vue";
-import movieLengthMinutesToHuman from "@/helpers/movieLengthMinutesToHuman";
+import { movieLengthMinutesToHuman } from "@/helpers/timeUtils";
 
 export default {
   props: {
@@ -13,6 +13,9 @@ export default {
     movieLength() {
       return movieLengthMinutesToHuman(this.movie.length);
     },
+    movieReleaseYear() {
+      return this.movie.release_date.split("-")[0];
+    },
   },
   components: { Tags },
 };
@@ -24,7 +27,7 @@ export default {
       <h1 class="font--header">{{ movie.title }}</h1>
       <div class="movie-details__meta--misc">
         <Tags>{{ movie.genre.name }}</Tags>
-        <div class="font--bold">{{ movie.release_date.split("-")[0] }}</div>
+        <div class="font--bold">{{ movieReleaseYear }}</div>
         <div class="font--bold">{{ movieLength }}</div>
         <div class="font--bold">R</div>
       </div>

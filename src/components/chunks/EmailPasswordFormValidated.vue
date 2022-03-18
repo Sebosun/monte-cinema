@@ -41,17 +41,23 @@ export default {
     },
     passwordLength() {
       if (!this.isPasswordTouched) return "";
-      return this.password.length > 8 ? "positive" : "negative";
+      return this.password.length > 8
+        ? "validated-form__info"
+        : "validated-form__info--error";
     },
     passwordDigits() {
       if (!this.isPasswordTouched) return "";
       const matchNumbers = this.password.match(/\d/);
-      return matchNumbers ? "positive" : "negative";
+      return matchNumbers
+        ? "validated-form__info"
+        : "validated-form__info--error";
     },
     passwordLetters() {
       if (!this.isPasswordTouched) return "";
       const matchLetters = this.password.match(/[a-zA-Z]/);
-      return matchLetters ? "positive" : "negative";
+      return matchLetters
+        ? "validated-form__info"
+        : "validated-form__info--error";
     },
   },
 
@@ -100,7 +106,7 @@ export default {
             >Next Step</ui-button
           >
           <router-link :to="{ name: 'Login' }">
-            <ui-button empty borderless colors="brand">
+            <ui-button transparent borderless colors="brand">
               Log in instead
             </ui-button>
           </router-link>
@@ -115,13 +121,13 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .validated-form {
-  .positive {
+  &__info {
     color: #27ae60;
   }
 
-  .negative {
+  &__info--error {
     color: var(--color-error);
   }
 

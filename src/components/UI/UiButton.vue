@@ -18,7 +18,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    empty: {
+    transparent: {
       type: Boolean,
       default: false,
     },
@@ -38,17 +38,17 @@ export default {
         { "button--sm": this.small },
         { "button--md": this.medium },
         { "button--lg": this.large },
-        { "button--empty": this.empty },
+        { "button--transparent": this.transparent },
         { "button--borderless": this.borderless },
       ];
     },
     // making sure we're using appropriate colors as a text color
-    // if background is empty
+    // if background is transparent
     buttonColors() {
       if (this.colors === "brand") {
-        return this.empty ? "button--brand-font" : "button__brand";
+        return this.transparent ? "button--brand-font" : "button__brand";
       } else if (this.colors === "primary") {
-        return this.empty ? "button--primary-font" : "button__primary";
+        return this.transparent ? "button--primary-font" : "button__primary";
       }
       return "";
     },
@@ -72,12 +72,12 @@ export default {
   background: inherit;
 
   border: solid;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   font-family: Roboto Mono;
   font-weight: 500;
   letter-spacing: 0.015em;
-  border-width: 2px;
+  border-width: 0.125rem;
   transition: color 0.2s ease-in-out, background-color 0.3s ease-in-out;
 
   &:hover {
@@ -114,7 +114,7 @@ export default {
 
   /* utility classes */
 
-  &--empty {
+  &--transparent {
     background: inherit;
   }
 
