@@ -11,7 +11,18 @@ export default {
     },
     screenings: {
       type: Array,
-      required: true,
+      default: () => [],
+    },
+    show: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  methods: {
+    movieLength(length) {
+      const hours = Math.floor(length / 60);
+      const minutes = `0${length % 60}`.slice(-2);
+      return `${hours}h ${minutes}`;
     },
   },
   computed: {
@@ -22,20 +33,17 @@ export default {
         return { ...screening, datetime: screeningDate };
       });
     },
-  },
-  methods: {
-    movieLength(length) {
-      const hours = Math.floor(length / 60);
-      const minutes = `0${length % 60}`.slice(-2);
-      return `${hours}h ${minutes}`;
+    showComponent() {
+      return this.screenings.length >= 1 || this.show;
     },
   },
+
   components: { MovieCard, Tags, ButtonsScreenings },
 };
 </script>
 
 <template>
-  <MovieCard v-if="screenings.length >= 1" class="list-one-movie">
+  <MovieCard v-if="showComponent" class="list-one-movie">
     <div class="list-one-movie__wrapper">
       <div class="list-one-movie__fill">
         <img :src="movie.poster_url" :alt="movie.title" />
@@ -48,16 +56,23 @@ export default {
             {{ movieLength(movie.length) }} min
           </div>
         </div>
-        <ButtonsScreenings
-          :screeningsWithDates="screeningsWithDates"
-          class="list-one-movie__buttons--md-screen"
-        />
+        <slot class="list-one-movie__buttons--md-screen">
+          <ButtonsScreenings
+            :screeningsWithDates="screeningsWithDates"
+            class="list-one-movie__buttons--md-screen"
+          />
+        </slot>
       </div>
     </div>
-    <ButtonsScreenings
-      :screeningsWithDates="screeningsWithDates"
-      class="list-one-movie__buttons--sm-screen"
-    />
+
+    <div class="list-one-movie__buttons--sm-screen">
+      <slot>
+        <ButtonsScreenings
+          :screeningsWithDates="screeningsWithDates"
+          class="list-one-movie__buttons--sm-screen"
+        />
+      </slot>
+    </div>
   </MovieCard>
 </template>
 
