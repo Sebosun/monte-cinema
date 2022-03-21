@@ -1,36 +1,11 @@
 <script>
 import MainHeader from "@/components/MainHeader.vue";
+import ChooseSeatsSection from "@/components/sections/ChooseSeatsSection.vue";
+import Tags from "@/components/UI/Tags.vue";
+import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
+
+import genSeatsArr from "@/helpers/genSeatsArr";
 import { showSeances, getHall, getOneMovie } from "@/helpers/api/movies";
-import ListOneMovie from "../components/chunks/ListOneMovie.vue";
-import Tags from "../components/UI/Tags.vue";
-
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-function generateArray(length, taken_seats) {
-  const metaArr = Array.from(Array(length).keys());
-  return metaArr.map((item, index) => {
-    const seatsObj = {
-      row: alphabet[index],
-      array: arrayWithLetter(alphabet[index], 10, taken_seats),
-    };
-    return seatsObj;
-  });
-}
-
-function arrayWithLetter(letter, length = 10, taken_seats = []) {
-  const arr = Array.from(Array(length));
-  return arr.map((item, index) => {
-    const value = letter + (index + 1);
-    const isTaken = taken_seats.indexOf(value) === -1 ? false : true;
-
-    const arrObj = {
-      taken: false,
-      reserved: isTaken,
-      value,
-    };
-    return arrObj;
-  });
-}
 
 export default {
   data() {
@@ -38,7 +13,7 @@ export default {
       seance: null,
       hall: null,
       movie: null,
-      array: Array.from(Array(10).keys()),
+      array: [],
     };
   },
   props: {
@@ -64,7 +39,7 @@ export default {
       const response = await getHall(id);
       this.hall = response.data;
       const seatLength = response.data.seats / 10;
-      this.array = generateArray(seatLength, this.seance.taken_seats);
+      this.array = genSeatsArr(seatLength, this.seance.taken_seats);
     },
     async fetchMovie(movieId) {
       const response = await getOneMovie(movieId);
@@ -76,9 +51,11 @@ export default {
       const indexNestArr = this.array[indexMainArr].array.findIndex((arr) => {
         return arr.value === item.value;
       });
-      if (!this.array[indexMainArr].array[indexNestArr].reserved) {
-        this.array[indexMainArr].array[indexNestArr].taken =
-          !this.array[indexMainArr].array[indexNestArr].taken;
+
+      const nestedSelectedArr = this.array[indexMainArr].array[indexNestArr];
+
+      if (!nestedSelectedArr.reserved) {
+        nestedSelectedArr.taken = !nestedSelectedArr.taken;
       }
     },
   },
@@ -87,7 +64,7 @@ export default {
       return !!(this.hall && this.seance && this.movie);
     },
   },
-  components: { MainHeader, ListOneMovie, Tags },
+  components: { MainHeader, ListOneMovie, Tags, ChooseSeatsSection },
 };
 </script>
 
@@ -100,27 +77,8 @@ export default {
         <Tags class="tag">{{ new Date().toUTCString() }}</Tags>
       </ListOneMovie>
       <main>
-        <div
-          v-for="(item, index) in array"
-          class="booking__container"
-          :key="index"
-        >
-          <div>{{ item.row }}</div>
-          <div
-            @click="toggleTakeSeat(i)"
-            v-for="(i, arrIndex) in item.array"
-            :key="i.value"
-            class="square"
-            :class="{
-              'square--user-checked': i.taken,
-              'square--reserved': i.reserved,
-            }"
-          >
-            <div>{{ arrIndex + 1 }}</div>
-          </div>
-          <div>{{ item.row }}</div>
-        </div>
         <h1>Choose your seats</h1>
+        <choose-seats-section @takeSeat="toggleTakeSeat" :array="array" />
         <div>Card</div>
         <div>Choose seats menu</div>
       </main>
@@ -137,28 +95,7 @@ export default {
   line-height: 100%;
   margin-top: auto;
 }
-.booking__container {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px;
-}
-.square {
-  height: 35px;
-  width: 35px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #fbcfd0;
-}
 
-.square--reserved {
-  background: #ccc;
-}
-
-.square--user-checked {
-  background: red;
-}
 p {
   margin: 0;
   padding: 0;
