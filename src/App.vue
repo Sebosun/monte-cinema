@@ -1,8 +1,8 @@
 <script>
 export default {
   created() {
-    this.$store.dispatch("movies/getMovies");
     this.$store.dispatch("user/restoreUserData");
+    this.$store.dispatch("movies/getMovies");
   },
   metaInfo: {
     title: "",

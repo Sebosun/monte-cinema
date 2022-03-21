@@ -14,10 +14,7 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!store.getters["user/isLoggedIn"]) {
       store.dispatch("redirectUserAfterLogin", to.fullPath);
-      next({
-        path: "Login",
-        replace: true,
-      });
+      next({ path: "login" });
     } else {
       next();
     }
@@ -25,4 +22,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
+
 export default router;

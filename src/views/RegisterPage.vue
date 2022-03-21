@@ -16,7 +16,6 @@ export default {
       this.nextStep = true;
     },
     async submitRegistration(event) {
-      /* console.log("data submitted to the server", event); */
       const userCreds = {
         ...this.userCredentials,
         first_name: event.firstName,
