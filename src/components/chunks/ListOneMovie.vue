@@ -3,7 +3,7 @@ import MovieCard from "@/components/UI/MovieCard.vue";
 import Tags from "@/components/UI/Tags.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import {
-  movieLengthMinutesToHuman,
+  minutesToHoursAndRemainder,
   dateToHoursMinutes,
 } from "@/helpers/timeUtils";
 
@@ -28,7 +28,7 @@ export default {
       });
     },
     movieLength() {
-      return movieLengthMinutesToHuman(this.movie.length);
+      return minutesToHoursAndRemainder(this.movie.length);
     },
   },
   methods: {

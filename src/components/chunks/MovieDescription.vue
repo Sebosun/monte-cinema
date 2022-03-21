@@ -1,6 +1,6 @@
 <script>
 import Tags from "@/components/UI/Tags.vue";
-import { movieLengthMinutesToHuman } from "@/helpers/timeUtils";
+import { minutesToHoursAndRemainder } from "@/helpers/timeUtils";
 
 export default {
   props: {
@@ -11,7 +11,7 @@ export default {
   },
   computed: {
     movieLength() {
-      return movieLengthMinutesToHuman(this.movie.length);
+      return minutesToHoursAndRemainder(this.movie.length);
     },
     movieReleaseYear() {
       return this.movie.release_date.split("-")[0];

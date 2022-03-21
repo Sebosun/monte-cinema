@@ -7,7 +7,7 @@ export function dateToHumanReadableDay(date) {
   return date.toDateString() === today ? "Today" : dayString;
 }
 
-export function movieLengthMinutesToHuman(length) {
+export function minutesToHoursAndRemainder(length) {
   const hours = Math.floor(length / 60);
   const minutes = `0${length % 60}`.slice(-2);
   return `${hours}h ${minutes} min`;
