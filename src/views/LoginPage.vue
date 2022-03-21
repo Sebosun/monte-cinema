@@ -14,6 +14,12 @@ export default {
       isPasswordTouched: false,
     };
   },
+  mounted() {
+    if (this.$store.getters["user/isLoggedIn"]) {
+      const redirectPath = this.$store.getters.redirectTo;
+      this.$router.push(redirectPath);
+    }
+  },
   methods: {
     async submitForm() {
       this.touchAll();
