@@ -9,19 +9,12 @@ export const showSeances = async (id) => defaultClient.get(`/seances/${id}`);
 export const getHall = async (id) => defaultClient.get(`/halls/${id}`);
 
 export const getSeances = async ({ date, id }) => {
-  if (date && id) {
-    const dateFormatted = formatDateForFetch(date);
-    return await defaultClient.get(
-      `/seances?movie_id=${id}&date=${dateFormatted}`
-    );
-  } else if (date) {
-    const dateFormatted = formatDateForFetch(date);
-    return await defaultClient.get(`/seances?date=${dateFormatted}`);
-  } else if (id) {
-    return await defaultClient.get(`/seances?movie_id=${id}`);
-  } else {
-    return await defaultClient.get("/seances");
-  }
+  return await defaultClient.get("/seances", {
+    params: {
+      movie_id: id && id,
+      date: date && formatDateForFetch(date),
+    },
+  });
 };
 
 function formatDateForFetch(date) {

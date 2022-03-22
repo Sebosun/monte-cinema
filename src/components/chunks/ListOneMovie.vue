@@ -17,6 +17,9 @@ export default {
       type: Boolean,
       default: false,
     },
+    movieLength() {
+      return minutesToHoursAndRemainder(this.movie.length);
+    },
   },
   methods: {
     movieLength(length) {
@@ -53,7 +56,7 @@ export default {
         <div class="list-one-movie__info">
           <Tags class="list-one-movie__info--name">{{ movie.genre.name }}</Tags>
           <div class="list-one-movie__info--len">
-            {{ movieLength(movie.length) }} min
+            {{ movieLength }}
           </div>
         </div>
         <div class="list-one-movie__buttons--md-screen">
@@ -124,7 +127,7 @@ export default {
     align-items: center;
   }
 
-  &__buttons--sm-screen {
+  &__buttons-container--sm {
     width: 100%;
     padding: 0.625rem 0;
     margin-top: -20px;
@@ -132,15 +135,15 @@ export default {
     overflow-x: auto;
   }
 
-  &__buttons--md-screen {
+  &__buttons-container--md {
     display: none;
   }
 
-  &__buttons--sm-screen button {
+  &__buttons-container--sm button {
     padding: 0.3125rem 1rem;
   }
 
-  &__buttons--sm-screen button + button {
+  &__buttons-container--sm button + button {
     margin-inline: 0.5rem;
   }
 
@@ -176,18 +179,18 @@ export default {
       margin: 0;
     }
 
-    &__buttons--sm-screen {
+    &__buttons-container--sm {
       display: none;
     }
 
-    &__buttons--md-screen {
+    &__buttons-container--md {
       margin-top: auto;
       display: flex;
       gap: 8px;
       flex-direction: row;
     }
 
-    &__buttons--md-screen button {
+    &__buttons-container--md button {
       padding: 12px 32px;
     }
   }

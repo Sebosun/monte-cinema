@@ -1,5 +1,5 @@
 <script>
-import UiButton from "../UI/UiButton.vue";
+import UiButton from "@/components/UI/UiButton.vue";
 export default {
   components: { UiButton },
   methods: {
@@ -22,7 +22,9 @@ export default {
     </template>
     <template v-else>
       <router-link :to="{ name: 'Register' }">
-        <UiButton medium borderless empty colors="brand"> Register </UiButton>
+        <UiButton medium borderless transparent colors="brand">
+          Register
+        </UiButton>
       </router-link>
       <router-link :to="{ name: 'Login' }">
         <UiButton medium colors="brand"> Login </UiButton>
