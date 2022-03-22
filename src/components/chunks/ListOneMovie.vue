@@ -56,12 +56,14 @@ export default {
             {{ movieLength(movie.length) }} min
           </div>
         </div>
-        <slot class="list-one-movie__buttons--md-screen">
-          <ButtonsScreenings
-            :screeningsWithDates="screeningsWithDates"
-            class="list-one-movie__buttons--md-screen"
-          />
-        </slot>
+        <div class="list-one-movie__buttons--md-screen">
+          <slot>
+            <ButtonsScreenings
+              :screeningsWithDates="screeningsWithDates"
+              class="list-one-movie__buttons--md-screen"
+            />
+          </slot>
+        </div>
       </div>
     </div>
 
@@ -125,7 +127,6 @@ export default {
   &__buttons--sm-screen {
     width: 100%;
     padding: 0.625rem 0;
-    max-width: min-content;
     margin-top: -20px;
     display: flex;
     overflow-x: auto;
