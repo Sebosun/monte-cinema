@@ -1,18 +1,21 @@
 export default function getGenres(movies) {
   const genres = movies.reduce((uniqueGenres, currentMovie) => {
     //checks if value already exists within uniqueGenres arr
-    const isUnique = !uniqueGenres.some((genre) => {
+    const isUnique = !uniqueGenres.some((oneUniqueGenre) => {
       return (
-        genre.name === currentMovie.genre.name &&
-        genre.id === currentMovie.genre.id
+        oneUniqueGenre.name === currentMovie.genre.name &&
+        oneUniqueGenre.id === currentMovie.genre.id
       );
     });
+
     //if it does not exist, add the genre
     if (isUnique) {
-      uniqueGenres.push({
+      const genreObj = {
         id: currentMovie.genre.id,
         name: currentMovie.genre.name,
-      });
+      };
+
+      uniqueGenres.push(genreObj);
     }
     return uniqueGenres;
   }, []);
