@@ -4,27 +4,14 @@ export const getAllMovies = async () => defaultClient.get("/movies");
 
 export const getOneMovie = async (id) => defaultClient.get(`/movies/${id}`);
 
-export const getSeancesByMovieId = async (id) =>
-  defaultClient.get(`/seances?movie_id=${id}`);
-
-// expects a date object
-export const getSeancesByDate = async (date) => {
-  const response = await defaultClient.get(
-    `/seances?date=${formatDateForFetch(date)}`
-  );
-  return response;
+export const getSeances = async ({ date, id }) => {
+  return await defaultClient.get("/seances", {
+    params: {
+      movie_id: id && id,
+      date: date && formatDateForFetch(date),
+    },
+  });
 };
-
-export const getSeancesByDateID = async (date, id) => {
-  const dateFormatted = formatDateForFetch(date);
-
-  const response = await defaultClient.get(
-    `/seances?movie_id=${id}&date=${dateFormatted}`
-  );
-  return response;
-};
-
-export const getUser = async () => defaultClient.get("/user");
 
 function formatDateForFetch(date) {
   const dateIntl = new Intl.DateTimeFormat("pl-PL").format(date);

@@ -24,9 +24,10 @@ export default {
     async getSingleScreening(id) {
       this.loading = true;
       try {
-        const response = await moviesApi.getSeancesByMovieId(id);
+        const response = await moviesApi.getSeances({ id });
         this.screenings = response.data;
-      } catch {
+      } catch (error) {
+        console.error(error);
         this.error = { status: true, message: "Failed to fetch movies" };
       } finally {
         this.loading = false;
@@ -43,21 +44,11 @@ export default {
         return screeningDate.toDateString() === this.selectedDay.toDateString();
       });
     },
-    moviesArrayWithScreeningDates() {
-      return this.allMovies.map((movie) => {
-        const screeningsForThisMovie = this.screenings.filter(
-          (screening) => screening.movie === movie.id
-        );
-        return { ...movie, screenings: screeningsForThisMovie };
-      });
-    },
-    mockMovieAsArray() {
-      const arr = [];
-      arr.push({ ...this.movie, screenings: this.selectedDayScreenings });
-      return arr;
+    castMovieAsArray() {
+      return [{ ...this.movie, screenings: this.selectedDayScreenings }];
     },
     isTheDayEmpty() {
-      return this.screenings.length == 0;
+      return this.selectedDayScreenings.length === 0;
     },
   },
   components: {
@@ -69,7 +60,7 @@ export default {
 <template>
   <Screenings
     :selectedDay="selectedDay"
-    :movies="mockMovieAsArray"
+    :movies="castMovieAsArray"
     :empty="isTheDayEmpty"
     :loading="loading"
     :error="error"

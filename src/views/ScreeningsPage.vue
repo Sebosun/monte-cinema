@@ -3,6 +3,9 @@ import MainHeader from "@/components/MainHeader.vue";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
 import AllScreeningsLogic from "@/components/sections/AllScreeningsLogic.vue";
 export default {
+  metaInfo: {
+    title: "Screenings",
+  },
   components: { MainHeader, BreadcrumbNavigation, AllScreeningsLogic },
 };
 </script>

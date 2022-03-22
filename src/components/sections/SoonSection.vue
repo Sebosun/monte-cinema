@@ -12,8 +12,8 @@ export default { components: { UiButton, MovieCard } };
         Soon in the cinema
       </h2>
       <h2 class="font--paragraph font--bold"></h2>
-      <ui-button class="font--bold" empty borderless colors="brand"
-        >See All</ui-button
+      <UiButton class="font--bold" transparent borderless colors="brand"
+        >See All</UiButton
       >
     </div>
     <div class="soon__wrapper">

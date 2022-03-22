@@ -6,6 +6,7 @@ const USER_STORAGE_KEY = "user";
 //TODO error handling + some notification system for error handling
 
 const user = {
+  namespaced: true,
   state: {
     user: null,
     authToken: null,

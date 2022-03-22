@@ -14,9 +14,13 @@ export default {
     MainHeader,
     AllScreeningsLogic,
   },
+  metaInfo: {
+    title: "Monte Cinema",
+    // override the parent template and just use the above title only
+    titleTemplate: null,
+  },
 };
 </script>
-, MainHeader
 <template>
   <div>
     <MainHeader />

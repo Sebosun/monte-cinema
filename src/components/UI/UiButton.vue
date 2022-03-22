@@ -18,7 +18,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    empty: {
+    transparent: {
       type: Boolean,
       default: false,
     },
@@ -38,17 +38,17 @@ export default {
         { "button--sm": this.small },
         { "button--md": this.medium },
         { "button--lg": this.large },
-        { "button--empty": this.empty },
+        { "button--transparent": this.transparent },
         { "button--borderless": this.borderless },
       ];
     },
     // making sure we're using appropriate colors as a text color
-    // if background is empty
+    // if background is transparent
     buttonColors() {
       if (this.colors === "brand") {
-        return this.empty ? "button--brand-font" : "button__brand";
+        return this.transparent ? "button--brand-font" : "button__brand";
       } else if (this.colors === "primary") {
-        return this.empty ? "button--primary-font" : "button__primary";
+        return this.transparent ? "button--primary-font" : "button__primary";
       }
       return "";
     },
@@ -58,7 +58,7 @@ export default {
 
 <template>
   <button
-    @click="$emit('click')"
+    @click="$emit('click', $event)"
     :disabled="disabled"
     :class="[buttonUtililityClasses, buttonColors]"
   >
@@ -72,12 +72,13 @@ export default {
   background: inherit;
 
   border: solid;
-  border-radius: 999px;
+  border-radius: 62.4375rem;
 
   font-family: Roboto Mono;
   font-weight: 500;
   letter-spacing: 0.015em;
-  border-width: 2px;
+  border-width: 0.125rem;
+  transition: color 0.2s ease-in-out, background-color 0.3s ease-in-out;
 
   &:hover {
     cursor: pointer;
@@ -90,6 +91,8 @@ export default {
     cursor: not-allowed;
     border: 0;
     &:hover {
+      color: white;
+      background: var(--color-secondary);
       opacity: 90%;
     }
   }
@@ -111,28 +114,47 @@ export default {
 
   /* utility classes */
 
-  &--empty {
+  &--transparent {
     background: inherit;
   }
 
   &--borderless {
     border: 0;
+    &:hover {
+      background-color: transparent;
+      color: var(--color-brand);
+    }
   }
 
   /* Colors */
 
   &--brand-font {
     color: var(--color-brand);
+    &:hover {
+      background-color: var(--color-brand);
+      color: var(--color-background);
+    }
   }
 
   &--primary-font {
     color: var(--color-primary);
+    &:hover {
+      background-color: var(--color-primary);
+      color: var(--color-background);
+    }
+    &:hover svg {
+      fill: var(--color-background);
+    }
   }
 
   &__brand {
     color: var(--color-background);
     background: var(--color-brand);
     border-color: var(--color-brand);
+    &:hover {
+      color: var(--color-brand);
+      background-color: var(--color-background);
+    }
   }
 
   &__primary {

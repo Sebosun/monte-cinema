@@ -1,15 +1,15 @@
 <script>
-import UiButton from "../UI/UiButton.vue";
+import UiButton from "@/components/UI/UiButton.vue";
 export default {
   components: { UiButton },
   methods: {
     logout() {
-      this.$store.dispatch("logout");
+      this.$store.dispatch("user/logout");
     },
   },
   computed: {
     isLoggedIn() {
-      return this.$store.getters.isLoggedIn;
+      return this.$store.getters["user/isLoggedIn"];
     },
   },
 };
@@ -21,14 +21,14 @@ export default {
       <UiButton @click="logout" medium colors="brand"> Logout </UiButton>
     </template>
     <template v-else>
-      <UiButton medium borderless empty colors="brand">
-        <router-link :to="{ name: 'Register' }"> Register </router-link>
-      </UiButton>
-      <UiButton medium colors="brand">
-        <router-link :to="{ name: 'Login' }">Login</router-link>
-      </UiButton>
+      <router-link :to="{ name: 'Register' }">
+        <UiButton medium borderless transparent colors="brand">
+          Register
+        </UiButton>
+      </router-link>
+      <router-link :to="{ name: 'Login' }">
+        <UiButton medium colors="brand"> Login </UiButton>
+      </router-link>
     </template>
   </div>
 </template>
-
-<style lang="scss"></style>

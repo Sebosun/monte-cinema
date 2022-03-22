@@ -1,11 +1,13 @@
 <script>
-/* TODO - Calendar*/
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 import getGenres from "@/helpers/getGenres";
-import dateToHumanReadableDay from "@/helpers/dateToHumanReadableDay";
+import {
+  ONE_DAY_IN_MILLISECONDS,
+  dateToHumanReadableDay,
+} from "@/helpers/timeUtils.js";
 import CalendarSVG from "@/assets/calendar.svg";
 
 export default {
@@ -59,17 +61,16 @@ export default {
       return this.selectedGenre == "" ? this.movies : filteredMovies;
     },
     datesForDaySwitchingButtons() {
-      const UNIX_ONE_DAY = 24 * 3600 * 1000; //one day
       const today = new Date();
-      const datesArr = [today];
-      for (let i = 0; i < 4; i++) {
-        let lastItem = datesArr[datesArr.length - 1];
-        datesArr.push(new Date(lastItem.getTime() + UNIX_ONE_DAY));
-      }
-      return datesArr;
+      const dayIndexes = Array.from(Array(4).keys());
+
+      return dayIndexes.map(
+        (dayNumber) =>
+          new Date(today.getTime() + dayNumber * ONE_DAY_IN_MILLISECONDS)
+      );
     },
     currentScreeningsText() {
-      var options = { weekday: "long" };
+      const options = { weekday: "long" };
       const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
         this.selectedDay
       );
@@ -88,13 +89,7 @@ export default {
 
 <template>
   <section class="screenings">
-    <div v-if="loading" class="screenings__loading"><LoadingSpinner /></div>
-
-    <div v-else-if="error.status" class="screenings__error">
-      <ErrorMessage>{{ error.message }}</ErrorMessage>
-    </div>
-
-    <div v-else class="screenings__wrapper">
+    <div class="screenings__wrapper">
       <div class="screenings__top">
         <div class="screenings__headers font--header">
           <h1>Screenings:</h1>
@@ -103,19 +98,25 @@ export default {
         <div class="screenings__filters">
           <div class="screenings__days">
             <div class="font--label">Day</div>
-            <div class="screenings__buttons">
+            <div class="screenings__button-container">
               <ui-button
                 v-for="(date, index) in datesForDaySwitchingButtons"
                 @click="$emit('changeDate', date)"
                 :key="index"
-                :empty="!(date.toDateString() === selectedDay.toDateString())"
+                :transparent="
+                  !(date.toDateString() === selectedDay.toDateString())
+                "
                 colors="primary"
                 >{{ dayToHuman(date) }}</ui-button
               >
               <div class="screenings__calendar">
                 <vc-date-picker :value="selectedDay" @input="emitDayUpdate">
                   <template v-slot="{ togglePopover }">
-                    <ui-button @click="togglePopover()" empty colors="primary">
+                    <ui-button
+                      @click="togglePopover()"
+                      transparent
+                      colors="primary"
+                    >
                       <CalendarSVG />
                     </ui-button>
                   </template>
@@ -139,14 +140,20 @@ export default {
           </div>
         </div>
       </div>
-      <ListOneMovie
-        v-for="movie in filterMovies"
-        :screenings="movie.screenings"
-        :key="movie.id"
-        :movie="movie"
-      />
-      <template v-if="empty">
+      <div v-if="loading" class="screenings--loading"><LoadingSpinner /></div>
+      <div v-else-if="error.status" class="screenings--error">
+        <ErrorMessage>{{ error.message }}</ErrorMessage>
+      </div>
+      <template v-else-if="empty">
         <error-message>No screenings found for this day </error-message>
+      </template>
+      <template v-else>
+        <ListOneMovie
+          v-for="movie in filterMovies"
+          :screenings="movie.screenings"
+          :key="movie.id"
+          :movie="movie"
+        />
       </template>
     </div>
   </section>
@@ -154,16 +161,16 @@ export default {
 
 <style scoped lang="scss">
 .screenings {
-  margin: 5.5rem 0;
+  margin-top: 5.5rem;
+  margin-bottom: 10rem;
 
-  &__loading {
+  &--loading {
     text-align: center;
     margin-inline: auto;
     margin-bottom: 5rem;
   }
 
   &__headers {
-    margin-inline: 1.5rem;
     margin-bottom: 2rem;
   }
 
@@ -189,7 +196,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
-    margin-left: 1.5rem;
     margin-bottom: 6.125rem;
   }
 
@@ -202,49 +208,43 @@ export default {
     flex-direction: column;
   }
 
-  &__buttons .button + .button {
-    margin-left: 0.625rem;
-  }
-
-  &__days &__buttons {
+  &__button-container {
     font-size: 1rem;
     padding: 0.75rem 0;
     display: flex;
     overflow: auto;
   }
 
-  &__buttons .button + .button {
-    margin-left: 0.625rem;
-  }
-
-  &__buttons {
-    font-size: 1rem;
-    padding: 0.75rem 0;
-    display: flex;
-    overflow: auto;
-  }
-  &__buttons button {
+  &__button-container button {
     font-size: 0.875rem;
     padding: 19px 40px;
-    @include media-sm {
-      font-size: 14px;
-      padding: 9px 24px;
-    }
+  }
+
+  &__button-container .button + .button {
+    margin-left: 0.625rem;
+  }
+
+  &__days &__button-container {
+    font-size: 1rem;
+    padding: 0.75rem 0;
+    display: flex;
+    overflow: auto;
+  }
+
+  &__button-container .button + .button {
+    margin-left: 0.625rem;
   }
 
   &__calendar {
     display: inline-block;
     margin: auto 10px;
-    button {
-      padding: 12px 16px;
-      @include media-sm {
-        font-size: 14px;
-        padding: 2px 4px;
-      }
-    }
   }
 
-  &__days .screenings__buttons:last-child {
+  &__calendar button {
+    padding: 12px 16px;
+  }
+
+  &__days .screenings__button-container:last-child {
     padding-right: 0.625rem;
   }
 
@@ -262,15 +262,34 @@ export default {
     border: 0;
     background-color: #f7f7f7;
   }
-}
 
-@include media-md {
-  .screenings {
-    &__headers h2 {
+  @include media-sm {
+    &__headers {
+      margin-inline: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    &__filters {
+      margin-left: 1.5rem;
+    }
+
+    &__calendar button {
+      font-size: 14px;
+      padding: 2px 4px;
+    }
+
+    &__button-container button {
+      font-size: 14px;
+      padding: 9px 24px;
+    }
+  }
+
+  @include media-md {
+    &__headers h1 {
       font-size: 64px;
     }
 
-    &__headers h1 {
+    &__headers h2 {
       font-size: 64px;
     }
 
@@ -279,7 +298,7 @@ export default {
       grid-template-columns: 1fr 1fr;
     }
 
-    &__buttons button {
+    &__button-container button {
       font-size: 18px;
     }
 
@@ -290,15 +309,12 @@ export default {
     &__genres select {
       margin: 0;
       width: 100%;
+      margin: 12px 0;
     }
 
     &__genres .font--label {
       font-size: 14px;
       justify-self: flex-start;
-    }
-
-    &__genres select {
-      margin: 12px 0;
     }
   }
 }

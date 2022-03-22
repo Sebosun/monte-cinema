@@ -4,7 +4,6 @@ import HamburgerIcon from "@/assets/navigation-menu 1.svg";
 export default {
   components: { MonteCinemaLogo, HamburgerIcon },
 };
-// TODO: ask for specification of the hamburger menu on this page
 </script>
 
 <template>

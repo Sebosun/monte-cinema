@@ -3,11 +3,13 @@ import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
 import AuthHeader from "@/components/AuthHeader.vue";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
+import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 export default {
   data() {
     return {
-      email: "admin@monterail.com",
-      password: "monterail1",
+      email: "",
+      password: "",
+      error: { status: false, message: "" },
       isEmailTouched: false,
       isPasswordTouched: false,
     };
@@ -16,11 +18,25 @@ export default {
     async submitForm() {
       this.touchAll();
       if (this.isFormValid) {
-        await this.$store.dispatch("login", {
-          email: this.email,
-          password: this.password,
-        });
-        this.$router.push("/");
+        try {
+          await this.$store.dispatch("user/login", {
+            email: this.email,
+            password: this.password,
+          });
+        } catch (error) {
+          if (error.response.status === 401) {
+            this.error = {
+              status: true,
+              message: "Invalid credentials",
+            };
+          } else {
+            this.error = {
+              status: true,
+              message:
+                "Something went wrong. Please recheck your details and try again.",
+            };
+          }
+        }
       }
     },
     touchAll() {
@@ -41,7 +57,16 @@ export default {
       return !this.emailError && !this.passwordError;
     },
   },
-  components: { UiButton, PasswordInputShowHide, AuthHeader, FormWrapper },
+  metaInfo: {
+    title: "Screenings",
+  },
+  components: {
+    UiButton,
+    PasswordInputShowHide,
+    AuthHeader,
+    FormWrapper,
+    ErrorMessage,
+  },
 };
 </script>
 
@@ -58,6 +83,7 @@ export default {
             @submit.prevent="submitForm"
             class="login-page__form"
           >
+            <ErrorMessage v-if="error.status">{{ error.message }}</ErrorMessage>
             <ul>
               <li :class="{ 'login-page__error--input': !!emailError }">
                 <label class="font--label" for="email">Email </label>
@@ -84,20 +110,15 @@ export default {
             </ul>
 
             <div class="action-buttons">
-              <UiButton :disabled="!isFormValid" colors="brand"
-                >Log in</UiButton
-              >
-
-              <UiButton
-                class="login-page__buttons--register"
-                empty
-                borderless
-                colors="brand"
-              >
-                <router-link :to="{ name: 'Register' }"
-                  >Register instead</router-link
-                >
+              <UiButton :disabled="!isFormValid" colors="brand">
+                Log in
               </UiButton>
+
+              <router-link :to="{ name: 'Register' }">
+                <UiButton transparent borderless colors="brand">
+                  Register instead
+                </UiButton>
+              </router-link>
             </div>
           </form>
         </FormWrapper>
@@ -128,6 +149,11 @@ export default {
 
   h2 {
     color: var(--color-secondary);
+  }
+
+  .error {
+    margin: 0 0 1rem 0;
+    font-size: 2.125rem;
   }
 
   &__error {

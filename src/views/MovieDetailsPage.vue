@@ -8,13 +8,8 @@ import ScreeningsForOneMovie from "@/components/sections/ScreeningsForOneMovie.v
 import * as moviesApi from "@/helpers/api/movies";
 
 export default {
-  components: {
-    ErrorMessage,
-    MainHeader,
-    BreadcrumbNavigation,
-    ScreeningsForOneMovie,
-    MovieDescription,
-  },
+  name: "MovieDetails",
+
   data() {
     return {
       movie: null,
@@ -32,6 +27,15 @@ export default {
   async created() {
     this.fetchMovie();
   },
+  computed: {
+    title() {
+      if (this.movie) {
+        return this.movie.title;
+      } else {
+        return "Monte Cinema";
+      }
+    },
+  },
   methods: {
     async fetchMovie() {
       try {
@@ -46,6 +50,16 @@ export default {
       this.loading = false;
     },
   },
+  metaInfo() {
+    return { title: this.title };
+  },
+  components: {
+    ErrorMessage,
+    MainHeader,
+    BreadcrumbNavigation,
+    ScreeningsForOneMovie,
+    MovieDescription,
+  },
 };
 </script>
 
@@ -57,7 +71,7 @@ export default {
       <error-message>{{ error.message }}</error-message>
     </div>
     <div v-else>
-      <BreadcrumbNavigation :nestedName="movie.title"
+      <BreadcrumbNavigation backPath="/movies" :nestedName="movie.title"
         >Movies</BreadcrumbNavigation
       >
 

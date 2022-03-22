@@ -7,6 +7,7 @@ export default {
     return {
       userCredentials: { email: "", password: "" },
       nextStep: false,
+      error: { status: false, message: "" },
     };
   },
   methods: {
@@ -14,7 +15,8 @@ export default {
       this.userCredentials = event;
       this.nextStep = true;
     },
-    submitRegistration(event) {
+    async submitRegistration(event) {
+
       /* console.log("data submitted to the server", event); */
       const userCreds = {
         ...this.userCredentials,
@@ -23,7 +25,15 @@ export default {
         date_of_birth: event.birthday,
       };
 
-      this.$store.dispatch("register", userCreds);
+      try {
+        await this.$store.dispatch("user/register", userCreds);
+      } catch (error) {
+        this.error = {
+          status: true,
+          message:
+            "Something went wrong. Please recheck the inputs and again later",
+        };
+      }
     },
   },
   computed: {
@@ -31,7 +41,14 @@ export default {
       return this.isValidEmailPassword && this.nextStep ? 1 : 0;
     },
   },
-  components: { AuthHeader, EmailPasswordFormValidated, UserInformationForm },
+  metaInfo: {
+    title: "Registration",
+  },
+  components: {
+    AuthHeader,
+    EmailPasswordFormValidated,
+    UserInformationForm,
+  },
 };
 </script>
 
@@ -42,7 +59,7 @@ export default {
       <div v-if="nextStep">
         <h1 class="font--header">Great!</h1>
         <h2 class="font--header">Now your name</h2>
-        <UserInformationForm @submit="submitRegistration" />
+        <UserInformationForm :error="error" @submit="submitRegistration" />
       </div>
       <div v-else>
         <h1 class="font--header">Ahoy you!</h1>

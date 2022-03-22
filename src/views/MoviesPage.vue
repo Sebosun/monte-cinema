@@ -15,13 +15,13 @@ export default {
   },
   computed: {
     loading() {
-      return this.$store.getters.loading;
+      return this.$store.getters["movies/loading"];
     },
     error() {
-      return this.$store.getters.error;
+      return this.$store.getters["movies/error"];
     },
     movies() {
-      return this.$store.getters.allMovies;
+      return this.$store.getters["movies/allMovies"];
     },
     genres() {
       return getGenres(this.movies);
@@ -38,6 +38,10 @@ export default {
         ? this.filterMoviesByName
         : filteredMovies;
     },
+  },
+  metaInfo: {
+    title: "All Movies",
+    titleTemplate: "%s | Monte Cinema",
   },
   components: { MainHeader, MovieItem, LoadingSpinner, BreadcrumbNavigation },
 };
