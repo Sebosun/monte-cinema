@@ -1,6 +1,6 @@
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-export default function generateArray(length, taken_seats) {
+export default function genSeatsTable(length, taken_seats) {
   const metaArr = Array.from(Array(length).keys());
   return metaArr.map((item, index) => {
     const seatsObj = {
