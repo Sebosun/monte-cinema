@@ -3,57 +3,110 @@ export default {
   props: {
     array: { type: Array, required: true },
   },
+  methods: {
+    boxClasses(seat) {
+      return [
+        "choose-seats__box",
+        {
+          "choose-seats__box--user-selected": seat.taken,
+          "choose-seats__box--reserved": seat.reserved,
+        },
+      ];
+    },
+  },
 };
 </script>
 
 <template>
-  <div>
-    <div v-for="(item, index) in array" class="booking__container" :key="index">
-      <div>{{ item.row }}</div>
+  <div class="choose-seats">
+    <div
+      v-for="(row, index) in array"
+      class="choose-seats__container"
+      :key="index"
+    >
+      <div class="choose-seats--indicator">{{ row.row }}</div>
       <button
-        @click="$emit('takeSeat', i)"
-        v-for="(i, arrIndex) in item.array"
-        :key="i.value"
-        class="square"
-        :class="{
-          'square--user-checked': i.taken,
-          'square--reserved': i.reserved,
-        }"
+        @click="$emit('takeSeat', seat)"
+        v-for="(seat, arrIndex) in row.array"
+        :key="seat.value"
+        :class="boxClasses(seat)"
       >
-        <div>{{ arrIndex + 1 }}</div>
+        {{ arrIndex + 1 }}
       </button>
-      <div>{{ item.row }}</div>
+
+      <div class="choose-seats--indicator">{{ row.row }}</div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.booking__container {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 20px;
-}
-.square {
-  transition: color 0.2s ease-in-out, background-color 0.3s ease-in-out;
+.choose-seats {
+  padding: 40px;
 
-  border: 0;
-  height: 35px;
-  width: 55px;
   display: flex;
+  gap: 10px;
+  flex-flow: column;
   justify-content: center;
   align-items: center;
-  background: #fbcfd0;
-  &:hover {
-    cursor: pointer;
+
+  box-shadow: 0px 1.596024513244629px 5.187079429626465px 0px #00000004;
+  box-shadow: 0px 5.360713958740234px 17.422321319580078px 0px #00000006;
+  box-shadow: 0px 24px 78px 0px #00000014;
+
+  &__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    overflow: auto;
   }
-}
 
-.square--reserved {
-  background: #ccc;
-}
+  &__box {
+    border: 0;
+    height: 35px;
+    width: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fbcfd0;
 
-.square--user-checked {
-  background: red;
+    transition: color 0.2s ease-in-out, background-color 0.3s ease-in-out;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__box--reserved {
+    background: var(--color-secondary);
+  }
+
+  &__box--user-selected {
+    background: var(--color-brand);
+    color: var(--color-background);
+  }
+
+  @include media-sm {
+    &__container {
+      margin: 10px 20px;
+      overflow: auto;
+    }
+    &__box {
+      flex: 1;
+      align-self: stretch;
+      width: 100%;
+    }
+
+    &--indicator {
+      margin-inline: 0;
+    }
+  }
+  @include media-md {
+    &--indicator {
+      margin-inline: 0px 20px;
+    }
+    &--indicator:last-child {
+      margin-inline: 20px 0;
+    }
+  }
 }
 </style>
