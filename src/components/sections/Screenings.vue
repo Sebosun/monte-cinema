@@ -3,11 +3,11 @@ import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
-import getGenres from "@/helpers/getGenres";
+import getGenres from "@/helpers/getGenres.ts";
 import {
   ONE_DAY_IN_MILLISECONDS,
   dateToHumanReadableDay,
-} from "@/helpers/timeUtils.js";
+} from "@/helpers/timeUtils.ts";
 import CalendarSVG from "@/assets/calendar.svg";
 
 export default {

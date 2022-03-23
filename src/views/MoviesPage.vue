@@ -2,7 +2,7 @@
 import MainHeader from "@/components/MainHeader.vue";
 import MovieItem from "@/components/chunks/MovieItem.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
-import getGenres from "@/helpers/getGenres";
+import getGenres from "@/helpers/getGenres.ts";
 import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
 
 export default {

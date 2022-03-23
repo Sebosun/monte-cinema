@@ -2,7 +2,7 @@
 import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
 
-import validateEmail from "@/helpers/validateEmail";
+import validateEmail from "@/helpers/validateEmail.ts";
 import validatePassword from "@/helpers/validatePassword";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 

@@ -1,7 +1,18 @@
-export default function getGenres(movies) {
-  const genres = movies.reduce((uniqueGenres, currentMovie) => {
+interface genreObj {
+  name: string;
+  id: number;
+}
+
+interface movieObj {
+  genre: genreObj;
+}
+
+type uniqueGenres = genreObj[];
+
+export default function getGenres(movies: []) {
+  const genres = movies.reduce((uniqueGenres, currentMovie: movieObj) => {
     //checks if value already exists within uniqueGenres arr
-    const isUnique = !uniqueGenres.some((genre) => {
+    const isUnique = !uniqueGenres.some((genre: genreObj) => {
       return (
         genre.name === currentMovie.genre.name &&
         genre.id === currentMovie.genre.id
@@ -15,7 +26,7 @@ export default function getGenres(movies) {
       });
     }
     return uniqueGenres;
-  }, []);
+  }, [] as uniqueGenres);
 
   return genres;
 }

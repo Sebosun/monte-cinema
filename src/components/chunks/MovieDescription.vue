@@ -1,6 +1,6 @@
 <script>
 import Tags from "@/components/UI/Tags.vue";
-import { minutesToHoursAndRemainder } from "@/helpers/timeUtils";
+import { minutesToHoursAndRemainder } from "@/helpers/timeUtils.ts";
 
 export default {
   props: {
