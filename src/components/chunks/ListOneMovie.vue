@@ -5,7 +5,7 @@ import UiButton from "@/components/UI/UiButton.vue";
 import {
   minutesToHoursAndRemainder,
   dateToHoursMinutes,
-} from "@/helpers/timeUtils.ts";
+} from "@/helpers/timeUtils";
 
 export default {
   components: { MovieCard, Tags, UiButton },

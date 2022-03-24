@@ -7,7 +7,7 @@ interface Seances {
 
 export const getAllMovies = async () => defaultClient.get("/movies");
 
-export const getOneMovie = async (id: number) =>
+export const getOneMovie = async (id: number | string) =>
   defaultClient.get(`/movies/${id}`);
 
 export const getSeances = async ({ date, id }: Seances) => {

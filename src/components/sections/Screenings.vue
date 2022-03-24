@@ -1,31 +1,39 @@
-<script>
+<script lang="ts">
+import Vue, { PropType } from "vue";
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
-import getGenres from "@/helpers/getGenres.ts";
 import {
   ONE_DAY_IN_MILLISECONDS,
   dateToHumanReadableDay,
-} from "@/helpers/timeUtils.ts";
-import CalendarSVG from "@/assets/calendar.svg";
+} from "@/helpers/timeUtils";
 
-export default {
+import CalendarSVG from "@/assets/calendar.svg";
+import getGenres from "@/helpers/getGenres";
+
+interface genreObj {
+  name: string;
+  id: number;
+}
+
+import { movieWithScreenings } from "@/interfaces/MovieTypes";
+
+import { Error } from "./AllScreeningsLogic.vue";
+
+export default Vue.extend({
   data() {
     return {
       selectedGenre: "",
-      modelConfig: {
-        type: "Date",
-      },
     };
   },
   props: {
     movies: {
-      type: Array,
+      type: Array as PropType<movieWithScreenings[]>,
       required: true,
     },
     selectedDay: {
-      type: Date,
+      type: Date as PropType<Date>,
       required: true,
     },
     empty: {
@@ -37,30 +45,30 @@ export default {
       default: true,
     },
     error: {
-      type: Object,
+      type: Object as PropType<Error>,
       required: true,
     },
   },
   methods: {
-    dayToHuman(day) {
+    dayToHuman(day: Date) {
       return dateToHumanReadableDay(day);
     },
-    emitDayUpdate(event) {
+    emitDayUpdate(event: string) {
       this.$emit("changeDate", new Date(event));
     },
   },
   computed: {
-    genres() {
+    genres(): genreObj[] {
       return getGenres(this.movies);
     },
-    filterMovies() {
+    filterMovies(): movieWithScreenings[] {
       const filteredMovies = this.movies.filter(
         (item) => item.genre.name === this.selectedGenre
       );
       // making sure something is actually selected
       return this.selectedGenre == "" ? this.movies : filteredMovies;
     },
-    datesForDaySwitchingButtons() {
+    datesForDaySwitchingButtons(): Date[] {
       const today = new Date();
       const dayIndexes = Array.from(Array(4).keys());
 
@@ -69,8 +77,8 @@ export default {
           new Date(today.getTime() + dayNumber * ONE_DAY_IN_MILLISECONDS)
       );
     },
-    currentScreeningsText() {
-      const options = { weekday: "long" };
+    currentScreeningsText(): string {
+      const options = { weekday: "long" } as const;
       const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
         this.selectedDay
       );
@@ -84,7 +92,7 @@ export default {
     LoadingSpinner,
     CalendarSVG,
   },
-};
+});
 </script>
 
 <template>

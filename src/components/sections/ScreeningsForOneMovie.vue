@@ -3,29 +3,11 @@ import Vue, { PropType } from "vue";
 import * as moviesApi from "@/helpers/api/movies.ts";
 import Screenings from "./Screenings.vue";
 
-interface Movie {
-  id: number;
-  title: string;
-  genre: {
-    id: number;
-    name: string;
-  };
-  poster_url: string;
-  length: number;
-  release_date: string;
-  description: string;
-}
-
-interface ScreeningTypes {
-  id: number;
-  datetime: string;
-  movie: number;
-  hall: number;
-}
-
-interface selectedDayScreenings extends Movie {
-  screenings: ScreeningTypes[];
-}
+import {
+  Movie,
+  ScreeningTypes,
+  movieWithScreenings,
+} from "@/interfaces/MovieTypes";
 
 export default Vue.extend({
   data() {
@@ -63,17 +45,17 @@ export default Vue.extend({
     },
   },
   computed: {
-    selectedDayScreenings(): ScreeningTypes[] {
+    movieWithScreenings(): ScreeningTypes[] {
       return this.screenings.filter((screening) => {
         const screeningDate = new Date(screening.datetime);
         return screeningDate.toDateString() === this.selectedDay.toDateString();
       });
     },
-    castMovieAsArray(): selectedDayScreenings[] {
-      return [{ ...this.movie, screenings: this.selectedDayScreenings }];
+    castMovieAsArray(): movieWithScreenings[] {
+      return [{ ...this.movie, screenings: this.movieWithScreenings }];
     },
     isTheDayEmpty(): boolean {
-      return this.selectedDayScreenings.length === 0;
+      return this.movieWithScreenings.length === 0;
     },
   },
   components: {
