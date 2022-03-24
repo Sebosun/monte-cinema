@@ -1,8 +1,8 @@
 import { mount, shallowMount, RouterLinkStub } from "@vue/test-utils";
 import EmailPasswordFormValidated from "@/components/chunks/EmailPasswordFormValidated.vue";
 
-describe("Main Header", () => {
-  xit("shows hamburger menu", () => {
+describe("Email Password Form", () => {
+  xit("emits the form on submit", () => {
     const wrapper = mount(EmailPasswordFormValidated, {
       stubs: {
         RouterLink: RouterLinkStub,
