@@ -25,8 +25,8 @@ export default {
       this.touchAll();
       if (this.isFormValid) {
         this.$emit("submit", {
-          firstName: this.name,
-          lastName: this.lastName,
+          firstName: this.name.trim(),
+          lastName: this.lastName.trim(),
           birthday: this.birthday,
         });
       }
@@ -41,15 +41,25 @@ export default {
   computed: {
     firstNameError() {
       if (!this.isFirstNameTouched) return "";
-      return this.name.length > 0 ? "" : "First name cannot be empty";
+      return this.name.trim().length > 0 ? "" : "First name cannot be empty";
     },
     lastNameError() {
       if (!this.isLastNameTouched) return "";
-      return this.lastName.length > 0 ? "" : "Last name cannot be empty";
+      return this.lastName.trim().length > 0 ? "" : "Last name cannot be empty";
     },
     birthdayError() {
       if (!this.isBirthdayTouched) return "";
-      return this.birthday === "" ? "Birthday is required" : "";
+      if (this.birthday === "") return "Birthday is required";
+
+      const userBirthday = new Date(this.birthday);
+
+      const age = Math.trunc(
+        (Date.now() - userBirthday) / (24 * 3600 * 365.25 * 1000)
+      );
+
+      return age >= 18
+        ? ""
+        : "You have to be at least 18 years old to register on this site";
     },
     privacyError() {
       if (!this.isPrivacyTouched) return "";
@@ -82,8 +92,11 @@ export default {
             type="text"
             v-model="name"
             placeholder="e.g. Jessica"
+            data-spec="name-input"
           />
-          <div class="user-info__error--message">{{ firstNameError }}</div>
+          <div data-spec="first-name-error" class="user-info__error--message">
+            {{ firstNameError }}
+          </div>
         </li>
         <li :class="{ 'user-info__error--input': !!lastNameError }">
           <label class="font--label" for="last name">Last Name</label>
@@ -94,8 +107,11 @@ export default {
             type="text"
             v-model="lastName"
             placeholder="e.g. Walton"
+            data-spec="last-name-input"
           />
-          <div class="user-info__error--message">{{ lastNameError }}</div>
+          <div data-spec="last-name-error" class="user-info__error--message">
+            {{ lastNameError }}
+          </div>
         </li>
 
         <li :class="{ 'user-info__error--input': !!birthdayError }">
@@ -109,7 +125,9 @@ export default {
             placeholder="DD/MM/YYYY"
             data-date-split-input="true"
           />
-          <div class="user-info__error--message">{{ birthdayError }}</div>
+          <div data-spec="birthday-error" class="user-info__error--message">
+            {{ birthdayError }}
+          </div>
           <p class="user-info__age">You should be at least 18 years old</p>
         </li>
 
@@ -130,7 +148,9 @@ export default {
         <div class="user-info__error--message">{{ privacyError }}</div>
       </ul>
       <div class="action-buttons">
-        <UiButton :disabled="!isFormValid" colors="brand">Register</UiButton>
+        <UiButton type="submit" :disabled="!isFormValid" colors="brand"
+          >Register</UiButton
+        >
         <router-link :to="{ name: 'Login' }">
           <UiButton transparent borderless colors="brand">
             Log in instead
