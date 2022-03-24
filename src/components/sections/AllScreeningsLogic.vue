@@ -6,9 +6,11 @@ export default {
       selectedDay: new Date(),
     };
   },
+
   async mounted() {
     await this.fetchScreenings();
   },
+
   methods: {
     async fetchScreenings(date = this.selectedDay) {
       this.$store.dispatch("movies/getSeances", date);
@@ -18,6 +20,7 @@ export default {
       this.selectedDay = event;
     },
   },
+
   computed: {
     loading() {
       return this.$store.getters["movies/loading"];
@@ -43,6 +46,7 @@ export default {
       return this.screenings.length == 0;
     },
   },
+
   watch: {
     async selectedDay(day) {
       await this.fetchScreenings(day);
