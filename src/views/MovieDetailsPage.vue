@@ -5,7 +5,7 @@ import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
 import MovieDescription from "@/components/chunks/MovieDescription.vue";
 import ScreeningsForOneMovie from "@/components/sections/ScreeningsForOneMovie.vue";
 
-import * as moviesApi from "@/helpers/api/movies";
+import * as moviesApi from "@/helpers/api/movies.ts";
 
 export default {
   name: "MovieDetails",

@@ -1,11 +1,36 @@
-<script>
-import * as moviesApi from "@/helpers/api/movies";
+<script lang="ts">
+import Vue, { PropType } from "vue";
+import * as moviesApi from "@/helpers/api/movies.ts";
 import Screenings from "./Screenings.vue";
 
-export default {
+interface Movie {
+  id: number;
+  title: string;
+  genre: {
+    id: number;
+    name: string;
+  };
+  poster_url: string;
+  length: number;
+  release_date: string;
+  description: string;
+}
+
+interface ScreeningTypes {
+  id: number;
+  datetime: string;
+  movie: number;
+  hall: number;
+}
+
+interface selectedDayScreenings extends Movie {
+  screenings: ScreeningTypes[];
+}
+
+export default Vue.extend({
   data() {
     return {
-      screenings: [],
+      screenings: [] as ScreeningTypes[],
       selectedDay: new Date(),
       loading: true,
       error: { status: false, message: "Something went wrong" },
@@ -13,7 +38,7 @@ export default {
   },
   props: {
     movie: {
-      type: Object,
+      type: Object as PropType<Movie>,
       required: true,
     },
   },
@@ -21,7 +46,7 @@ export default {
     this.getSingleScreening(this.movie.id);
   },
   methods: {
-    async getSingleScreening(id) {
+    async getSingleScreening(id: number) {
       this.loading = true;
       try {
         const response = await moviesApi.getSeances({ id });
@@ -33,28 +58,28 @@ export default {
         this.loading = false;
       }
     },
-    changeDate(event) {
+    changeDate(event: Date) {
       this.selectedDay = event;
     },
   },
   computed: {
-    selectedDayScreenings() {
+    selectedDayScreenings(): ScreeningTypes[] {
       return this.screenings.filter((screening) => {
         const screeningDate = new Date(screening.datetime);
         return screeningDate.toDateString() === this.selectedDay.toDateString();
       });
     },
-    castMovieAsArray() {
+    castMovieAsArray(): selectedDayScreenings[] {
       return [{ ...this.movie, screenings: this.selectedDayScreenings }];
     },
-    isTheDayEmpty() {
+    isTheDayEmpty(): boolean {
       return this.selectedDayScreenings.length === 0;
     },
   },
   components: {
     Screenings,
   },
-};
+});
 </script>
 
 <template>
