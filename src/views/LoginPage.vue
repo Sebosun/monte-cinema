@@ -128,7 +128,7 @@ export default {
               </UiButton>
 
               <router-link :to="{ name: 'Register' }">
-                <UiButton empty borderless colors="brand">
+                <UiButton transparent borderless colors="brand">
                   Register instead
                 </UiButton>
               </router-link>

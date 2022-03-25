@@ -48,7 +48,7 @@ export default {
       return [{ ...this.movie, screenings: this.selectedDayScreenings }];
     },
     isTheDayEmpty() {
-      return this.selectedDayScreenings.length == 0;
+      return this.selectedDayScreenings.length === 0;
     },
   },
   components: {

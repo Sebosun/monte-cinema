@@ -26,32 +26,34 @@ export default {
       this.isEmailTouched = true;
       this.isPasswordTouched = true;
     },
+    getValidationClass(validationType) {
+      const validator = this.passwordValidation[validationType];
+      if (typeof validator === "undefined") return "";
+      return validator ? "validated-form__info" : "validated-form__info--error";
+    },
   },
   computed: {
     emailError() {
-      if (!this.isEmailTouched) return "";
+      if (!this.isEmailTouched) return false;
       return validateEmail(this.email, this.isEmailTouched);
     },
     passwordError() {
       if (!this.isPasswordTouched) return false;
       return validatePassword(this.password, this.isPasswordTouched);
     },
+    passwordValidation() {
+      return {
+        length: this.isPasswordTouched ? this.password.length > 8 : undefined,
+        digits: this.isPasswordTouched
+          ? !!this.password.match(/\d/)
+          : undefined,
+        letters: this.isPasswordTouched
+          ? !!this.password.match(/[a-zA-Z]/)
+          : undefined,
+      };
+    },
     isFormValid() {
       return !this.emailError && !this.passwordError;
-    },
-    passwordLength() {
-      if (!this.isPasswordTouched) return "";
-      return this.password.length > 8 ? "positive" : "negative";
-    },
-    passwordDigits() {
-      if (!this.isPasswordTouched) return "";
-      const matchNumbers = this.password.match(/\d/);
-      return matchNumbers ? "positive" : "negative";
-    },
-    passwordLetters() {
-      if (!this.isPasswordTouched) return "";
-      const matchLetters = this.password.match(/[a-zA-Z]/);
-      return matchLetters ? "positive" : "negative";
     },
   },
 
@@ -91,16 +93,16 @@ export default {
           </li>
         </ul>
 
-        <p :class="passwordLength">At least 8 characters</p>
-        <p :class="passwordLetters">At least one letter</p>
-        <p :class="passwordDigits">At least one digit</p>
+        <p :class="getValidationClass('length')">At least 8 characters</p>
+        <p :class="getValidationClass('letters')">At least one letter</p>
+        <p :class="getValidationClass('digits')">At least one digit</p>
 
         <div class="action-buttons">
           <ui-button :disabled="!isFormValid" colors="brand"
             >Next Step</ui-button
           >
           <router-link :to="{ name: 'Login' }">
-            <ui-button empty borderless colors="brand">
+            <ui-button transparent borderless colors="brand">
               Log in instead
             </ui-button>
           </router-link>
@@ -117,11 +119,11 @@ export default {
 
 <style scoped lang="scss">
 .validated-form {
-  .positive {
+  &__info {
     color: #27ae60;
   }
 
-  .negative {
+  &__info--error {
     color: var(--color-error);
   }
 
