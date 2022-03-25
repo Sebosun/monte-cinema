@@ -14,6 +14,12 @@ export default {
       isPasswordTouched: false,
     };
   },
+  mounted() {
+    if (this.$store.getters["user/isLoggedIn"]) {
+      const redirectPath = this.$store.getters.redirectTo;
+      this.$router.push(redirectPath);
+    }
+  },
   methods: {
     async submitForm() {
       this.touchAll();
@@ -23,6 +29,13 @@ export default {
             email: this.email,
             password: this.password,
           });
+
+          if (this.$store.getters.redirect) {
+            const redirectPath = this.$store.getters.redirectTo;
+            this.$router.push(redirectPath);
+          } else {
+            this.$router.push("/");
+          }
         } catch (error) {
           if (error.response.status === 401) {
             this.error = {
@@ -131,7 +144,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .login-page {
   margin: 64px 0;
   margin-inline: auto;

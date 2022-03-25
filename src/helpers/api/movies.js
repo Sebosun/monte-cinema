@@ -4,6 +4,10 @@ export const getAllMovies = async () => defaultClient.get("/movies");
 
 export const getOneMovie = async (id) => defaultClient.get(`/movies/${id}`);
 
+export const getOneSeance = async (id) => defaultClient.get(`/seances/${id}`);
+
+export const getHall = async (id) => defaultClient.get(`/halls/${id}`);
+
 export const getSeances = async ({ date, id }) => {
   return await defaultClient.get("/seances", {
     params: {

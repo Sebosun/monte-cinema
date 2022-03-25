@@ -10,6 +10,8 @@ import Meta from "vue-meta";
 
 Vue.config.productionTip = false;
 
+store.dispatch("user/restoreUserData");
+
 Vue.use(Meta);
 Vue.use(VueRouter);
 Vue.use(VCalendar, {
