@@ -5,7 +5,7 @@ import Tags from "@/components/UI/Tags.vue";
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 
 import genSeatsTable from "@/helpers/genSeatsTable";
-import { showSeances, getHall, getOneMovie } from "@/helpers/api/movies";
+import { getOneSeance, getHall, getOneMovie } from "@/helpers/api/movies";
 import UiButton from "@/components/UI/UiButton.vue";
 
 export default {
@@ -14,7 +14,7 @@ export default {
       seance: null,
       hall: null,
       movie: null,
-      array: [],
+      seatsArray: [],
       chosenSeats: new Set(),
     };
   },
@@ -34,14 +34,14 @@ export default {
   },
   methods: {
     async fetchShowSeances() {
-      const response = await showSeances(this.id);
+      const response = await getOneSeance(this.id);
       this.seance = response.data;
     },
     async fetchHall(id) {
       const response = await getHall(id);
       this.hall = response.data;
       const seatLength = response.data.seats / 10;
-      this.array = genSeatsTable(seatLength, this.seance.taken_seats);
+      this.seatsArray = genSeatsTable(seatLength, this.seance.taken_seats);
     },
     async fetchMovie(movieId) {
       const response = await getOneMovie(movieId);
@@ -49,12 +49,17 @@ export default {
     },
     toggleTakeSeat(seat) {
       const letter = seat.value[0];
-      const indexMainArr = this.array.findIndex((arr) => arr.row === letter);
-      const indexNestArr = this.array[indexMainArr].array.findIndex((arr) => {
-        return arr.value === seat.value;
-      });
+      const indexMainArr = this.seatsArray.findIndex(
+        (arr) => arr.row === letter
+      );
+      const indexNestArr = this.seatsArray[indexMainArr].array.findIndex(
+        (arr) => {
+          return arr.value === seat.value;
+        }
+      );
 
-      var nestedSelectedArr = this.array[indexMainArr].array[indexNestArr];
+      const nestedSelectedArr =
+        this.seatsArray[indexMainArr].array[indexNestArr];
 
       if (!nestedSelectedArr.reserved) {
         nestedSelectedArr.taken = !nestedSelectedArr.taken;
@@ -90,7 +95,10 @@ export default {
       </ListOneMovie>
       <main class="booking-page__seats">
         <h1>Choose your seats</h1>
-        <ChooseSeatsSection @takeSeat="toggleTakeSeat" :array="array" />
+        <ChooseSeatsSection
+          @takeSeat="toggleTakeSeat"
+          :seatsArray="seatsArray"
+        />
         <UiButton
           medium
           :disabled="chosenSeats.size === 0"

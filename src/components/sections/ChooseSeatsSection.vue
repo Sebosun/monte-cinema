@@ -1,7 +1,7 @@
 <script>
 export default {
   props: {
-    array: { type: Array, required: true },
+    seatsArray: { type: Array, required: true },
   },
   methods: {
     boxClasses(seat) {
@@ -20,7 +20,7 @@ export default {
 <template>
   <div class="choose-seats">
     <div
-      v-for="(row, index) in array"
+      v-for="(row, index) in seatsArray"
       class="choose-seats__container"
       :key="index"
     >

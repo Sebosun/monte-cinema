@@ -33,7 +33,7 @@ export default {
         return { ...screening, datetime: screeningDate };
       });
     },
-    showComponent() {
+    isComponentVisible() {
       return this.screenings.length >= 1 || this.show;
     },
   },
@@ -43,7 +43,7 @@ export default {
 </script>
 
 <template>
-  <MovieCard v-if="showComponent" class="list-one-movie">
+  <MovieCard v-if="isComponentVisible" class="list-one-movie">
     <div class="list-one-movie__wrapper">
       <div class="list-one-movie__fill">
         <img :src="movie.poster_url" :alt="movie.title" />

@@ -9,7 +9,8 @@ import VCalendar from "v-calendar";
 import Meta from "vue-meta";
 
 Vue.config.productionTip = false;
-// TODO call store in here and setup headers before app launches
+
+store.dispatch("user/restoreUserData");
 
 Vue.use(Meta);
 Vue.use(VueRouter);
