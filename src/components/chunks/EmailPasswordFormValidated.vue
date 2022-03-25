@@ -7,7 +7,7 @@ import validateEmail from "@/helpers/validateEmail";
 import validatePassword from "@/helpers/validatePassword";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 
-type InputError = boolean | string;
+type InputError = false | string;
 
 interface PasswordValidation {
   length: boolean;

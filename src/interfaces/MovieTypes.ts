@@ -18,6 +18,6 @@ export interface ScreeningTypes {
   hall: number;
 }
 
-export interface movieWithScreenings extends Movie {
+export interface MovieWithScreenings extends Movie {
   screenings: ScreeningTypes[];
 }

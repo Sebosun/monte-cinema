@@ -12,12 +12,12 @@ import {
 import CalendarSVG from "@/assets/calendar.svg";
 import getGenres from "@/helpers/getGenres";
 
-interface genreObj {
+interface GenreObj {
   name: string;
   id: number;
 }
 
-import { movieWithScreenings } from "@/interfaces/MovieTypes";
+import { MovieWithScreenings } from "@/interfaces/MovieTypes";
 
 import { Error } from "./AllScreeningsLogic.vue";
 
@@ -29,7 +29,7 @@ export default Vue.extend({
   },
   props: {
     movies: {
-      type: Array as PropType<movieWithScreenings[]>,
+      type: Array as PropType<MovieWithScreenings[]>,
       required: true,
     },
     selectedDay: {
@@ -58,10 +58,10 @@ export default Vue.extend({
     },
   },
   computed: {
-    genres(): genreObj[] {
+    genres(): GenreObj[] {
       return getGenres(this.movies);
     },
-    filterMovies(): movieWithScreenings[] {
+    filterMovies(): MovieWithScreenings[] {
       const filteredMovies = this.movies.filter(
         (item) => item.genre.name === this.selectedGenre
       );
@@ -78,7 +78,7 @@ export default Vue.extend({
       );
     },
     currentScreeningsText(): string {
-      const options = { weekday: "long" } as const;
+      const options = { weekday: "long" } as Intl.DateTimeFormatOptions;
       const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
         this.selectedDay
       );

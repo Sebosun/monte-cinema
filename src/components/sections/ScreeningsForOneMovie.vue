@@ -1,12 +1,12 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
-import * as moviesApi from "@/helpers/api/movies.ts";
+import * as moviesApi from "@/helpers/api/movies";
 import Screenings from "./Screenings.vue";
 
 import {
   Movie,
   ScreeningTypes,
-  movieWithScreenings,
+  MovieWithScreenings,
 } from "@/interfaces/MovieTypes";
 
 export default Vue.extend({
@@ -51,7 +51,7 @@ export default Vue.extend({
         return screeningDate.toDateString() === this.selectedDay.toDateString();
       });
     },
-    castMovieAsArray(): movieWithScreenings[] {
+    castMovieAsArray(): MovieWithScreenings[] {
       return [{ ...this.movie, screenings: this.movieWithScreenings }];
     },
     isTheDayEmpty(): boolean {

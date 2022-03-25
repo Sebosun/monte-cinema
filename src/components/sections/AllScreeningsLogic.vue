@@ -4,7 +4,7 @@ import Screenings from "@/components/sections/Screenings.vue";
 import {
   Movie,
   ScreeningTypes,
-  movieWithScreenings,
+  MovieWithScreenings,
 } from "@/interfaces/MovieTypes";
 
 export interface Error {
@@ -43,7 +43,7 @@ export default Vue.extend({
     screenings(): ScreeningTypes[] {
       return this.$store.getters["movies/seances"];
     },
-    moviesArrayWithScreeningDates(): movieWithScreenings[] {
+    moviesArrayWithScreeningDates(): MovieWithScreenings[] {
       return this.movies.map((movie) => {
         const screeningsForThisMovie = this.screenings.filter(
           (screening) => screening.movie === movie.id

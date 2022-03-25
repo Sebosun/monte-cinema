@@ -8,7 +8,7 @@ import MovieDescription from "@/components/chunks/MovieDescription.vue";
 import ScreeningsForOneMovie from "@/components/sections/ScreeningsForOneMovie.vue";
 
 import * as moviesApi from "@/helpers/api/movies";
-import { Movie, ScreeningTypes } from "@/interfaces/MovieTypes";
+import { Movie } from "@/interfaces/MovieTypes";
 
 interface MetaInfo {
   title: string;
@@ -18,9 +18,8 @@ export default Vue.extend({
   name: "MovieDetails",
   data() {
     return {
-      movie: new Object() as Movie,
+      movie: {} as Movie,
       loading: true,
-      screenings: new Object() as ScreeningTypes,
       error: { status: false, message: "Something went wrong" },
     };
   },

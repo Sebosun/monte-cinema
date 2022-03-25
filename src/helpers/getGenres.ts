@@ -1,16 +1,16 @@
 import { Movie } from "@/interfaces/MovieTypes";
 
-export interface genreObj {
+export interface GenreObj {
   name: string;
   id: number;
 }
 
-export type uniqueGenres = genreObj[];
+export type uniqueGenres = GenreObj[];
 
 export default function getGenres(movies: Movie[]) {
   const genres = movies.reduce((uniqueGenres, currentMovie) => {
     //checks if value already exists within uniqueGenres arr
-    const isUnique = !uniqueGenres.some((genre: genreObj) => {
+    const isUnique = !uniqueGenres.some((genre: GenreObj) => {
       return (
         genre.name === currentMovie.genre.name &&
         genre.id === currentMovie.genre.id
