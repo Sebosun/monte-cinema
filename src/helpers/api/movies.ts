@@ -5,14 +5,16 @@ interface Seances {
   id?: number;
 }
 
+type Id = number | string;
+
 export const getAllMovies = async () => defaultClient.get("/movies");
 
-export const getOneMovie = async (id: number | string) =>
-  defaultClient.get(`/movies/${id}`);
+export const getOneMovie = async (id: Id) => defaultClient.get(`/movies/${id}`);
 
-export const getOneSeance = async (id) => defaultClient.get(`/seances/${id}`);
+export const getOneSeance = async (id: Id) =>
+  defaultClient.get(`/seances/${id}`);
 
-export const getHall = async (id) => defaultClient.get(`/halls/${id}`);
+export const getHall = async (id: Id) => defaultClient.get(`/halls/${id}`);
 
 export const getSeances = async ({ date, id }: Seances) => {
   return await defaultClient.get("/seances", {
