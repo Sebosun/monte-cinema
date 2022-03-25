@@ -1,5 +1,3 @@
-<script></script>
-
 <template>
   <div class="tag background--rose">
     <slot />

@@ -1,24 +1,26 @@
-<script>
+<script lang="ts">
+import Vue, { PropType } from "vue";
 import Tags from "@/components/UI/Tags.vue";
 import { minutesToHoursAndRemainder } from "@/helpers/timeUtils";
+import { Movie } from "@/interfaces/MovieTypes";
 
-export default {
+export default Vue.extend({
   props: {
     movie: {
-      type: Object,
+      type: Object as PropType<Movie>,
       required: true,
     },
   },
   computed: {
-    movieLength() {
+    movieLength(): string {
       return minutesToHoursAndRemainder(this.movie.length);
     },
-    movieReleaseYear() {
+    movieReleaseYear(): string {
       return this.movie.release_date.split("-")[0];
     },
   },
   components: { Tags },
-};
+});
 </script>
 
 <template>

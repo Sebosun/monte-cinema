@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import UiButton from "../UI/UiButton.vue";
+import UiButton from "@/components/UI/UiButton.vue";
 export default {
   props: {
     screeningsWithDates: {

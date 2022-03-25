@@ -1,4 +1,4 @@
-export default function validateEmail(email) {
+export default function validateEmail(email: string) {
   const re = email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
   if (!re) {
     if (!email.includes("@")) return "Email must have a @ sign";

@@ -1,37 +1,49 @@
-<script>
+<script lang="ts">
+import Vue from "vue";
 import Screenings from "@/components/sections/Screenings.vue";
-export default {
+import {
+  Movie,
+  ScreeningTypes,
+  movieWithScreenings,
+} from "@/interfaces/MovieTypes";
+
+export interface Error {
+  status: boolean;
+  message: string;
+}
+
+export default Vue.extend({
   data() {
     return {
-      selectedDay: new Date(),
+      selectedDay: new Date() as Date,
     };
   },
   async mounted() {
     await this.fetchScreenings();
   },
   methods: {
-    async fetchScreenings(date = this.selectedDay) {
-      this.$store.dispatch("movies/getSeances", date);
+    async fetchScreenings(date?: Date) {
+      const fetchDate = date ? date : this.selectedDay;
+      this.$store.dispatch("movies/getSeances", fetchDate);
     },
-    changeDate(event) {
-      console.log(event);
+    changeDate(event: Date) {
       this.selectedDay = event;
     },
   },
   computed: {
-    loading() {
+    loading(): boolean {
       return this.$store.getters["movies/loading"];
     },
-    error() {
+    error(): Error {
       return this.$store.getters["movies/error"];
     },
-    movies() {
+    movies(): Movie[] {
       return this.$store.getters["movies/allMovies"];
     },
-    screenings() {
+    screenings(): ScreeningTypes[] {
       return this.$store.getters["movies/seances"];
     },
-    moviesArrayWithScreeningDates() {
+    moviesArrayWithScreeningDates(): movieWithScreenings[] {
       return this.movies.map((movie) => {
         const screeningsForThisMovie = this.screenings.filter(
           (screening) => screening.movie === movie.id
@@ -39,7 +51,7 @@ export default {
         return { ...movie, screenings: screeningsForThisMovie };
       });
     },
-    isTheDayEmpty() {
+    isTheDayEmpty(): boolean {
       return this.screenings.length == 0;
     },
   },
@@ -49,7 +61,7 @@ export default {
     },
   },
   components: { Screenings },
-};
+});
 </script>
 
 <template>
@@ -62,5 +74,3 @@ export default {
     :empty="isTheDayEmpty"
   />
 </template>
-
-<style scoped></style>

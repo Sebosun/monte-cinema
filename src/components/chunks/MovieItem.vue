@@ -1,7 +1,7 @@
 <script>
 import Tags from "@/components/UI/Tags.vue";
 import MovieCard from "@/components/UI/MovieCard.vue";
-import { minutesToHoursAndRemainder } from "@/helpers/timeUtils";
+import { minutesToHoursAndRemainder } from "@/helpers/timeUtils.ts";
 export default {
   props: {
     movie: {

@@ -34,6 +34,7 @@ export default {
       return minutesToHoursAndRemainder(this.movie.length);
     },
   },
+  components: { MovieCard, Tags, ButtonsScreenings },
 };
 </script>
 
@@ -52,13 +53,12 @@ export default {
           </div>
         </div>
         <div class="list-one-movie__buttons-container--md">
-          <UiButton
-            v-for="screening in screeningsWithDatesObjects"
-            :key="screening.id"
-            transparent
-            colors="brand"
-            >{{ getScreeningHour(screening.datetime) }}</UiButton
-          >
+          <slot>
+            <ButtonsScreenings
+              :screeningsWithDates="screeningsWithDates"
+              class="list-one-movie__buttons-container--md"
+            />
+          </slot>
         </div>
       </div>
     </div>
