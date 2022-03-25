@@ -1,25 +1,51 @@
-<script>
+<script lang="ts">
+import Vue from "vue";
 import MainHeader from "@/components/MainHeader.vue";
 import ChooseSeatsSection from "@/components/sections/ChooseSeatsSection.vue";
 import Tags from "@/components/UI/Tags.vue";
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 
-import genSeatsTable from "@/helpers/genSeatsTable";
+import genSeatsTable, { SeatsTable } from "@/helpers/genSeatsTable";
 import { getOneSeance, getHall, getOneMovie } from "@/helpers/api/movies";
+import { Movie } from "@/interfaces/MovieTypes";
 import UiButton from "@/components/UI/UiButton.vue";
+import SeatsPicker from "@/components/chunks/SeatsPicker.vue";
 
-export default {
+export interface Seat {
+  taken: boolean;
+  reserved: boolean;
+  value: string;
+}
+
+export interface Hall {
+  id: number;
+  name: string;
+  seats: number;
+}
+
+export interface Seance {
+  available_seats: string[];
+  datetime: string;
+  hall: number;
+  id: number;
+  movie: number;
+  taken_seats: string[];
+}
+
+export default Vue.extend({
   data() {
     return {
-      seance: null,
-      hall: null,
-      movie: null,
-      seatsArray: [],
-      chosenSeats: new Set(),
+      seance: null as Seance | null,
+      hall: null as Hall | null,
+      movie: null as Movie | null,
+      seatsArray: null as SeatsTable | null,
+      chosenSeats: new Set<string>(),
+      bookTickets: false,
     };
   },
   props: {
     id: {
+      type: Number,
       required: true,
     },
   },
@@ -37,17 +63,20 @@ export default {
       const response = await getOneSeance(this.id);
       this.seance = response.data;
     },
-    async fetchHall(id) {
+    async fetchHall(id: string | number) {
       const response = await getHall(id);
       this.hall = response.data;
       const seatLength = response.data.seats / 10;
-      this.seatsArray = genSeatsTable(seatLength, this.seance.taken_seats);
+      if (this.seance) {
+        this.seatsArray = genSeatsTable(seatLength, this.seance.taken_seats);
+      }
     },
-    async fetchMovie(movieId) {
+    async fetchMovie(movieId: string | number) {
       const response = await getOneMovie(movieId);
       this.movie = response.data;
     },
-    toggleTakeSeat(seat) {
+    toggleTakeSeat(seat: Seat) {
+      if (!this.seatsArray) return false;
       const letter = seat.value[0];
       const indexMainArr = this.seatsArray.findIndex(
         (arr) => arr.row === letter
@@ -66,7 +95,7 @@ export default {
         this.addChosenSeat(seat);
       }
     },
-    addChosenSeat(seat) {
+    addChosenSeat(seat: Seat) {
       const { value } = seat;
       if (this.chosenSeats.has(value)) {
         this.chosenSeats.delete(value);
@@ -77,38 +106,59 @@ export default {
     },
   },
   computed: {
-    loadingFinished() {
-      return !!(this.hall && this.seance && this.movie);
+    seanceScreeningTime(): string {
+      const screeningDate = new Date(this.seance!.datetime).toUTCString();
+      return screeningDate;
     },
   },
-  components: { MainHeader, ListOneMovie, Tags, ChooseSeatsSection, UiButton },
-};
+  components: {
+    MainHeader,
+    ListOneMovie,
+    Tags,
+    ChooseSeatsSection,
+    UiButton,
+    SeatsPicker,
+  },
+});
 </script>
 
 <template>
   <div class="booking-page">
     <MainHeader />
     <div>Breadcrubs</div>
-    <div v-if="loadingFinished">
+    <template v-if="movie && hall && seance">
       <ListOneMovie show :movie="movie">
-        <Tags class="tag">{{ new Date(seance.datetime).toUTCString() }}</Tags>
+        <Tags class="tag">{{ seanceScreeningTime }}</Tags>
       </ListOneMovie>
       <main class="booking-page__seats">
-        <h1>Choose your seats</h1>
-        <ChooseSeatsSection
-          @takeSeat="toggleTakeSeat"
-          :seatsArray="seatsArray"
-        />
-        <UiButton
-          medium
-          :disabled="chosenSeats.size === 0"
-          colors="brand"
-          class="booking-page__seats--button"
-        >
-          Choose {{ chosenSeats.size }} seats
-        </UiButton>
+        <template v-if="!bookTickets">
+          <h1>Choose your seats</h1>
+          <ChooseSeatsSection
+            @takeSeat="toggleTakeSeat"
+            :seatsArray="seatsArray"
+          />
+          <UiButton
+            medium
+            :disabled="chosenSeats.size === 0"
+            @click="bookTickets = true"
+            colors="brand"
+            class="booking-page__seats--button"
+          >
+            Choose {{ chosenSeats.size }} seats
+          </UiButton>
+        </template>
+
+        <template v-else>
+          <h1>Choose your tickets</h1>
+          <SeatsPicker :tickets="chosenSeats" />
+          <div class="book-tickets">
+            <UiButton medium colors="brand" class="booking-page__seats--button">
+              Book {{ chosenSeats.size }} seats
+            </UiButton>
+          </div>
+        </template>
       </main>
-    </div>
+    </template>
   </div>
 </template>
 

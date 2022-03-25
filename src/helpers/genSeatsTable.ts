@@ -1,6 +1,8 @@
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-export default function genSeatsTable(length, taken_seats) {
+export type SeatsTable = ReturnType<typeof genSeatsTable>;
+
+export default function genSeatsTable(length: number, taken_seats: string[]) {
   const metaArr = Array.from(Array(length).keys());
   return metaArr.map((item, index) => {
     const seatsObj = {
@@ -11,7 +13,11 @@ export default function genSeatsTable(length, taken_seats) {
   });
 }
 
-function arrayWithLetter(letter, length = 10, taken_seats = []) {
+function arrayWithLetter(
+  letter: string,
+  length = 10,
+  taken_seats: string[] = []
+) {
   const arr = Array.from(Array(length));
   return arr.map((item, index) => {
     const value = letter + (index + 1);
