@@ -2,6 +2,7 @@
 import MovieCard from "@/components/UI/MovieCard.vue";
 import Tags from "@/components/UI/Tags.vue";
 import ButtonsScreenings from "./ButtonsScreenings.vue";
+import { minutesToHoursAndRemainder } from "@/helpers/timeUtils";
 
 export default {
   props: {
@@ -17,16 +18,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    movieLength() {
-      return minutesToHoursAndRemainder(this.movie.length);
-    },
-  },
-  methods: {
-    movieLength(length) {
-      const hours = Math.floor(length / 60);
-      const minutes = `0${length % 60}`.slice(-2);
-      return `${hours}h ${minutes}`;
-    },
   },
   computed: {
     screeningsWithDates() {
@@ -38,6 +29,9 @@ export default {
     },
     isComponentVisible() {
       return this.screenings.length >= 1 || this.show;
+    },
+    movieLength() {
+      return minutesToHoursAndRemainder(this.movie.length);
     },
   },
 
@@ -59,22 +53,22 @@ export default {
             {{ movieLength }}
           </div>
         </div>
-        <div class="list-one-movie__buttons--md-screen">
+        <div class="list-one-movie__buttons-container--md">
           <slot>
             <ButtonsScreenings
               :screeningsWithDates="screeningsWithDates"
-              class="list-one-movie__buttons--md-screen"
+              class="list-one-movie__buttons-container--md"
             />
           </slot>
         </div>
       </div>
     </div>
 
-    <div class="list-one-movie__buttons--sm-screen">
+    <div class="list-one-movie__buttons-container--sm">
       <slot>
         <ButtonsScreenings
           :screeningsWithDates="screeningsWithDates"
-          class="list-one-movie__buttons--sm-screen"
+          class="list-one-movie__buttons-container--sm"
         />
       </slot>
     </div>

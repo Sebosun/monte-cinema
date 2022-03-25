@@ -5,7 +5,7 @@
       :key="screening.id"
       :to="{ name: 'Booking', params: { id: screening.id } }"
     >
-      <ui-button empty colors="brand">
+      <ui-button transparent colors="brand">
         {{ getScreeningHour(screening.datetime) }}
       </ui-button>
     </router-link>
