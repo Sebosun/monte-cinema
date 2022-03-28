@@ -7,6 +7,7 @@ import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 
 import genSeatsTable, { SeatsTable } from "@/helpers/genSeatsTable";
 import { getOneSeance, getHall, getOneMovie } from "@/helpers/api/movies";
+import { bookReservations } from "@/helpers/api/userActions";
 import { Movie } from "@/interfaces/MovieTypes";
 import UiButton from "@/components/UI/UiButton.vue";
 import SeatsPicker from "@/components/chunks/SeatsPicker.vue";
@@ -30,6 +31,15 @@ export interface Seance {
   id: number;
   movie: number;
   taken_seats: string[];
+}
+
+interface TicketsSubmit {
+  seat: string;
+  ticket: {
+    id: number;
+    name: string;
+    price: number;
+  };
 }
 
 export default Vue.extend({
@@ -114,8 +124,18 @@ export default Vue.extend({
       // since this relies on emited event, its guaranteed to be in the array
       this.toggleTakeSeat({ value: event, taken: true, reserved: false });
     },
-    handleSubmit(event: any) {
-      console.log(event);
+    async handleSubmit(ticketData: TicketsSubmit[]) {
+      const ticketsMapped = ticketData.map((item) => {
+        const obj = { seat: item.seat, ticket_type_id: item.ticket.id };
+        return obj;
+      });
+
+      const response = await bookReservations({
+        seance_id: +this.id,
+        tickets: [...ticketsMapped],
+      });
+
+      console.log(response);
     },
   },
   computed: {
@@ -210,14 +230,6 @@ export default Vue.extend({
       margin: 20px;
       box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.08);
       border-radius: 8px;
-    }
-
-    &__seats {
-      margin-inline: 29px;
-      &--button {
-        display: block;
-        width: 100%;
-      }
     }
   }
   @include media-md {
