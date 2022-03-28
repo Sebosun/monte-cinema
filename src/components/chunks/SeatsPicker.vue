@@ -85,7 +85,7 @@ export default Vue.extend({
             <b>{{ getTicketRowSeat(item.seat).seat }}</b>
           </div>
         </div>
-        <div>
+        <div class="seats-picker__tickets">
           <h3 class="font--label">Ticket type</h3>
           <select
             class="input"
@@ -179,6 +179,12 @@ export default Vue.extend({
     }
   }
 
+  &__tickets {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+  }
+
   @include media-sm {
     &__wrapper {
       flex-flow: column;
@@ -190,6 +196,28 @@ export default Vue.extend({
     &__wrapper * {
       width: 100%;
     }
+
+    &__seats {
+      margin-inline: 29px;
+      display: flex;
+      flex-flow: column &--button {
+        display: block;
+        width: 100%;
+      }
+    }
+
+    &__privacy {
+      max-width: 350px;
+      margin-inline: auto;
+    }
+
+    &__buttons-wrapper {
+      display: flex;
+      flex-flow: column-reverse;
+      gap: 20px;
+      max-width: 350px;
+      margin-inline: auto;
+    }
   }
 
   @include media-md {
@@ -197,15 +225,13 @@ export default Vue.extend({
       margin-left: auto;
       align-self: end;
     }
-  }
-  &__seats {
-    margin-inline: 29px;
-    &--button {
-      display: block;
-      width: 100%;
+    &__seats {
+      margin-inline: 29px;
+      &--button {
+        display: block;
+        width: 100%;
+      }
     }
-  }
-  @include media-md {
     &__buttons-wrapper {
       display: flex;
       margin: 5rem 0;
