@@ -41,11 +41,12 @@ export default Vue.extend({
       seatsArray: null as SeatsTable | null,
       chosenSeats: new Set<string>(),
       bookTickets: false,
+      ticketPrices: 0,
     };
   },
   props: {
     id: {
-      type: Number,
+      type: [Number, String],
       required: true,
     },
   },
@@ -104,6 +105,18 @@ export default Vue.extend({
         this.chosenSeats = new Set(this.chosenSeats.add(value));
       }
     },
+
+    setTicketPrice(event: number) {
+      this.ticketPrices = event;
+    },
+    removeItem(event: string) {
+      // taken and reserved dont matter here, just making typescript happy
+      // since this relies on emited event, its guaranteed to be in the array
+      this.toggleTakeSeat({ value: event, taken: true, reserved: false });
+    },
+    handleSubmit(event: any) {
+      console.log(event);
+    },
   },
   computed: {
     seanceScreeningTime(): string {
@@ -127,7 +140,7 @@ export default Vue.extend({
     <MainHeader />
     <div>Breadcrubs</div>
     <template v-if="movie && hall && seance">
-      <ListOneMovie show :movie="movie">
+      <ListOneMovie class="booking-page__card" show :movie="movie">
         <Tags class="tag">{{ seanceScreeningTime }}</Tags>
       </ListOneMovie>
       <main class="booking-page__seats">
@@ -150,12 +163,13 @@ export default Vue.extend({
 
         <template v-else>
           <h1>Choose your tickets</h1>
-          <SeatsPicker :tickets="chosenSeats" />
-          <div class="book-tickets">
-            <UiButton medium colors="brand" class="booking-page__seats--button">
-              Book {{ chosenSeats.size }} seats
-            </UiButton>
-          </div>
+          <SeatsPicker
+            @goBack="bookTickets = false"
+            @submit="handleSubmit"
+            @priceChange="setTicketPrice"
+            @removeItem="removeItem"
+            :tickets="chosenSeats"
+          />
         </template>
       </main>
     </template>
@@ -181,11 +195,40 @@ export default Vue.extend({
 
   &__seats {
     margin: 50px 0;
-
     &--button {
-      margin: 10px 0;
       display: flex;
       margin-left: auto;
+    }
+  }
+  @include media-sm {
+    h1 {
+      text-align: center;
+    }
+
+    &__card {
+      padding: 16px;
+      margin: 20px;
+      box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+
+    &__seats {
+      margin-inline: 29px;
+      &--button {
+        display: block;
+        width: 100%;
+      }
+    }
+  }
+  @include media-md {
+    &__buttons-wrapper {
+      display: flex;
+      margin: 5rem 0;
+      justify-content: space-between;
+      &--button {
+        display: flex;
+        margin-left: 0;
+      }
     }
   }
 }
