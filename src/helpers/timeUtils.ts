@@ -7,6 +7,21 @@ export function dateToHumanReadableDay(date: Date) {
   return date.toDateString() === today ? "Today" : dayString;
 }
 
+export function dateToBookingHour(date: string) {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: false,
+  };
+
+  const constructedDate = new Date(date);
+  return new Intl.DateTimeFormat("en-US", options).format(constructedDate);
+}
+
 export function minutesToHoursAndRemainder(length: number) {
   const hours = Math.floor(length / 60);
   const minutes = `0${length % 60}`.slice(-2);

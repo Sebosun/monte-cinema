@@ -11,6 +11,7 @@ import { bookReservations } from "@/helpers/api/userActions";
 import { Movie } from "@/interfaces/MovieTypes";
 import UiButton from "@/components/UI/UiButton.vue";
 import SeatsPicker from "@/components/chunks/SeatsPicker.vue";
+import BookingsFinished from "@/components/sections/BookingsFinished.vue";
 
 export interface Seat {
   taken: boolean;
@@ -35,11 +36,22 @@ export interface Seance {
 
 interface TicketsSubmit {
   seat: string;
-  ticket: {
-    id: number;
-    name: string;
-    price: number;
-  };
+  ticket: Tickets;
+}
+
+interface Tickets {
+  id: number;
+  name: string;
+  price: number;
+}
+
+interface CheckoutData {
+  movie: string;
+  tickets: {
+    seat: string;
+    ticket_type_id: number;
+  }[];
+  time: string;
 }
 
 export default Vue.extend({
@@ -52,6 +64,8 @@ export default Vue.extend({
       chosenSeats: new Set<string>(),
       bookTickets: false,
       ticketPrices: 0,
+      isCheckoutFinished: false,
+      checkoutData: null as CheckoutData | null,
     };
   },
   props: {
@@ -130,18 +144,36 @@ export default Vue.extend({
         return obj;
       });
 
-      const response = await bookReservations({
-        seance_id: +this.id,
-        tickets: [...ticketsMapped],
-      });
+      try {
+        await bookReservations({
+          seance_id: +this.id,
+          tickets: [...ticketsMapped],
+        });
 
-      console.log(response);
+        this.isCheckoutFinished = true;
+
+        this.checkoutData = {
+          movie: this.movie!.title,
+          tickets: ticketsMapped,
+          time: this.seance!.datetime,
+        };
+      } catch {
+        this.$notify({
+          type: "error",
+          title: "Something went wrong",
+          text: "Please try again later",
+          duration: 2000,
+        });
+      }
     },
   },
   computed: {
     seanceScreeningTime(): string {
       const screeningDate = new Date(this.seance!.datetime).toUTCString();
       return screeningDate;
+    },
+    isDataLoaded(): boolean {
+      return !!this.movie && !!this.hall && !!this.seance;
     },
   },
   components: {
@@ -151,6 +183,7 @@ export default Vue.extend({
     ChooseSeatsSection,
     UiButton,
     SeatsPicker,
+    BookingsFinished,
   },
 });
 </script>
@@ -159,7 +192,7 @@ export default Vue.extend({
   <div class="booking-page">
     <MainHeader />
     <div>Breadcrubs</div>
-    <template v-if="movie && hall && seance">
+    <template v-if="isDataLoaded && !isCheckoutFinished">
       <ListOneMovie class="booking-page__card" show :movie="movie">
         <Tags class="tag">{{ seanceScreeningTime }}</Tags>
       </ListOneMovie>
@@ -193,6 +226,13 @@ export default Vue.extend({
         </template>
       </main>
     </template>
+    <template v-else>
+      <h1 class="font--header booking-page--headers">Hell Yeah</h1>
+      <h1 class="font--header booking-page--headers">
+        You booked {{ chosenSeats.size }} tickets
+      </h1>
+      <BookingsFinished :checkoutData="checkoutData" />
+    </template>
   </div>
 </template>
 
@@ -211,6 +251,16 @@ export default Vue.extend({
     font-weight: 500;
     line-height: 100%;
     color: var(--color-brand);
+  }
+
+  &--headers {
+    font-size: 48px;
+    margin-bottom: 0;
+    &:last-of-type {
+      margin: 0;
+      padding: 0;
+      color: #f47073;
+    }
   }
 
   &__seats {

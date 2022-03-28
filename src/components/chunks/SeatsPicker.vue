@@ -1,6 +1,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import UiButton from "@/components/UI/UiButton.vue";
+import { getTicketRowSeat, ticketTypes } from "@/helpers/tickets";
 
 const dummySet = new Set<string>();
 
@@ -19,12 +20,7 @@ export default Vue.extend({
   components: { UiButton },
   data() {
     return {
-      ticketTypes: [
-        { id: 1, name: "Adult", price: 20.0 },
-        { id: 2, name: "Child", price: 10.0 },
-        { id: 3, name: "Senior", price: 15.0 },
-        { id: 4, name: "Student", price: 12.0 },
-      ],
+      ticketTypes: ticketTypes,
       chosenTicketsAndTicketTypes: [] as CombinedArray[],
       termsAndConditions: false,
     };
@@ -44,9 +40,7 @@ export default Vue.extend({
   },
   methods: {
     getTicketRowSeat(ticket: string) {
-      const row = ticket[0];
-      const seat = ticket.split(row)[1];
-      return { row, seat };
+      return getTicketRowSeat(ticket);
     },
     removeSeat(index: number, seat: string) {
       this.chosenTicketsAndTicketTypes.splice(index, 1);
