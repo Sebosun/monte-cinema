@@ -6,12 +6,14 @@ import Tags from "@/components/UI/Tags.vue";
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 
 import genSeatsTable, { SeatsTable } from "@/helpers/genSeatsTable";
+import { dateToBookingHour } from "@/helpers/timeUtils";
 import { getOneSeance, getHall, getOneMovie } from "@/helpers/api/movies";
 import { bookReservations } from "@/helpers/api/userActions";
 import { Movie } from "@/interfaces/MovieTypes";
 import UiButton from "@/components/UI/UiButton.vue";
 import SeatsPicker from "@/components/chunks/SeatsPicker.vue";
 import BookingsFinished from "@/components/sections/BookingsFinished.vue";
+import CheckoutBreadCrumbs from "@/components/navigation/CheckoutBreadCrumbs.vue";
 
 export interface Seat {
   taken: boolean;
@@ -129,11 +131,10 @@ export default Vue.extend({
         this.chosenSeats = new Set(this.chosenSeats.add(value));
       }
     },
-
     setTicketPrice(event: number) {
       this.ticketPrices = event;
     },
-    removeItem(event: string) {
+    seatsPageRemoveItem(event: string) {
       // taken and reserved dont matter here, just making typescript happy
       // since this relies on emited event, its guaranteed to be in the array
       this.toggleTakeSeat({ value: event, taken: true, reserved: false });
@@ -169,8 +170,7 @@ export default Vue.extend({
   },
   computed: {
     seanceScreeningTime(): string {
-      const screeningDate = new Date(this.seance!.datetime).toUTCString();
-      return screeningDate;
+      return dateToBookingHour(this.seance!.datetime);
     },
     isDataLoaded(): boolean {
       return !!this.movie && !!this.hall && !!this.seance;
@@ -184,6 +184,7 @@ export default Vue.extend({
     UiButton,
     SeatsPicker,
     BookingsFinished,
+    CheckoutBreadCrumbs,
   },
 });
 </script>
@@ -191,42 +192,45 @@ export default Vue.extend({
 <template>
   <div class="booking-page">
     <MainHeader />
-    <div>Breadcrubs</div>
-    <template v-if="isDataLoaded && !isCheckoutFinished">
-      <ListOneMovie class="booking-page__card" show :movie="movie">
-        <Tags class="tag">{{ seanceScreeningTime }}</Tags>
-      </ListOneMovie>
-      <main class="booking-page__seats">
-        <template v-if="!bookTickets">
-          <h1>Choose your seats</h1>
-          <ChooseSeatsSection
-            @takeSeat="toggleTakeSeat"
-            :seatsArray="seatsArray"
-          />
-          <UiButton
-            medium
-            :disabled="chosenSeats.size === 0"
-            @click="bookTickets = true"
-            colors="brand"
-            class="booking-page__seats--button"
-          >
-            Choose {{ chosenSeats.size }} seats
-          </UiButton>
-        </template>
+    <div v-if="!isCheckoutFinished">
+      <checkout-bread-crumbs :isOnBookTickets="bookTickets" />
+      <template v-if="isDataLoaded && !isCheckoutFinished">
+        <ListOneMovie class="booking-page__card" show :movie="movie">
+          <Tags class="tag">{{ seanceScreeningTime }}</Tags>
+        </ListOneMovie>
 
-        <template v-else>
-          <h1>Choose your tickets</h1>
-          <SeatsPicker
-            @goBack="bookTickets = false"
-            @submit="handleSubmit"
-            @priceChange="setTicketPrice"
-            @removeItem="removeItem"
-            :tickets="chosenSeats"
-          />
-        </template>
-      </main>
-    </template>
-    <template v-else>
+        <main class="booking-page__seats">
+          <template v-if="!bookTickets">
+            <h1>Choose your seats</h1>
+            <ChooseSeatsSection
+              @takeSeat="toggleTakeSeat"
+              :seatsArray="seatsArray"
+            />
+            <UiButton
+              medium
+              :disabled="chosenSeats.size === 0"
+              @click="bookTickets = true"
+              colors="brand"
+              class="booking-page__seats--button"
+            >
+              Choose {{ chosenSeats.size }} seats
+            </UiButton>
+          </template>
+
+          <template v-else>
+            <h1>Choose your tickets</h1>
+            <SeatsPicker
+              @goBack="bookTickets = false"
+              @removeItem="seatsPageRemoveItem"
+              @priceChange="setTicketPrice"
+              @submit="handleSubmit"
+              :tickets="chosenSeats"
+            />
+          </template>
+        </main>
+      </template>
+    </div>
+    <template v-else-if="isCheckoutFinished">
       <h1 class="font--header booking-page--headers">Hell Yeah</h1>
       <h1 class="font--header booking-page--headers">
         You booked {{ chosenSeats.size }} tickets

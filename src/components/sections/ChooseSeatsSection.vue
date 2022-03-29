@@ -27,23 +27,25 @@ export default Vue.extend({
 </script>
 
 <template>
-  <div class="choose-seats">
-    <div
-      v-for="(row, index) in seatsArray"
-      class="choose-seats__container"
-      :key="index"
-    >
-      <div class="choose-seats--indicator">{{ row.row }}</div>
-      <button
-        v-for="(seat, arrIndex) in row.array"
-        @click="$emit('takeSeat', seat)"
-        :key="seat.value"
-        :class="boxClasses(seat)"
+  <div>
+    <div class="choose-seats">
+      <div
+        v-for="(row, index) in seatsArray"
+        class="choose-seats__container"
+        :key="index"
       >
-        {{ arrIndex + 1 }}
-      </button>
+        <div class="choose-seats--indicator">{{ row.row }}</div>
+        <button
+          v-for="(seat, arrIndex) in row.array"
+          @click="$emit('takeSeat', seat)"
+          :key="seat.value"
+          :class="boxClasses(seat)"
+        >
+          {{ arrIndex + 1 }}
+        </button>
 
-      <div class="choose-seats--indicator">{{ row.row }}</div>
+        <div class="choose-seats--indicator">{{ row.row }}</div>
+      </div>
     </div>
   </div>
 </template>
