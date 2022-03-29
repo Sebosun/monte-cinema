@@ -1,19 +1,24 @@
 <script lang="ts">
 import Vue from "vue";
 import MainHeader from "@/components/MainHeader.vue";
-import ChooseSeatsSection from "@/components/sections/ChooseSeatsSection.vue";
-import Tags from "@/components/UI/Tags.vue";
+
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
+
+import UiButton from "@/components/UI/UiButton.vue";
+import Tags from "@/components/UI/Tags.vue";
+
+import TicketsCartSection from "@/components/sections/TicketsCartSection.vue";
+import BookingsFinished from "@/components/sections/BookingsFinished.vue";
+import ChooseSeatsSection from "@/components/sections/ChooseSeatsSection.vue";
 
 import genSeatsTable, { SeatsTable } from "@/helpers/genSeatsTable";
 import { dateToBookingHour } from "@/helpers/timeUtils";
 import { getOneSeance, getHall, getOneMovie } from "@/helpers/api/movies";
 import { bookReservations } from "@/helpers/api/userActions";
-import { Movie } from "@/interfaces/MovieTypes";
-import UiButton from "@/components/UI/UiButton.vue";
-import SeatsPicker from "@/components/chunks/SeatsPicker.vue";
-import BookingsFinished from "@/components/sections/BookingsFinished.vue";
+
 import CheckoutBreadCrumbs from "@/components/navigation/CheckoutBreadCrumbs.vue";
+
+import { Movie } from "@/interfaces/MovieTypes";
 
 export interface Seat {
   taken: boolean;
@@ -182,7 +187,7 @@ export default Vue.extend({
     Tags,
     ChooseSeatsSection,
     UiButton,
-    SeatsPicker,
+    TicketsCartSection,
     BookingsFinished,
     CheckoutBreadCrumbs,
   },
@@ -219,7 +224,7 @@ export default Vue.extend({
 
           <template v-else>
             <h1>Choose your tickets</h1>
-            <SeatsPicker
+            <TicketsCartSection
               @goBack="bookTickets = false"
               @removeItem="seatsPageRemoveItem"
               @priceChange="setTicketPrice"
