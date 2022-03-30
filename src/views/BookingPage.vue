@@ -11,9 +11,8 @@ import TicketsCartSection from "@/components/sections/TicketsCartSection.vue";
 import BookingsFinished from "@/components/sections/BookingsFinished.vue";
 import ChooseSeatsSection from "@/components/sections/ChooseSeatsSection.vue";
 
-import genSeatsTable, { SeatsTable } from "@/helpers/genSeatsTable";
+import { SeatsTable } from "@/helpers/genSeatsTable";
 import { dateToBookingHour } from "@/helpers/timeUtils";
-import { getOneSeance, getHall, getOneMovie } from "@/helpers/api/movies";
 import { bookReservations } from "@/helpers/api/userActions";
 
 import CheckoutBreadCrumbs from "@/components/navigation/CheckoutBreadCrumbs.vue";
@@ -52,6 +51,15 @@ interface Tickets {
   price: number;
 }
 
+interface ChosenSeats {
+  seat: string;
+  ticket: {
+    id: number;
+    name: string;
+    price: number;
+  };
+}
+
 interface CheckoutData {
   movie: string;
   tickets: {
@@ -64,11 +72,6 @@ interface CheckoutData {
 export default Vue.extend({
   data() {
     return {
-      seance: null as Seance | null,
-      hall: null as Hall | null,
-      movie: null as Movie | null,
-      seatsArray: null as SeatsTable | null,
-      chosenSeats: new Set<string>(),
       bookTickets: false,
       ticketPrices: 0,
       isCheckoutFinished: false,
@@ -81,68 +84,24 @@ export default Vue.extend({
       required: true,
     },
   },
-  mounted() {
-    this.fetchShowSeances();
+  created() {
+    // TODO query control maybe if clearData is to be triggered?
+    this.$store.dispatch("checkout/clearData");
+    this.$store.dispatch("checkout/fetchSeance", +this.id);
   },
   watch: {
-    seance(newSeances) {
-      this.fetchHall(newSeances.hall);
-      this.fetchMovie(newSeances.movie);
+    seance(newSeance) {
+      this.$store.dispatch("checkout/fetchMovie", newSeance.movie);
+      this.$store.dispatch("checkout/fetchHall", newSeance.hall);
+    },
+    hall() {
+      this.$store.dispatch("checkout/generateSeatsArray");
     },
   },
   methods: {
-    async fetchShowSeances() {
-      const response = await getOneSeance(this.id);
-      this.seance = response.data;
-    },
-    async fetchHall(id: string | number) {
-      const response = await getHall(id);
-      this.hall = response.data;
-      const seatLength = response.data.seats / 10;
-      if (this.seance) {
-        this.seatsArray = genSeatsTable(seatLength, this.seance.taken_seats);
-      }
-    },
-    async fetchMovie(movieId: string | number) {
-      const response = await getOneMovie(movieId);
-      this.movie = response.data;
-    },
     toggleTakeSeat(seat: Seat) {
       if (!this.seatsArray) return false;
-      const letter = seat.value[0];
-      const indexMainArr = this.seatsArray.findIndex(
-        (arr) => arr.row === letter
-      );
-      const indexNestArr = this.seatsArray[indexMainArr].array.findIndex(
-        (arr) => {
-          return arr.value === seat.value;
-        }
-      );
-
-      const nestedSelectedArr =
-        this.seatsArray[indexMainArr].array[indexNestArr];
-
-      if (!nestedSelectedArr.reserved) {
-        nestedSelectedArr.taken = !nestedSelectedArr.taken;
-        this.addChosenSeat(seat);
-      }
-    },
-    addChosenSeat(seat: Seat) {
-      const { value } = seat;
-      if (this.chosenSeats.has(value)) {
-        this.chosenSeats.delete(value);
-        this.chosenSeats = new Set(this.chosenSeats);
-      } else {
-        this.chosenSeats = new Set(this.chosenSeats.add(value));
-      }
-    },
-    setTicketPrice(event: number) {
-      this.ticketPrices = event;
-    },
-    seatsPageRemoveItem(event: string) {
-      // taken and reserved dont matter here, just making typescript happy
-      // since this relies on emited event, its guaranteed to be in the array
-      this.toggleTakeSeat({ value: event, taken: true, reserved: false });
+      this.$store.dispatch("checkout/toggleTakeSeat", seat);
     },
     async handleSubmit(ticketData: TicketsSubmit[]) {
       const ticketsMapped = ticketData.map((item) => {
@@ -174,11 +133,26 @@ export default Vue.extend({
     },
   },
   computed: {
+    seance(): Seance | null {
+      return this.$store.getters["checkout/getSeance"];
+    },
+    movie(): Movie | null {
+      return this.$store.getters["checkout/getMovie"];
+    },
+    hall(): Hall | null {
+      return this.$store.getters["checkout/getHall"];
+    },
+    chosenSeats(): ChosenSeats[] {
+      return this.$store.getters["checkout/getChosenSeats"];
+    },
+    seatsArray(): SeatsTable {
+      return this.$store.getters["checkout/getSeatsArray"];
+    },
     seanceScreeningTime(): string {
       return dateToBookingHour(this.seance!.datetime);
     },
     isDataLoaded(): boolean {
-      return !!this.movie && !!this.hall && !!this.seance;
+      return !!(this.movie && this.hall && this.seance);
     },
   },
   components: {
@@ -213,12 +187,12 @@ export default Vue.extend({
             />
             <UiButton
               medium
-              :disabled="chosenSeats.size === 0"
+              :disabled="chosenSeats.length === 0"
               @click="bookTickets = true"
               colors="brand"
               class="booking-page__seats--button"
             >
-              Choose {{ chosenSeats.size }} seats
+              Choose {{ chosenSeats.length }} seats
             </UiButton>
           </template>
 
@@ -226,10 +200,7 @@ export default Vue.extend({
             <h1>Choose your tickets</h1>
             <TicketsCartSection
               @goBack="bookTickets = false"
-              @removeItem="seatsPageRemoveItem"
-              @priceChange="setTicketPrice"
               @submit="handleSubmit"
-              :tickets="chosenSeats"
             />
           </template>
         </main>
@@ -238,7 +209,7 @@ export default Vue.extend({
     <template v-else-if="isCheckoutFinished">
       <h1 class="font--header booking-page--headers">Hell Yeah</h1>
       <h1 class="font--header booking-page--headers">
-        You booked {{ chosenSeats.size }} tickets
+        You booked {{ chosenSeats.length }} tickets
       </h1>
       <BookingsFinished :checkoutData="checkoutData" />
     </template>
