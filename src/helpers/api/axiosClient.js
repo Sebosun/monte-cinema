@@ -12,7 +12,8 @@ defaultClient.interceptors.response.use(
   async (error) => {
     if (error.response.status === 401) {
       await store.dispatch("user/logout");
-      if (!router.currentRoute.name === "Login") {
+      // TODO remember redirection :facepalm:
+      if (!(router.currentRoute.name === "Login")) {
         router.push({ name: "Login" });
       }
     }

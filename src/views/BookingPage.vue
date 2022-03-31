@@ -1,114 +1,218 @@
-<script>
+<script lang="ts">
+import Vue from "vue";
 import MainHeader from "@/components/MainHeader.vue";
-import ChooseSeatsSection from "@/components/sections/ChooseSeatsSection.vue";
-import Tags from "@/components/UI/Tags.vue";
+
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 
-import genSeatsTable from "@/helpers/genSeatsTable";
-import { getOneSeance, getHall, getOneMovie } from "@/helpers/api/movies";
 import UiButton from "@/components/UI/UiButton.vue";
+import Tags from "@/components/UI/Tags.vue";
 
-export default {
+import TicketsCartSection from "@/components/sections/TicketsCartSection.vue";
+import BookingsFinished from "@/components/sections/BookingsFinished.vue";
+import ChooseSeatsSection from "@/components/sections/ChooseSeatsSection.vue";
+
+import { SeatsTable } from "@/helpers/genSeatsTable";
+import { dateToBookingHour } from "@/helpers/timeUtils";
+import { bookReservations } from "@/helpers/api/userActions";
+
+import CheckoutBreadCrumbs from "@/components/navigation/CheckoutBreadCrumbs.vue";
+
+import { Movie } from "@/interfaces/MovieTypes";
+
+export interface Seat {
+  taken: boolean;
+  reserved: boolean;
+  value: string;
+}
+
+export interface Hall {
+  id: number;
+  name: string;
+  seats: number;
+}
+
+export interface Seance {
+  available_seats: string[];
+  datetime: string;
+  hall: number;
+  id: number;
+  movie: number;
+  taken_seats: string[];
+}
+
+interface TicketsSubmit {
+  seat: string;
+  ticket: Tickets;
+}
+
+interface Tickets {
+  id: number;
+  name: string;
+  price: number;
+}
+
+interface ChosenSeats {
+  seat: string;
+  ticket: {
+    id: number;
+    name: string;
+    price: number;
+  };
+}
+
+interface CheckoutData {
+  movie: string;
+  tickets: {
+    seat: string;
+    ticket_type_id: number;
+  }[];
+  time: string;
+}
+
+export default Vue.extend({
   data() {
     return {
-      seance: null,
-      hall: null,
-      movie: null,
-      seatsArray: [],
-      chosenSeats: new Set(),
+      bookTickets: false,
+      ticketPrices: 0,
+      isCheckoutFinished: false,
+      checkoutData: null as CheckoutData | null,
     };
   },
   props: {
     id: {
+      type: [Number, String],
       required: true,
     },
   },
-  mounted() {
-    this.fetchShowSeances();
+  created() {
+    // TODO query control maybe if clearData is to be triggered?
+    this.$store.dispatch("checkout/clearData");
+    this.$store.dispatch("checkout/fetchSeance", +this.id);
   },
   watch: {
-    seance(newSeances) {
-      this.fetchHall(newSeances.hall);
-      this.fetchMovie(newSeances.movie);
+    seance(newSeance) {
+      this.$store.dispatch("checkout/fetchMovie", newSeance.movie);
+      this.$store.dispatch("checkout/fetchHall", newSeance.hall);
+    },
+    hall() {
+      this.$store.dispatch("checkout/generateSeatsArray");
     },
   },
   methods: {
-    async fetchShowSeances() {
-      const response = await getOneSeance(this.id);
-      this.seance = response.data;
+    toggleTakeSeat(seat: Seat) {
+      if (!this.seatsArray) return false;
+      this.$store.dispatch("checkout/toggleTakeSeat", seat);
     },
-    async fetchHall(id) {
-      const response = await getHall(id);
-      this.hall = response.data;
-      const seatLength = response.data.seats / 10;
-      this.seatsArray = genSeatsTable(seatLength, this.seance.taken_seats);
-    },
-    async fetchMovie(movieId) {
-      const response = await getOneMovie(movieId);
-      this.movie = response.data;
-    },
-    toggleTakeSeat(seat) {
-      const letter = seat.value[0];
-      const indexMainArr = this.seatsArray.findIndex(
-        (arr) => arr.row === letter
-      );
-      const indexNestArr = this.seatsArray[indexMainArr].array.findIndex(
-        (arr) => {
-          return arr.value === seat.value;
-        }
-      );
+    async handleSubmit(ticketData: TicketsSubmit[]) {
+      const ticketsMapped = ticketData.map((item) => {
+        const obj = { seat: item.seat, ticket_type_id: item.ticket.id };
+        return obj;
+      });
 
-      const nestedSelectedArr =
-        this.seatsArray[indexMainArr].array[indexNestArr];
+      try {
+        await bookReservations({
+          seance_id: +this.id,
+          tickets: [...ticketsMapped],
+        });
 
-      if (!nestedSelectedArr.reserved) {
-        nestedSelectedArr.taken = !nestedSelectedArr.taken;
-        this.addChosenSeat(seat);
-      }
-    },
-    addChosenSeat(seat) {
-      const { value } = seat;
-      if (this.chosenSeats.has(value)) {
-        this.chosenSeats.delete(value);
-        this.chosenSeats = new Set(this.chosenSeats);
-      } else {
-        this.chosenSeats = new Set(this.chosenSeats.add(value));
+        this.isCheckoutFinished = true;
+
+        this.checkoutData = {
+          movie: this.movie!.title,
+          tickets: ticketsMapped,
+          time: this.seance!.datetime,
+        };
+      } catch {
+        this.$notify({
+          type: "error",
+          title: "Something went wrong",
+          text: "Please try again later",
+          duration: 2000,
+        });
       }
     },
   },
   computed: {
-    loadingFinished() {
-      return !!(this.hall && this.seance && this.movie);
+    seance(): Seance | null {
+      return this.$store.getters["checkout/getSeance"];
+    },
+    movie(): Movie | null {
+      return this.$store.getters["checkout/getMovie"];
+    },
+    hall(): Hall | null {
+      return this.$store.getters["checkout/getHall"];
+    },
+    chosenSeats(): ChosenSeats[] {
+      return this.$store.getters["checkout/getChosenSeats"];
+    },
+    seatsArray(): SeatsTable {
+      return this.$store.getters["checkout/getSeatsArray"];
+    },
+    seanceScreeningTime(): string {
+      return dateToBookingHour(this.seance!.datetime);
+    },
+    isDataLoaded(): boolean {
+      return !!(this.movie && this.hall && this.seance);
     },
   },
-  components: { MainHeader, ListOneMovie, Tags, ChooseSeatsSection, UiButton },
-};
+  components: {
+    MainHeader,
+    ListOneMovie,
+    Tags,
+    ChooseSeatsSection,
+    UiButton,
+    TicketsCartSection,
+    BookingsFinished,
+    CheckoutBreadCrumbs,
+  },
+});
 </script>
 
 <template>
   <div class="booking-page">
     <MainHeader />
-    <div>Breadcrubs</div>
-    <div v-if="loadingFinished">
-      <ListOneMovie show :movie="movie">
-        <Tags class="tag">{{ new Date(seance.datetime).toUTCString() }}</Tags>
-      </ListOneMovie>
-      <main class="booking-page__seats">
-        <h1>Choose your seats</h1>
-        <ChooseSeatsSection
-          @takeSeat="toggleTakeSeat"
-          :seatsArray="seatsArray"
-        />
-        <UiButton
-          medium
-          :disabled="chosenSeats.size === 0"
-          colors="brand"
-          class="booking-page__seats--button"
-        >
-          Choose {{ chosenSeats.size }} seats
-        </UiButton>
-      </main>
+    <div v-if="!isCheckoutFinished">
+      <checkout-bread-crumbs :isOnBookTickets="bookTickets" />
+      <template v-if="isDataLoaded && !isCheckoutFinished">
+        <ListOneMovie class="booking-page__card" show :movie="movie">
+          <Tags class="tag">{{ seanceScreeningTime }}</Tags>
+        </ListOneMovie>
+
+        <main class="booking-page__seats">
+          <template v-if="!bookTickets">
+            <h1>Choose your seats</h1>
+            <ChooseSeatsSection
+              @takeSeat="toggleTakeSeat"
+              :seatsArray="seatsArray"
+            />
+            <UiButton
+              medium
+              :disabled="chosenSeats.length === 0"
+              @click="bookTickets = true"
+              colors="brand"
+              class="booking-page__seats--button"
+            >
+              Choose {{ chosenSeats.length }} seats
+            </UiButton>
+          </template>
+
+          <template v-else>
+            <h1>Choose your tickets</h1>
+            <TicketsCartSection
+              @goBack="bookTickets = false"
+              @submit="handleSubmit"
+            />
+          </template>
+        </main>
+      </template>
     </div>
+    <template v-else-if="isCheckoutFinished">
+      <h1 class="font--header booking-page--headers">Hell Yeah</h1>
+      <h1 class="font--header booking-page--headers">
+        You booked {{ chosenSeats.length }} tickets
+      </h1>
+      <BookingsFinished :checkoutData="checkoutData" />
+    </template>
   </div>
 </template>
 
@@ -129,13 +233,44 @@ export default {
     color: var(--color-brand);
   }
 
+  &--headers {
+    font-size: 48px;
+    margin-bottom: 0;
+    &:last-of-type {
+      margin: 0;
+      padding: 0;
+      color: #f47073;
+    }
+  }
+
   &__seats {
     margin: 50px 0;
-
     &--button {
-      margin: 10px 0;
       display: flex;
       margin-left: auto;
+    }
+  }
+  @include media-sm {
+    h1 {
+      text-align: center;
+    }
+
+    &__card {
+      padding: 16px;
+      margin: 20px;
+      box-shadow: 0px 24px 24px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+    }
+  }
+  @include media-md {
+    &__buttons-wrapper {
+      display: flex;
+      margin: 5rem 0;
+      justify-content: space-between;
+      &--button {
+        display: flex;
+        margin-left: 0;
+      }
     }
   }
 }

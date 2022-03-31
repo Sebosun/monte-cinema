@@ -3,6 +3,7 @@ import router from "@/router";
 import store from "./store";
 import App from "./App.vue";
 
+import Notifications from "vue-notification";
 import VueRouter from "vue-router";
 import VCalendar from "v-calendar";
 
@@ -14,6 +15,7 @@ store.dispatch("user/restoreUserData");
 
 Vue.use(Meta);
 Vue.use(VueRouter);
+Vue.use(Notifications);
 Vue.use(VCalendar, {
   componentPrefix: "vc",
 });

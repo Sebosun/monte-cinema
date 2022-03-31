@@ -1,10 +1,19 @@
-<script>
-export default {
+<script lang="ts">
+import { SeatsTable } from "@/helpers/genSeatsTable";
+import Vue, { PropType } from "vue";
+
+interface Seat {
+  taken: boolean;
+  reserved: boolean;
+  value: string;
+}
+
+export default Vue.extend({
   props: {
-    seatsArray: { type: Array, required: true },
+    seatsArray: { type: Array as PropType<SeatsTable>, required: true },
   },
   methods: {
-    boxClasses(seat) {
+    boxClasses(seat: Seat) {
       return [
         "choose-seats__box",
         {
@@ -14,27 +23,29 @@ export default {
       ];
     },
   },
-};
+});
 </script>
 
 <template>
-  <div class="choose-seats">
-    <div
-      v-for="(row, index) in seatsArray"
-      class="choose-seats__container"
-      :key="index"
-    >
-      <div class="choose-seats--indicator">{{ row.row }}</div>
-      <button
-        @click="$emit('takeSeat', seat)"
-        v-for="(seat, arrIndex) in row.array"
-        :key="seat.value"
-        :class="boxClasses(seat)"
+  <div>
+    <div class="choose-seats">
+      <div
+        v-for="(row, index) in seatsArray"
+        class="choose-seats__container"
+        :key="index"
       >
-        {{ arrIndex + 1 }}
-      </button>
+        <div class="choose-seats--indicator">{{ row.row }}</div>
+        <button
+          v-for="(seat, arrIndex) in row.array"
+          @click="$emit('takeSeat', seat)"
+          :key="seat.value"
+          :class="boxClasses(seat)"
+        >
+          {{ arrIndex + 1 }}
+        </button>
 
-      <div class="choose-seats--indicator">{{ row.row }}</div>
+        <div class="choose-seats--indicator">{{ row.row }}</div>
+      </div>
     </div>
   </div>
 </template>
