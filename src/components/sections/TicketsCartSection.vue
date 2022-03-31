@@ -1,11 +1,7 @@
 <script lang="ts">
-import Vue, { PropType } from "vue";
+import Vue from "vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import { getTicketRowSeat, ticketTypes } from "@/helpers/tickets";
-
-const dummySet = new Set<string>();
-
-type SetType = typeof dummySet;
 
 interface CombinedArray {
   seat: string;
@@ -21,46 +17,37 @@ export default Vue.extend({
   data() {
     return {
       ticketTypes: ticketTypes,
-      chosenTicketsAndTicketTypes: [] as CombinedArray[],
       termsAndConditions: false,
     };
-  },
-  props: {
-    tickets: {
-      type: Set as PropType<SetType>,
-      required: true,
-    },
-  },
-  mounted() {
-    const chosenTicketsArray: string[] = Array.from(this.tickets);
-
-    this.chosenTicketsAndTicketTypes = chosenTicketsArray.map((item) => {
-      return { seat: item, ticket: { id: 1, name: "Adult", price: 20.0 } };
-    });
   },
   methods: {
     getTicketRowSeat(ticket: string) {
       return getTicketRowSeat(ticket);
     },
     removeSeat(index: number, seat: string) {
-      this.chosenTicketsAndTicketTypes.splice(index, 1);
-      this.$emit("removeItem", seat);
+      this.$store.dispatch("checkout/toggleTakeSeat", { value: seat, index });
     },
     finishBooking() {
       if (this.termsAndConditions) {
-        this.$emit("submit", this.chosenTicketsAndTicketTypes);
+        this.$emit("submit", this.chosenSeats);
       }
+    },
+    updateTicketType(ticketId: string, index: number) {
+      this.$store.commit("checkout/updateTicketType", {
+        ticketId,
+        index,
+      });
     },
   },
   computed: {
+    chosenSeats(): CombinedArray[] {
+      return this.$store.getters["checkout/getChosenSeats"];
+    },
     totalTicketPrice(): number {
-      const totalPrice = this.chosenTicketsAndTicketTypes.reduce(
-        (acc, cur) => acc + cur.ticket.price,
-        0
-      );
-
-      this.$emit("priceChange", totalPrice);
-      return totalPrice;
+      return this.$store.getters["checkout/getTotalPrice"];
+    },
+    isProceedButtonDisabled(): boolean {
+      return !this.termsAndConditions || this.chosenSeats.length === 0;
     },
   },
 });
@@ -68,15 +55,15 @@ export default Vue.extend({
 
 <template>
   <div class="seats-picker">
-    <div v-for="(item, index) in chosenTicketsAndTicketTypes" :key="index">
+    <div v-for="(chosenSeat, index) in chosenSeats" :key="index">
       <div class="seats-picker__wrapper">
         <div>
           <h3 class="font--label">Seat</h3>
           <div class="seats-picker--seat">
             Row:
-            <b>{{ getTicketRowSeat(item.seat).row }}</b
+            <b>{{ getTicketRowSeat(chosenSeat.seat).row }}</b
             >, Seat
-            <b>{{ getTicketRowSeat(item.seat).seat }}</b>
+            <b>{{ getTicketRowSeat(chosenSeat.seat).seat }}</b>
           </div>
         </div>
         <div class="seats-picker__tickets">
@@ -84,12 +71,12 @@ export default Vue.extend({
           <select
             class="input"
             name="ticket-types"
-            key="item.id"
-            v-model="item.ticket"
+            :value="chosenSeat.ticket.id"
+            @change="updateTicketType($event.target.value, index)"
           >
             <option
               v-for="ticketType in ticketTypes"
-              :value="ticketType"
+              :value="ticketType.id"
               :key="ticketType.id"
             >
               {{ ticketType.name }} -- ${{ ticketType.price }}
@@ -97,7 +84,7 @@ export default Vue.extend({
           </select>
         </div>
         <UiButton
-          @click="removeSeat(index, item.seat)"
+          @click="removeSeat(index, chosenSeat.seat)"
           transparent
           colors="primary"
           large
@@ -133,7 +120,7 @@ export default Vue.extend({
         colors="brand"
         class="seats-picker__buttons-wrapper--button"
         @click="finishBooking"
-        :disabled="!termsAndConditions"
+        :disabled="isProceedButtonDisabled"
       >
         Book tickets - ${{ totalTicketPrice }}
       </UiButton>
