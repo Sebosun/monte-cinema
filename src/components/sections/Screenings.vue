@@ -82,6 +82,7 @@ export default Vue.extend({
       const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
         this.selectedDay
       );
+
       return `${dayStr} ${this.selectedDay.toLocaleDateString("en-UK")}`;
     },
   },
@@ -100,12 +101,12 @@ export default Vue.extend({
     <div class="screenings__wrapper">
       <div class="screenings__top">
         <div class="screenings__headers font--header">
-          <h1>Screenings:</h1>
+          <h1>{{ $t("screenings.screenings") }}:</h1>
           <h2>{{ currentScreeningsText }}</h2>
         </div>
         <div class="screenings__filters">
           <div class="screenings__days">
-            <div class="font--label">Day</div>
+            <div class="font--label">{{ $t("screenings.day") }}</div>
             <div class="screenings__button-container">
               <ui-button
                 v-for="(date, index) in datesForDaySwitchingButtons"
@@ -134,7 +135,9 @@ export default Vue.extend({
           </div>
 
           <div v-if="movies.length > 1" class="screenings__genres">
-            <label for="genres" class="font--label">Movie</label>
+            <label for="genres" class="font--label">{{
+              $t("screenings.movie")
+            }}</label>
             <select name="genres" v-model="selectedGenre">
               <option selected value="">All movies</option>
               <option

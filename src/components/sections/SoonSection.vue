@@ -7,14 +7,16 @@ export default { components: { UiButton, MovieCard } };
 <template>
   <section class="soon">
     <div class="soon__top">
-      <h2 class="font--paragraph font--bold soon__show--sm">Soon</h2>
+      <h2 class="font--paragraph font--bold soon__show--sm">
+        {{ $t("soon.soon_sm") }}
+      </h2>
       <h2 class="font--paragraph font--bold soon__show--md">
-        Soon in the cinema
+        {{ $t("soon.soon_lg") }}
       </h2>
       <h2 class="font--paragraph font--bold"></h2>
-      <UiButton class="font--bold" transparent borderless colors="brand"
-        >See All</UiButton
-      >
+      <UiButton class="font--bold" transparent borderless colors="brand">{{
+        $t("soon.all")
+      }}</UiButton>
     </div>
     <div class="soon__wrapper">
       <movie-card class="soon__movies">

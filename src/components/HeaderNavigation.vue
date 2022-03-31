@@ -3,22 +3,30 @@
     <ul>
       <li>
         <router-link :to="{ name: 'Movies' }">
-          <div class="nav__hover">Movies</div></router-link
+          <div class="nav__hover">
+            {{ $t("navigation.movies") }}
+          </div></router-link
         >
       </li>
       <li>
         <router-link :to="{ name: 'Screenings' }">
-          <div class="nav__hover">Screenings</div></router-link
+          <div class="nav__hover">
+            {{ $t("navigation.screenings") }}
+          </div></router-link
         >
       </li>
       <li>
         <router-link :to="{ name: 'Contact' }">
-          <div class="nav__hover">Contact Us</div></router-link
+          <div class="nav__hover">
+            {{ $t("navigation.contact") }}
+          </div></router-link
         >
       </li>
     </ul>
   </nav>
 </template>
+
+<script></script>
 
 <style lang="scss" scoped>
 .router-link-active {

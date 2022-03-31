@@ -18,16 +18,20 @@ export default {
 <template>
   <div class="header-actions">
     <template v-if="isLoggedIn">
-      <UiButton @click="logout" medium colors="brand"> Logout </UiButton>
+      <UiButton @click="logout" medium colors="brand">
+        {{ $t("navigation.logout") }}
+      </UiButton>
     </template>
     <template v-else>
       <router-link :to="{ name: 'Register' }">
-        <UiButton medium borderless transparent colors="brand">
-          Register
-        </UiButton>
+        <UiButton medium borderless transparent colors="brand">{{
+          $t("navigation.registration")
+        }}</UiButton>
       </router-link>
       <router-link :to="{ name: 'Login' }">
-        <UiButton medium colors="brand"> Login </UiButton>
+        <UiButton medium colors="brand">
+          {{ $t("navigation.login") }}
+        </UiButton>
       </router-link>
     </template>
   </div>
