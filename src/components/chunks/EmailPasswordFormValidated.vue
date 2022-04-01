@@ -36,16 +36,6 @@ export default defineComponent({
       return validator ? "validated-form__info" : "validated-form__info--error";
     }
 
-    const emailError = computed(() => {
-      if (!isEmailTouched.value) return false;
-      const emailValidation = validateEmail(email.value);
-      return emailValidation ? emailValidation : "";
-    });
-    const passwordError = computed(() => {
-      if (isPasswordTouched.value) return false;
-      return validatePassword(password.value);
-    });
-
     const passwordValidation = computed(() => {
       return {
         length: isPasswordTouched.value ? password.value.length > 8 : false,
@@ -56,11 +46,26 @@ export default defineComponent({
       };
     });
 
+    const emailError = computed(() => {
+      if (!isEmailTouched.value) return false;
+      const emailValidation = validateEmail(email.value);
+      return emailValidation ? emailValidation : "";
+    });
+    const passwordError = computed(() => {
+      if (isPasswordTouched.value) return false;
+      return validatePassword(password.value);
+    });
+
     const isFormValid = computed(() => {
       return !emailError.value && !passwordError.value;
     });
 
     return {
+      email,
+      password,
+      isEmailTouched,
+      isPasswordTouched,
+
       submitForm,
       touchAll,
       getValidationClass,
