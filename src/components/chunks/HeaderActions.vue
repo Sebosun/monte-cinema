@@ -1,18 +1,25 @@
-<script>
+<script lang="ts">
 import UiButton from "@/components/UI/UiButton.vue";
-export default {
+
+import { defineComponent, computed, ComputedRef } from "@vue/composition-api";
+import getStore from "@/helpers/composables/store";
+
+export default defineComponent({
   components: { UiButton },
-  methods: {
-    logout() {
-      this.$store.dispatch("user/logout");
-    },
+  setup() {
+    const { store } = getStore();
+
+    function logout() {
+      store.dispatch("user/logout");
+    }
+
+    const isLoggedIn: ComputedRef<boolean> = computed(() => {
+      return store.getters["user/isLoggedIn"];
+    });
+
+    return { logout, isLoggedIn };
   },
-  computed: {
-    isLoggedIn() {
-      return this.$store.getters["user/isLoggedIn"];
-    },
-  },
-};
+});
 </script>
 
 <template>
