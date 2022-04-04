@@ -6,17 +6,16 @@ import validateEmail from "@/helpers/validateEmail";
 import validatePassword from "@/helpers/validatePassword";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 
-import { ref, computed, defineComponent } from "@vue/composition-api";
+import { computed, defineComponent } from "@vue/composition-api";
+
+import emailPasswordTouched from "@/helpers/composables/emailPasswordTouched";
 
 type ValidationType = "length" | "digits" | "letters";
 
 export default defineComponent({
   setup(_, { emit }) {
-    const email = ref("");
-    const password = ref("");
-
-    const isEmailTouched = ref(false);
-    const isPasswordTouched = ref(false);
+    const { email, password, isEmailTouched, isPasswordTouched } =
+      emailPasswordTouched();
 
     function submitForm() {
       touchAll();
@@ -51,6 +50,7 @@ export default defineComponent({
       const emailValidation = validateEmail(email.value);
       return emailValidation ? emailValidation : "";
     });
+
     const passwordError = computed(() => {
       if (isPasswordTouched.value) return false;
       return validatePassword(password.value);
