@@ -1,5 +1,6 @@
 <script>
 import EyeSvg from "@/assets/eye.svg";
+import { ref, computed } from "@vue/composition-api";
 export default {
   props: {
     value: {
@@ -7,20 +8,18 @@ export default {
       default: "",
     },
   },
-  data() {
-    return {
-      isPasswordShown: false,
-    };
-  },
-  methods: {
-    togglePassword() {
-      this.isPasswordShown = !this.isPasswordShown;
-    },
-  },
-  computed: {
-    passwordInputType() {
-      return this.isPasswordShown ? "text" : "password";
-    },
+  setup() {
+    const isPasswordShown = ref(false);
+
+    function togglePassword() {
+      isPasswordShown.value = !isPasswordShown.value;
+    }
+
+    const passwordInputType = computed(() => {
+      return isPasswordShown.value ? "text" : "password";
+    });
+
+    return { isPasswordShown, togglePassword, passwordInputType };
   },
   components: { EyeSvg },
 };

@@ -32,7 +32,7 @@ export default Vue.extend({
     },
   },
   computed: {
-    formatTime() {
+    formatTime(): string {
       return dateToBookingHour(this.checkoutData.time);
     },
   },
