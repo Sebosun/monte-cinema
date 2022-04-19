@@ -2,7 +2,7 @@
   <div class="dropdown-select" @click="isOpen = !isOpen">
     <div class="dropdown-select__display">
       <div class="dropdown-select__display--selected">
-        {{ selectedGenreText }}
+        {{ selectedText }}
       </div>
       <div class="dropdown-select__display--svg-wrapper">
         <svg viewBox="0 0 1030 638" width="10">
@@ -21,7 +21,7 @@
           class="dropdown-select__item"
           @click="$emit('select', item)"
         >
-          {{ item.name }}
+          {{ isTicket ? ticketText(item) : item.name }}
         </li>
       </ul>
     </transition>
@@ -33,7 +33,7 @@ export default {
   name: "Dropdown",
   props: {
     selected: {
-      type: String,
+      type: [String, Object],
       required: true,
     },
     itemsArray: {
@@ -42,7 +42,11 @@ export default {
     },
     resetTerm: {
       type: String,
-      required: true,
+      required: false,
+    },
+    isTicket: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -51,11 +55,14 @@ export default {
     };
   },
   computed: {
-    selectedGenreText() {
+    selectedText() {
+      if (this.isTicket) {
+        return this.ticketText(this.selected);
+      }
       return this.selected ? this.selected : this.resetTerm;
     },
     transformedItemsArray() {
-      if (this.selected === "") {
+      if (this.selected === "" || !this.resetTerm) {
         return this.itemsArray;
       } else {
         const newArr = [...this.itemsArray];
@@ -63,6 +70,22 @@ export default {
         return newArr;
       }
     },
+  },
+  methods: {
+    ticketText(ticket) {
+      return `${ticket.name} -- $${ticket.price}`;
+    },
+    close(e) {
+      if (!this.$el.contains(e.target)) {
+        this.isOpen = false;
+      }
+    },
+  },
+  mounted() {
+    document.addEventListener("click", this.close);
+  },
+  beforeDestroy() {
+    document.removeEventListener("click", this.close);
   },
 };
 </script>
@@ -75,7 +98,7 @@ export default {
   display: flex;
   transition: 0.4s;
   border-radius: 8px;
-  background: rgba(0, 0, 0, 0.03);
+  background: darken(#f4f4f5, 0);
 
   ul {
     list-style-type: none;
@@ -91,6 +114,7 @@ export default {
     position: absolute;
     max-height: 200px;
     top: calc(100% - 10px);
+    z-index: 100;
 
     transform: translate(-50%, 0);
     left: 50%;

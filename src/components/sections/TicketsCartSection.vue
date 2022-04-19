@@ -2,6 +2,7 @@
 import Vue from "vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import { getTicketRowSeat, ticketTypes } from "@/helpers/tickets";
+import DropdownSelect from "@/components/chunks/DropdownSelect.vue";
 
 interface CombinedArray {
   seat: string;
@@ -11,9 +12,13 @@ interface CombinedArray {
     price: number;
   };
 }
+interface Ticket {
+  name: string;
+  id: number;
+}
 
 export default Vue.extend({
-  components: { UiButton },
+  components: { UiButton, DropdownSelect },
   data() {
     return {
       ticketTypes: ticketTypes,
@@ -32,9 +37,9 @@ export default Vue.extend({
         this.$emit("submit", this.chosenSeats);
       }
     },
-    updateTicketType(ticketId: string, index: number) {
+    updateTicketType(ticketId: Ticket, index: number) {
       this.$store.commit("checkout/updateTicketType", {
-        ticketId,
+        ticketId: ticketId.id,
         index,
       });
     },
@@ -68,20 +73,13 @@ export default Vue.extend({
         </div>
         <div class="seats-picker__tickets">
           <h3 class="font--label">Ticket type</h3>
-          <select
-            class="input"
-            name="ticket-types"
-            :value="chosenSeat.ticket.id"
-            @change="updateTicketType($event.target.value, index)"
-          >
-            <option
-              v-for="ticketType in ticketTypes"
-              :value="ticketType.id"
-              :key="ticketType.id"
-            >
-              {{ ticketType.name }} -- ${{ ticketType.price }}
-            </option>
-          </select>
+          <DropdownSelect
+            class="seats-picker__select"
+            :items-array="ticketTypes"
+            :selected="chosenSeat.ticket"
+            @select="updateTicketType($event, index)"
+            :isTicket="true"
+          />
         </div>
         <UiButton
           @click="removeSeat(index, chosenSeat.seat)"
@@ -164,6 +162,9 @@ export default Vue.extend({
     display: flex;
     flex-flow: column;
     justify-content: space-around;
+  }
+  &__select {
+    min-width: 350px;
   }
 
   @include media-sm {
