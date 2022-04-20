@@ -151,6 +151,7 @@ export default Vue.extend({
               :selected="selectedGenre"
               resetTerm="All movies"
               @select="handleGenreChange"
+              class="screenings__genres--select"
             />
           </div>
         </div>
@@ -269,10 +270,9 @@ export default Vue.extend({
     flex-direction: column;
   }
 
-  &__genres select {
+  &__genres--select {
     width: min(calc(100% - 1.5rem), 29.25rem);
     margin-right: 1.5rem;
-    padding: 1.094rem 1.5rem 1.094rem 1.5rem;
 
     border: 0;
     background-color: #f7f7f7;
@@ -321,7 +321,7 @@ export default Vue.extend({
       justify-content: space-around;
     }
 
-    &__genres select {
+    &__genres--select {
       margin: 0;
       width: 100%;
       margin: 12px 0;
