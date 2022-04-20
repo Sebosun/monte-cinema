@@ -4,6 +4,8 @@ import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
+import DropdownSelect from "@/components/chunks/DropdownSelect.vue";
+
 import {
   ONE_DAY_IN_MILLISECONDS,
   dateToHumanReadableDay,
@@ -56,6 +58,13 @@ export default Vue.extend({
     emitDayUpdate(event: string) {
       this.$emit("changeDate", new Date(event));
     },
+    handleGenreChange(genre: genreObj) {
+      if (genre.name === "All movies") {
+        this.selectedGenre = "";
+      } else {
+        this.selectedGenre = genre.name;
+      }
+    },
   },
   computed: {
     genres(): genreObj[] {
@@ -79,6 +88,7 @@ export default Vue.extend({
     },
     currentScreeningsText(): string {
       const options = { weekday: "long" } as const;
+
       const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
         this.selectedDay
       );
@@ -91,6 +101,7 @@ export default Vue.extend({
     ErrorMessage,
     LoadingSpinner,
     CalendarSVG,
+    DropdownSelect,
   },
 });
 </script>
@@ -135,16 +146,13 @@ export default Vue.extend({
 
           <div v-if="movies.length > 1" class="screenings__genres">
             <label for="genres" class="font--label">Movie</label>
-            <select name="genres" v-model="selectedGenre">
-              <option selected value="">All movies</option>
-              <option
-                v-for="genre in genres"
-                :value="genre.name"
-                :key="genre.id"
-              >
-                {{ genre.name }}
-              </option>
-            </select>
+            <DropdownSelect
+              :items-array="genres"
+              :selected="selectedGenre"
+              resetTerm="All movies"
+              @select="handleGenreChange"
+              class="screenings__genres--select"
+            />
           </div>
         </div>
       </div>
@@ -262,10 +270,9 @@ export default Vue.extend({
     flex-direction: column;
   }
 
-  &__genres select {
+  &__genres--select {
     width: min(calc(100% - 1.5rem), 29.25rem);
     margin-right: 1.5rem;
-    padding: 1.094rem 1.5rem 1.094rem 1.5rem;
 
     border: 0;
     background-color: #f7f7f7;
@@ -314,7 +321,7 @@ export default Vue.extend({
       justify-content: space-around;
     }
 
-    &__genres select {
+    &__genres--select {
       margin: 0;
       width: 100%;
       margin: 12px 0;
