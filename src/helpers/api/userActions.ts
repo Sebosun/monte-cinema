@@ -13,3 +13,26 @@ export const bookReservations = async (data: ReservationData) =>
     seance_id: data.seance_id,
     tickets: [...data.tickets],
   });
+
+interface UserCreds {
+  firstName: string;
+  lastName: string;
+  birthday: string;
+  email: string;
+}
+
+export const showCurrentUser = async () => defaultClient.get("/user");
+
+//WIP need to update the api
+export const updateCurrentUser = async ({
+  firstName,
+  lastName,
+  birthday,
+  email,
+}: UserCreds) =>
+  defaultClient.post("/user", {
+    first_name: firstName,
+    last_name: lastName,
+    date_of_birth: birthday,
+    email: email,
+  });
