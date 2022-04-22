@@ -4,7 +4,7 @@ import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue
 import AuthHeader from "@/components/AuthHeader.vue";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
-import emailPasswordTouched from "@/helpers/composables/emailPasswordTouched";
+import useEmailPasswordTouched from "@/helpers/composables/useEmailPasswordTouched";
 import {
   onMounted,
   computed,
@@ -24,7 +24,7 @@ export default defineComponent({
       isPasswordTouched,
       emailError,
       passwordError,
-    } = emailPasswordTouched();
+    } = useEmailPasswordTouched();
 
     const error = ref({ status: false, message: "" });
     const { store } = getStore();

@@ -2,7 +2,7 @@ import { ref, computed, ComputedRef } from "@vue/composition-api";
 import validateEmail from "@/helpers/validateEmail";
 import validatePassword from "@/helpers/validatePassword";
 
-export default function emailPasswordTouched() {
+export default function useEmailPasswordTouched() {
   const email = ref("");
   const password = ref("");
   const isEmailTouched = ref(false);

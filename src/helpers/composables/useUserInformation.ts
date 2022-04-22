@@ -1,6 +1,6 @@
 import { ref, computed } from "@vue/composition-api";
 
-export default function emailPasswordTouched() {
+export default function useUserInformation() {
   const name = ref("");
   const lastName = ref("");
   const birthday = ref("");

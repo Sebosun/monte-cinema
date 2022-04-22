@@ -3,7 +3,7 @@ import FormWrapper from "@/components/UI/FormWrapper.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import { ref, computed } from "@vue/composition-api";
-import UserInformation from "@/helpers/composables/UserInformation";
+import useUserInformation from "@/helpers/composables/useUserInformation";
 
 export default {
   props: {
@@ -22,7 +22,7 @@ export default {
       firstNameError,
       lastNameError,
       birthdayError,
-    } = UserInformation();
+    } = useUserInformation();
 
     const privacyPolicy = ref(false);
     const isPrivacyTouched = ref(false);

@@ -8,14 +8,14 @@ import FormWrapper from "@/components/UI/FormWrapper.vue";
 
 import { computed, defineComponent } from "@vue/composition-api";
 
-import emailPasswordTouched from "@/helpers/composables/emailPasswordTouched";
+import useEmailPasswordTouched from "@/helpers/composables/useEmailPasswordTouched";
 
 type ValidationType = "length" | "digits" | "letters";
 
 export default defineComponent({
   setup(_, { emit }) {
     const { email, password, isEmailTouched, isPasswordTouched } =
-      emailPasswordTouched();
+      useEmailPasswordTouched();
 
     function submitForm() {
       touchAll();

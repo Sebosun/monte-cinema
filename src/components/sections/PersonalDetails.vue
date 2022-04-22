@@ -1,19 +1,26 @@
 <script lang="ts">
-import MainHeader from "@/components/MainHeader.vue";
 import Vue from "vue";
+
 import {
   ref,
   computed,
   defineComponent,
   onMounted,
 } from "@vue/composition-api";
-import UserInformationForm from "../chunks/UserInformationForm.vue";
-import FormWrapper from "../UI/FormWrapper.vue";
-import UiButton from "../UI/UiButton.vue";
-import UserInformation from "@/helpers/composables/UserInformation";
-import emailPasswordTouched from "@/helpers/composables/emailPasswordTouched";
+
+import MainHeader from "@/components/MainHeader.vue";
+import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
+import UserInformationForm from "@/components/chunks/UserInformationForm.vue";
+
+import UiButton from "@/components/UI/UiButton.vue";
+import FormWrapper from "@/components//UI/FormWrapper.vue";
+
 import { showCurrentUser, updateCurrentUser } from "@/helpers/api/userActions";
-import PasswordInputShowHide from "../chunks/PasswordInputShowHide.vue";
+
+import useUserInformation from "@/helpers/composables/useUserInformation";
+import useEmailPasswordTouched from "@/helpers/composables/useEmailPasswordTouched";
+
+import { UserInformationModel } from "@/interfaces/UserTypes";
 
 export default defineComponent({
   components: {
@@ -34,7 +41,7 @@ export default defineComponent({
       firstNameError,
       lastNameError,
       birthdayError,
-    } = UserInformation();
+    } = useUserInformation();
 
     const {
       email,
@@ -43,7 +50,7 @@ export default defineComponent({
       isPasswordTouched: isNewPasswordTouched,
       emailError,
       passwordError: newPasswordError,
-    } = emailPasswordTouched();
+    } = useEmailPasswordTouched();
 
     const passwordConfirm = ref("");
     const isPasswordConfirmTouched = ref(false);
@@ -51,7 +58,7 @@ export default defineComponent({
     const isPasswordBeingChanged = ref(false);
 
     onMounted(async () => {
-      const { data } = await showCurrentUser();
+      const { data }: { data: UserInformationModel } = await showCurrentUser();
       name.value = data.first_name;
       lastName.value = data.last_name;
       email.value = data.email;
