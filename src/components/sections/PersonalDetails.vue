@@ -1,8 +1,6 @@
 <script lang="ts">
 import MainHeader from "@/components/MainHeader.vue";
 import Vue from "vue";
-import validateEmail from "@/helpers/validateEmail";
-import validatePassword from "@/helpers/validatePassword";
 import {
   ref,
   computed,
@@ -13,6 +11,7 @@ import UserInformationForm from "../chunks/UserInformationForm.vue";
 import FormWrapper from "../UI/FormWrapper.vue";
 import UiButton from "../UI/UiButton.vue";
 import UserInformation from "@/helpers/composables/UserInformation";
+import emailPasswordTouched from "@/helpers/composables/emailPasswordTouched";
 import { showCurrentUser, updateCurrentUser } from "@/helpers/api/userActions";
 import PasswordInputShowHide from "../chunks/PasswordInputShowHide.vue";
 
@@ -37,15 +36,19 @@ export default defineComponent({
       birthdayError,
     } = UserInformation();
 
+    const {
+      email,
+      password: newPassword,
+      isEmailTouched,
+      isPasswordTouched: isNewPasswordTouched,
+      emailError,
+      passwordError: newPasswordError,
+    } = emailPasswordTouched();
+
     const passwordConfirm = ref("");
     const isPasswordConfirmTouched = ref(false);
 
     const isPasswordBeingChanged = ref(false);
-
-    const email = ref("");
-    const newPassword = ref("");
-    const isEmailTouched = ref(false);
-    const isNewPasswordTouched = ref(false);
 
     onMounted(async () => {
       const { data } = await showCurrentUser();
@@ -55,34 +58,12 @@ export default defineComponent({
       birthday.value = data.date_of_birth;
     });
 
-    const emailError = computed(() => {
-      if (!isEmailTouched.value) return "";
-      const emailValidation = validateEmail(email.value);
-      return emailValidation ? emailValidation : "";
-    });
-
-    const newPasswordError = computed(() => {
-      if (!isNewPasswordTouched.value) return "";
-      return validatePassword(newPassword.value);
-    });
-
     const passwordConfirmError = computed(() => {
       if (!isPasswordConfirmTouched.value) return "";
       return passwordConfirm.value.length > 0 ? "" : "Password cannot be empty";
     });
 
     const error = ref({ status: false, message: "" });
-
-    function touchAll() {
-      isFirstNameTouched.value = true;
-      isLastNameTouched.value = true;
-      isBirthdayTouched.value = true;
-      isEmailTouched.value = true;
-      isPasswordConfirmTouched.value = true;
-      if (isPasswordBeingChanged) {
-        isNewPasswordTouched.value = true;
-      }
-    }
 
     const isFormValid = computed(() => {
       const areFieldsValid =
@@ -97,6 +78,17 @@ export default defineComponent({
       }
     });
 
+    function touchAll() {
+      isFirstNameTouched.value = true;
+      isLastNameTouched.value = true;
+      isBirthdayTouched.value = true;
+      isEmailTouched.value = true;
+      isPasswordConfirmTouched.value = true;
+      if (isPasswordBeingChanged) {
+        isNewPasswordTouched.value = true;
+      }
+    }
+
     const cleanupAfterSubmit = () => {
       isFirstNameTouched.value = false;
       isLastNameTouched.value = false;
@@ -110,7 +102,6 @@ export default defineComponent({
 
     async function submitForm() {
       touchAll();
-      console.log(isFormValid);
       if (isFormValid.value) {
         try {
           await updateCurrentUser({

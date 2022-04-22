@@ -17,8 +17,14 @@ import router from "@/router";
 
 export default defineComponent({
   setup() {
-    const { email, password, isEmailTouched, isPasswordTouched } =
-      emailPasswordTouched();
+    const {
+      email,
+      password,
+      isEmailTouched,
+      isPasswordTouched,
+      emailError,
+      passwordError,
+    } = emailPasswordTouched();
 
     const error = ref({ status: false, message: "" });
     const { store } = getStore();
@@ -34,17 +40,6 @@ export default defineComponent({
       isEmailTouched.value = true;
       isPasswordTouched.value = true;
     }
-
-    const emailError: ComputedRef<string> = computed(() => {
-      if (!isEmailTouched.value) return "";
-      return email.value.length > 0 ? "" : "Email cannot be empty";
-    });
-
-    const passwordError: ComputedRef<string> = computed(() => {
-      if (!isPasswordTouched.value) return "";
-      return password.value.length > 0 ? "" : "Password cannot be empty";
-    });
-
     const isFormValid: ComputedRef<boolean> = computed(() => {
       return !emailError.value && !passwordError.value;
     });
