@@ -3,6 +3,8 @@ import FormWrapper from "@/components/UI/FormWrapper.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import { ref, computed } from "@vue/composition-api";
+import useUserInformation from "@/helpers/composables/useUserInformation";
+
 export default {
   props: {
     error: {
@@ -10,13 +12,19 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const name = ref("");
-    const lastName = ref("");
-    const birthday = ref("");
+    const {
+      name,
+      lastName,
+      birthday,
+      isFirstNameTouched,
+      isLastNameTouched,
+      isBirthdayTouched,
+      firstNameError,
+      lastNameError,
+      birthdayError,
+    } = useUserInformation();
+
     const privacyPolicy = ref(false);
-    const isFirstNameTouched = ref(false);
-    const isLastNameTouched = ref(false);
-    const isBirthdayTouched = ref(false);
     const isPrivacyTouched = ref(false);
 
     function submitForm() {
@@ -35,30 +43,18 @@ export default {
       isPrivacyTouched.value = true;
     }
 
-    const firstNameError = computed(() => {
-      if (!isFirstNameTouched.value) return "";
-      return name.value.length > 0 ? "" : "First name cannot be empty";
-    });
-
-    const lastNameError = computed(() => {
-      if (!isLastNameTouched.value) return "";
-      return lastName.value.length > 0 ? "" : "Last name cannot be empty";
-    });
-
-    const birthdayError = computed(() => {
-      if (!isBirthdayTouched.value) return "";
-      return birthday.value === "" ? "Birthday is required" : "";
-    });
     const privacyError = computed(() => {
       if (!isPrivacyTouched.value) return "";
       return privacyPolicy.value === false ? "Privacy is required" : "";
     });
 
     const isFormValid = computed(() => {
-      !birthdayError.value &&
+      return (
+        !birthdayError.value &&
         !lastNameError.value &&
         !firstNameError.value &&
-        !privacyError.value;
+        !privacyError.value
+      );
     });
 
     return {
