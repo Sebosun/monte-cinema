@@ -1,7 +1,8 @@
 <script lang="ts">
 import MainHeader from "@/components/MainHeader.vue";
 import Vue from "vue";
-
+import validateEmail from "@/helpers/validateEmail";
+import validatePassword from "@/helpers/validatePassword";
 import {
   ref,
   computed,
@@ -36,11 +37,15 @@ export default defineComponent({
       birthdayError,
     } = UserInformation();
 
-    const email = ref("");
-    const isEmailTouched = ref(false);
-
     const passwordConfirm = ref("");
     const isPasswordConfirmTouched = ref(false);
+
+    const isPasswordBeingChanged = ref(false);
+
+    const email = ref("");
+    const newPassword = ref("");
+    const isEmailTouched = ref(false);
+    const isNewPasswordTouched = ref(false);
 
     onMounted(async () => {
       const { data } = await showCurrentUser();
@@ -52,12 +57,18 @@ export default defineComponent({
 
     const emailError = computed(() => {
       if (!isEmailTouched.value) return "";
-      return email.value.length > 0 ? "" : "Last name cannot be empty";
+      const emailValidation = validateEmail(email.value);
+      return emailValidation ? emailValidation : "";
+    });
+
+    const newPasswordError = computed(() => {
+      if (!isNewPasswordTouched.value) return "";
+      return validatePassword(newPassword.value);
     });
 
     const passwordConfirmError = computed(() => {
       if (!isPasswordConfirmTouched.value) return "";
-      return email.value.length > 0 ? "" : "Last name cannot be empty";
+      return passwordConfirm.value.length > 0 ? "" : "Password cannot be empty";
     });
 
     const error = ref({ status: false, message: "" });
@@ -67,26 +78,47 @@ export default defineComponent({
       isLastNameTouched.value = true;
       isBirthdayTouched.value = true;
       isEmailTouched.value = true;
+      isPasswordConfirmTouched.value = true;
+      if (isPasswordBeingChanged) {
+        isNewPasswordTouched.value = true;
+      }
     }
 
     const isFormValid = computed(() => {
-      return (
+      const areFieldsValid =
         !birthdayError.value &&
         !lastNameError.value &&
         !firstNameError.value &&
-        !passwordConfirmError.value
-      );
+        !passwordConfirmError.value;
+      if (isPasswordBeingChanged.value) {
+        return areFieldsValid && !newPasswordError.value;
+      } else {
+        return areFieldsValid;
+      }
     });
+
+    const cleanupAfterSubmit = () => {
+      isFirstNameTouched.value = false;
+      isLastNameTouched.value = false;
+      isBirthdayTouched.value = false;
+      isEmailTouched.value = false;
+      isPasswordConfirmTouched.value = false;
+      isPasswordBeingChanged.value = false;
+      newPassword.value = "";
+      passwordConfirm.value = "";
+    };
 
     async function submitForm() {
       touchAll();
-      if (isFormValid) {
+      console.log(isFormValid);
+      if (isFormValid.value) {
         try {
           await updateCurrentUser({
             firstName: name.value,
             lastName: lastName.value,
             birthday: birthday.value,
             email: email.value,
+            newPassword: isPasswordBeingChanged && newPassword.value,
             currentPassword: passwordConfirm.value,
           });
           Vue.notify({
@@ -95,8 +127,9 @@ export default defineComponent({
             text: "Changes applied succesfully",
             duration: 2000,
           });
-          passwordConfirm.value = "";
+          cleanupAfterSubmit();
         } catch (err: any) {
+          console.log(err);
           Vue.notify({
             type: "error",
             title: "Error",
@@ -113,12 +146,17 @@ export default defineComponent({
       lastName,
       birthday,
       email,
+      newPassword,
       passwordConfirm,
+      isPasswordBeingChanged,
       isPasswordConfirmTouched,
       isEmailTouched,
       isFirstNameTouched,
       isLastNameTouched,
       isBirthdayTouched,
+      isNewPasswordTouched,
+      isFormValid,
+      newPasswordError,
       emailError,
       firstNameError,
       lastNameError,
@@ -153,8 +191,10 @@ export default defineComponent({
             />
             <div class="error-message">{{ emailError }}</div>
           </li>
+
           <UiButton
             class="personal-details--button"
+            @click="isPasswordBeingChanged = !isPasswordBeingChanged"
             small
             transparent
             colors="brand"
@@ -163,6 +203,23 @@ export default defineComponent({
           >
             Change password
           </UiButton>
+
+          <template v-if="isPasswordBeingChanged">
+            <li
+              :class="[
+                'personal-details__list',
+                'personal-details__list--confirm',
+                { 'error-input': !!newPasswordError },
+              ]"
+            >
+              <password-input-show-hide
+                @touched="isNewPasswordTouched = true"
+                v-model="newPassword"
+                label="New Password"
+              />
+              <div class="error-message">{{ newPasswordError }}</div>
+            </li>
+          </template>
 
           <li
             :class="[
@@ -227,12 +284,13 @@ export default defineComponent({
             <password-input-show-hide
               @touched="isPasswordConfirmTouched = true"
               v-model="passwordConfirm"
-              label="Confirm Password"
+              label="Current Password"
             />
+            <div class="error-message">{{ passwordConfirmError }}</div>
           </li>
           <UiButton
             class="personal-details--submit"
-            :disabled="!passwordConfirm"
+            :disabled="!isFormValid"
             large
             colors="brand"
           >

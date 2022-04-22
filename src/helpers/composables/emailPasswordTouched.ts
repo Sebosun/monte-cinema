@@ -1,4 +1,4 @@
-import { ref } from "@vue/composition-api";
+import { ref, computed } from "@vue/composition-api";
 
 export default function emailPasswordTouched() {
   const email = ref("");
@@ -6,5 +6,10 @@ export default function emailPasswordTouched() {
   const isEmailTouched = ref(false);
   const isPasswordTouched = ref(false);
 
-  return { email, password, isEmailTouched, isPasswordTouched };
+  return {
+    email,
+    password,
+    isEmailTouched,
+    isPasswordTouched,
+  };
 }
