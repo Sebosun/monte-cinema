@@ -7,6 +7,10 @@ export default {
       type: String,
       default: "",
     },
+    label: {
+      type: String,
+      default: "Password",
+    },
   },
   setup() {
     const isPasswordShown = ref(false);
@@ -26,8 +30,8 @@ export default {
 </script>
 
 <template>
-  <label class="password-input font--label" for="password"
-    >Password
+  <label class="password-input font--label" for="password">
+    {{ label }}
     <input
       name="password"
       required

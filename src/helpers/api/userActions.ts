@@ -15,24 +15,31 @@ export const bookReservations = async (data: ReservationData) =>
   });
 
 interface UserCreds {
-  firstName: string;
-  lastName: string;
-  birthday: string;
-  email: string;
+  firstName?: string;
+  lastName?: string;
+  birthday?: string;
+  email?: string;
+  newPassword?: string;
+  currentPassword: string;
 }
 
 export const showCurrentUser = async () => defaultClient.get("/user");
 
-//WIP need to update the api
 export const updateCurrentUser = async ({
   firstName,
   lastName,
   birthday,
   email,
+  newPassword,
+  currentPassword,
 }: UserCreds) =>
-  defaultClient.post("/user", {
-    first_name: firstName,
-    last_name: lastName,
-    date_of_birth: birthday,
-    email: email,
+  defaultClient.patch("/user", {
+    user: {
+      first_name: firstName && firstName,
+      last_name: lastName && lastName,
+      date_of_birth: birthday && birthday,
+      email: email && email,
+      password: newPassword && newPassword,
+      current_password: currentPassword,
+    },
   });

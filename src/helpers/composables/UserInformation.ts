@@ -20,7 +20,12 @@ export default function emailPasswordTouched() {
 
   const birthdayError = computed(() => {
     if (!isBirthdayTouched.value) return "";
-    return birthday.value === "" ? "Birthday is required" : "";
+    if (birthday.value === "") return "Birthday is required";
+    const userBirthday = new Date(birthday.value);
+    const age = Math.trunc(
+      (Date.now() - +userBirthday) / (24 * 3600 * 365.25 * 1000)
+    );
+    return age >= 18 ? "" : "You have to be at least 18 years old";
   });
 
   return {

@@ -1,5 +1,6 @@
 <script lang="ts">
 import MainHeader from "@/components/MainHeader.vue";
+import Vue from "vue";
 
 import {
   ref,
@@ -11,10 +12,17 @@ import UserInformationForm from "../chunks/UserInformationForm.vue";
 import FormWrapper from "../UI/FormWrapper.vue";
 import UiButton from "../UI/UiButton.vue";
 import UserInformation from "@/helpers/composables/UserInformation";
-import { showCurrentUser } from "@/helpers/api/userActions";
+import { showCurrentUser, updateCurrentUser } from "@/helpers/api/userActions";
+import PasswordInputShowHide from "../chunks/PasswordInputShowHide.vue";
 
 export default defineComponent({
-  components: { MainHeader, FormWrapper, UiButton, UserInformationForm },
+  components: {
+    MainHeader,
+    FormWrapper,
+    UiButton,
+    UserInformationForm,
+    PasswordInputShowHide,
+  },
   setup() {
     const {
       name,
@@ -31,6 +39,9 @@ export default defineComponent({
     const email = ref("");
     const isEmailTouched = ref(false);
 
+    const passwordConfirm = ref("");
+    const isPasswordConfirmTouched = ref(false);
+
     onMounted(async () => {
       const { data } = await showCurrentUser();
       name.value = data.first_name;
@@ -44,6 +55,11 @@ export default defineComponent({
       return email.value.length > 0 ? "" : "Last name cannot be empty";
     });
 
+    const passwordConfirmError = computed(() => {
+      if (!isPasswordConfirmTouched.value) return "";
+      return email.value.length > 0 ? "" : "Last name cannot be empty";
+    });
+
     const error = ref({ status: false, message: "" });
 
     function touchAll() {
@@ -53,9 +69,42 @@ export default defineComponent({
       isEmailTouched.value = true;
     }
 
-    function submitForm() {
+    const isFormValid = computed(() => {
+      return (
+        !birthdayError.value &&
+        !lastNameError.value &&
+        !firstNameError.value &&
+        !passwordConfirmError.value
+      );
+    });
+
+    async function submitForm() {
       touchAll();
-      // do something, api i have doesnt have an update user method lol
+      if (isFormValid) {
+        try {
+          await updateCurrentUser({
+            firstName: name.value,
+            lastName: lastName.value,
+            birthday: birthday.value,
+            email: email.value,
+            currentPassword: passwordConfirm.value,
+          });
+          Vue.notify({
+            type: "success",
+            title: "Success",
+            text: "Changes applied succesfully",
+            duration: 2000,
+          });
+          passwordConfirm.value = "";
+        } catch (err: any) {
+          Vue.notify({
+            type: "error",
+            title: "Error",
+            text: "Something went wrong. Please try again later",
+            duration: 2000,
+          });
+        }
+      }
     }
 
     return {
@@ -64,6 +113,8 @@ export default defineComponent({
       lastName,
       birthday,
       email,
+      passwordConfirm,
+      isPasswordConfirmTouched,
       isEmailTouched,
       isFirstNameTouched,
       isLastNameTouched,
@@ -72,6 +123,7 @@ export default defineComponent({
       firstNameError,
       lastNameError,
       birthdayError,
+      passwordConfirmError,
       submitForm,
     };
   },
@@ -88,10 +140,7 @@ export default defineComponent({
         <ul>
           <error-message v-if="error.status">{{ error.message }}</error-message>
           <li
-            :class="[
-              'personal-details__list',
-              { 'user-info__error--input': !!emailError },
-            ]"
+            :class="['personal-details__list', { 'error-input': !!emailError }]"
           >
             <label class="font--label" for="emai">Email</label>
             <input
@@ -102,19 +151,23 @@ export default defineComponent({
               v-model="email"
               placeholder="example@monterail.com"
             />
-            <div class="user-info__error--message">{{ emailError }}</div>
+            <div class="error-message">{{ emailError }}</div>
           </li>
           <UiButton
             class="personal-details--button"
             small
             transparent
             colors="brand"
-            >Change password</UiButton
+            role=""
+            type="button"
           >
+            Change password
+          </UiButton>
+
           <li
             :class="[
               'personal-details__list',
-              { 'user-info__error--input': !!firstNameError },
+              { 'error-input': !!firstNameError },
             ]"
           >
             <label class="font--label" for="name">First Name</label>
@@ -126,12 +179,12 @@ export default defineComponent({
               v-model="name"
               placeholder="e.g. Jessica"
             />
-            <div class="user-info__error--message">{{ firstNameError }}</div>
+            <div class="error-message">{{ firstNameError }}</div>
           </li>
           <li
             :class="[
               'personal-details__list',
-              { 'user-info__error--input': !!lastNameError },
+              { 'error-input': !!lastNameError },
             ]"
           >
             <label class="font--label" for="last name">Last Name</label>
@@ -143,13 +196,13 @@ export default defineComponent({
               v-model="lastName"
               placeholder="e.g. Walton"
             />
-            <div class="user-info__error--message">{{ lastNameError }}</div>
+            <div class="error-message">{{ lastNameError }}</div>
           </li>
 
           <li
             :class="[
               'personal-details__list',
-              { 'user-info__error--input': !!birthdayError },
+              { 'error-input': !!birthdayError },
             ]"
           >
             <label class="font--label" for="birthday">Date of Birth</label>
@@ -162,14 +215,26 @@ export default defineComponent({
               placeholder="DD/MM/YYYY"
               data-date-split-input="true"
             />
-            <div class="user-info__error--message">{{ birthdayError }}</div>
-            <p class="user-info__age">You should be at least 18 years old</p>
+            <div class="error-message">{{ birthdayError }}</div>
+          </li>
+          <li
+            :class="[
+              'personal-details__list',
+              'personal-details__list--confirm',
+              { 'error-input': !!passwordConfirmError },
+            ]"
+          >
+            <password-input-show-hide
+              @touched="isPasswordConfirmTouched = true"
+              v-model="passwordConfirm"
+              label="Confirm Password"
+            />
           </li>
           <UiButton
-            class="personal-details--button"
+            class="personal-details--submit"
+            :disabled="!passwordConfirm"
             large
             colors="brand"
-            disabled
           >
             Save changes
           </UiButton>
@@ -181,10 +246,27 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .personal-details {
+  --width-lg: 475px;
+
   &__list {
-    max-width: 350px;
+    max-width: var(--width-lg);
     margin-inline: 0;
+    &--confirm {
+      margin-top: 20px;
+      label {
+        font-size: 16px;
+        color: var(--color-brand);
+        font-size: bold;
+      }
+    }
   }
+
+  &--submit {
+    width: 100%;
+    margin-top: 10px;
+    max-width: var(--width-lg);
+  }
+
   @include media-sm {
     display: flex;
     gap: 24px;
@@ -192,9 +274,9 @@ export default defineComponent({
     &__list {
       min-width: 300px;
     }
-    :not(&--button:first-of-type) {
-      margin-top: 10px;
+    &--submit {
       width: 100%;
+      margin-top: 10px;
     }
   }
 }

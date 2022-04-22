@@ -25,6 +25,9 @@ export default defineComponent({
 <template>
   <div class="header-actions">
     <template v-if="isLoggedIn">
+      <router-link :to="{ name: 'Account' }">
+        <UiButton medium colors="brand" transparent> My account </UiButton>
+      </router-link>
       <UiButton @click="logout" medium colors="brand"> Logout </UiButton>
     </template>
     <template v-else>
@@ -39,3 +42,11 @@ export default defineComponent({
     </template>
   </div>
 </template>
+
+<style scoped lang="scss">
+.header-actions {
+  button {
+    margin-right: 10px;
+  }
+}
+</style>
