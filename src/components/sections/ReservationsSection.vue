@@ -11,7 +11,6 @@ export default defineComponent({
       .get("/reservations?user_email=admin@monterail.com&page=5&per_page=10")
       .then(({ data }: { data: ReservationModel[] }) => {
         fetchData.value = data;
-        console.log(fetchData.value);
       });
     const activeReservations = computed(() => {
       return fetchData.value.filter(
@@ -59,19 +58,27 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .reservation {
-  margin-top: 64px;
-  margin-bottom: 128px;
-
-  box-shadow: 0px 4px 22px 0px #34354126;
-  padding: 64px;
   border-radius: 24px;
 
   h3 {
+    margin-inline: 24px;
     font-family: "Eczar";
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
     line-height: 102%;
+  }
+
+  @include media-sm {
+    margin-inline: auto;
+    max-width: 475px;
+  }
+
+  @include media-md {
+    box-shadow: 0px 4px 22px 0px #34354126;
+    margin-top: 64px;
+    margin-bottom: 128px;
+    padding: 64px;
   }
 }
 </style>

@@ -93,14 +93,37 @@ export default Vue.extend({
 
 <style scoped lang="scss">
 .reservations-table {
-  --table-min: 10px;
-
   font-family: "Roboto";
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
+
+  @include media-sm {
+    padding-inline: 27px;
+    max-width: var(--max-mobile-width);
+    margin-inline: auto;
+
+    h3 {
+      margin: 0;
+    }
+
+    p {
+      margin-top: 8px;
+    }
+  }
+
+  @include media-sm {
+  }
+
   &__wrapper {
     display: grid;
+    grid-template-columns: 60% 1fr;
+
+    @include media-sm {
+      flex-flow: column;
+      grid-gap: 12px;
+      margin-bottom: 48px;
+    }
     @include media-md {
       grid-template-columns: 1fr minmax(10%, 30%);
     }
@@ -108,10 +131,10 @@ export default Vue.extend({
 
   &__ticket-info {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
     grid-gap: 10px;
     @include media-md {
       min-width: 450px;
+      grid-template-columns: repeat(4, 1fr);
     }
     @include media-lg {
       min-width: 850px;
@@ -120,83 +143,43 @@ export default Vue.extend({
 
   &--seat {
     color: #343541;
-    min-width: var(--table-min);
-  }
-
-  &--movie {
-    min-width: var(--table-min);
-  }
-  &--time {
-    min-width: var(--table-min);
-  }
-  &--ticket {
-    min-width: var(--table-min);
   }
 
   &__actions-status {
     width: 100%;
-    justify-content: space-around;
-    align-items: center;
     display: flex;
     flex: 1;
+    @include media-sm {
+      flex-flow: column;
+      justify-content: space-evenly;
+      align-items: center;
+    }
   }
 
   &__status {
-    margin-left: auto;
-    h3 {
-      padding: 8px 16px;
-      background: #f7f7f7;
-      color: #85868d;
-      border-radius: 24px;
-      font-size: 14px;
-      font-weight: bold;
-      max-width: fit-content;
+    @include media-md {
+      margin-left: auto;
     }
   }
+
+  &__status h3 {
+    padding: 8px 16px;
+    background: #f7f7f7;
+    color: #85868d;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: bold;
+    max-width: fit-content;
+  }
+
   &--confirmed h3 {
     color: var(--color-red);
     background: var(--color-rose);
   }
 
   &__remove {
-    margin-left: auto;
-  }
-
-  &__nav {
-    display: flex;
-    margin-top: 64px;
-    a {
+    @include media-md {
       margin-left: auto;
-    }
-  }
-
-  @include media-sm {
-    margin: 64px 27px;
-    h3 {
-      margin: 0;
-    }
-
-    p {
-      margin-top: 8px;
-    }
-
-    &__wrapper {
-      flex-flow: column;
-      gap: 12px;
-      margin-bottom: 48px;
-    }
-
-    &__nav {
-      display: flex;
-      margin-top: 64px;
-      a,
-      button {
-        width: min(100%, 500px);
-      }
-
-      a {
-        margin-inline: auto;
-      }
     }
   }
 }

@@ -302,10 +302,8 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .personal-details {
-  --width-lg: 475px;
-
   &__list {
-    max-width: var(--width-lg);
+    max-width: var(--max-mobile-width);
     margin-inline: 0;
     &--confirm {
       margin-top: 20px;
@@ -320,7 +318,7 @@ export default defineComponent({
   &--submit {
     width: 100%;
     margin-top: 10px;
-    max-width: var(--width-lg);
+    max-width: var(--max-mobile-width);
   }
 
   @include media-sm {
