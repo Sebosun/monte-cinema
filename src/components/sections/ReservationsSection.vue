@@ -5,6 +5,9 @@ import { ReservationModel, Ticket } from "@/interfaces/ReservationsTypes";
 import ReservationTable from "../chunks/ReservationTable.vue";
 
 export default defineComponent({
+  metaInfo: {
+    title: "Reservations",
+  },
   setup() {
     const fetchData = ref<ReservationModel[]>([]);
     defaultClient

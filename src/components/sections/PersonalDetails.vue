@@ -325,9 +325,11 @@ export default defineComponent({
     display: flex;
     gap: 24px;
     justify-content: center;
+
     &__list {
       min-width: 300px;
     }
+
     &--submit {
       width: 100%;
       margin-top: 10px;

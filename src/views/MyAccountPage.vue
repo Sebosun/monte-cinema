@@ -8,6 +8,9 @@ import { defineComponent, ref } from "@vue/composition-api";
 
 export default defineComponent({
   components: { MainHeader, AccountNav, PersonalDetails, ReservationsSection },
+  metaInfo: {
+    title: "My Account",
+  },
   setup() {
     const activePage = ref("details");
 
