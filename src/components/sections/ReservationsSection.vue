@@ -4,6 +4,14 @@ import { defaultClient } from "@/helpers/api/axiosClient";
 import { ReservationModel, Ticket } from "@/interfaces/ReservationsTypes";
 import ReservationTable from "../chunks/ReservationTable.vue";
 
+/* eslint-disable */
+enum ReservationStatus {
+  Booked = 1,
+  Confirmed,
+  Cancelled,
+}
+/* eslint-enable */
+
 export default defineComponent({
   metaInfo: {
     title: "Reservations",
@@ -17,12 +25,14 @@ export default defineComponent({
       });
     const activeReservations = computed(() => {
       return fetchData.value.filter(
-        (reservation) => reservation.status.id != 3
+        (reservation) =>
+          reservation.status.id === ReservationStatus.Booked ||
+          reservation.status.id === ReservationStatus.Confirmed
       );
     });
     const inActiveReservations = computed(() => {
       return fetchData.value.filter(
-        (reservation) => reservation.status.id === 3
+        (reservation) => reservation.status.id === ReservationStatus.Cancelled
       );
     });
 
@@ -64,7 +74,6 @@ export default defineComponent({
   border-radius: 24px;
 
   h3 {
-    margin-inline: 24px;
     font-family: "Eczar";
     font-style: normal;
     font-weight: 600;
@@ -73,6 +82,9 @@ export default defineComponent({
   }
 
   @include media-sm {
+    h3 {
+      margin-inline: 24px;
+    }
     margin-inline: auto;
     max-width: 475px;
   }

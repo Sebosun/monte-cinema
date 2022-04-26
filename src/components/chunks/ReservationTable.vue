@@ -112,9 +112,6 @@ export default Vue.extend({
     }
   }
 
-  @include media-sm {
-  }
-
   &__wrapper {
     display: grid;
     grid-template-columns: 60% 1fr;
@@ -148,11 +145,11 @@ export default Vue.extend({
   &__actions-status {
     width: 100%;
     display: flex;
+    align-items: center;
     flex: 1;
     @include media-sm {
       flex-flow: column;
       justify-content: space-evenly;
-      align-items: center;
     }
   }
 
