@@ -113,6 +113,7 @@ h1 {
   &__top {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     button {
       margin-left: auto;
     }
