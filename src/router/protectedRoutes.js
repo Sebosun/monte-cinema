@@ -4,6 +4,7 @@ export default [
   {
     path: "/booking",
     redirect: "/screenings",
+    meta: { requiresAuth: true },
   },
   {
     path: "/booking/:id",
