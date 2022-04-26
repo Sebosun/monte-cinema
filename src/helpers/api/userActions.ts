@@ -8,12 +8,6 @@ interface ReservationData {
   }[];
 }
 
-export const bookReservations = async (data: ReservationData) =>
-  defaultClient.post("/reservations/online", {
-    seance_id: data.seance_id,
-    tickets: [...data.tickets],
-  });
-
 interface UserCreds {
   firstName?: string;
   lastName?: string;
@@ -23,7 +17,24 @@ interface UserCreds {
   currentPassword: string;
 }
 
+export const bookReservations = async (data: ReservationData) =>
+  defaultClient.post("/reservations/online", {
+    seance_id: data.seance_id,
+    tickets: [...data.tickets],
+  });
 export const showCurrentUser = async () => defaultClient.get("/user");
+
+export const getUserReservations = async (page = 5, per_page = 10) => {
+  const userCreds = await showCurrentUser();
+  console.log(userCreds);
+  return await defaultClient.get("/reservations", {
+    params: {
+      user_email: userCreds.data.email,
+      page,
+      per_page,
+    },
+  });
+};
 
 export const updateCurrentUser = async ({
   firstName,

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { ref, computed, defineComponent } from "@vue/composition-api";
-import { defaultClient } from "@/helpers/api/axiosClient";
+import { getUserReservations } from "@/helpers/api/userActions";
 import { ReservationModel, Ticket } from "@/interfaces/ReservationsTypes";
 import ReservationTable from "../chunks/ReservationTable.vue";
 
@@ -18,11 +18,11 @@ export default defineComponent({
   },
   setup() {
     const fetchData = ref<ReservationModel[]>([]);
-    defaultClient
-      .get("/reservations?user_email=admin@monterail.com&page=5&per_page=10")
-      .then(({ data }: { data: ReservationModel[] }) => {
-        fetchData.value = data;
-      });
+
+    getUserReservations(5).then(({ data }: { data: ReservationModel[] }) => {
+      fetchData.value = data;
+    });
+
     const activeReservations = computed(() => {
       return fetchData.value.filter(
         (reservation) =>

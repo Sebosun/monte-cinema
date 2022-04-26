@@ -32,6 +32,15 @@ export default Vue.extend({
     formatTime(): string {
       return dateToBookingHour(this.reservations.seance_datetime);
     },
+    isConfirmed(): boolean {
+      return this.reservations.status.name.toLowerCase() === "confirmed";
+    },
+    isRemoveButtonShown(): boolean {
+      if (this.isConfirmed && this.employee) {
+        return false;
+      }
+      return true;
+    },
   },
   components: { UiButton },
 });
@@ -84,14 +93,13 @@ export default Vue.extend({
             :class="[
               'reservations-table__status',
               {
-                'reservations-table--confirmed':
-                  reservations.status.name.toLowerCase() === 'confirmed',
+                'reservations-table--confirmed': isConfirmed,
               },
             ]"
           >
             <h3>{{ reservations.status.name }}</h3>
           </div>
-          <div class="left-auto">
+          <div v-if="isRemoveButtonShown" class="left-auto">
             <UiButton
               colors="primary"
               transparent
@@ -102,17 +110,18 @@ export default Vue.extend({
             >
           </div>
 
-          <div class="left-auto">
-            <UiButton
-              colors="brand"
-              v-if="employee"
-              transparent
-              @click="$emit('confirm', ticket)"
-              :medium="!employee"
-              :small="employee"
-              >Confirm</UiButton
-            >
-          </div>
+          <template v-if="employee && !isConfirmed">
+            <div class="left-auto">
+              <UiButton
+                colors="brand"
+                transparent
+                @click="$emit('confirm', ticket)"
+                :medium="!employee"
+                :small="employee"
+                >Confirm</UiButton
+              >
+            </div>
+          </template>
         </div>
       </template>
     </section>

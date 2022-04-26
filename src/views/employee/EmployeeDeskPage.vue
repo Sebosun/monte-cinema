@@ -1,33 +1,74 @@
 <script lang="ts">
+import { defineComponent, ref, computed } from "@vue/composition-api";
+
 import MainHeader from "@/components/MainHeader.vue";
-import { defineComponent, ref } from "@vue/composition-api";
-import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
-import { defaultClient } from "@/helpers/api/axiosClient";
 import ReservationTable from "@/components/chunks/ReservationTable.vue";
-import { ReservationModel } from "@/interfaces/ReservationsTypes";
+import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
+
+import { defaultClient } from "@/helpers/api/axiosClient";
+import { Ticket, ReservationModel } from "@/interfaces/ReservationsTypes";
+
+/* eslint-disable */
+enum ReservationStatus {
+  Booked = 1,
+  Confirmed,
+  Cancelled,
+}
+
+/* eslint-enable */
 export default defineComponent({
   components: { MainHeader, BreadcrumbNavigation, ReservationTable },
   setup() {
-    const reservationsList = ref<ReservationModel>();
+    const reservationsList = ref<ReservationModel[]>([]);
     defaultClient
-      .get("/reservations")
+      .get("/reservations?page=2")
       .then(
-        ({ data }: { data: ReservationModel }) =>
+        ({ data }: { data: ReservationModel[] }) =>
           (reservationsList.value = data)
       );
-    return { reservationsList };
+
+    const activeReservations = computed(() => {
+      return reservationsList.value.filter(
+        (reservation) =>
+          reservation.status.id === ReservationStatus.Booked ||
+          reservation.status.id === ReservationStatus.Confirmed
+      );
+    });
+
+    const handleRemoveTicket = (ticket: Ticket) => {
+      // no endpoint for this action
+      console.log(ticket);
+    };
+
+    const handleConfirmTicket = (ticket: Ticket) => {
+      // no endpoint for this action
+
+      console.log(ticket);
+    };
+    return {
+      reservationsList,
+      activeReservations,
+      handleRemoveTicket,
+      handleConfirmTicket,
+    };
   },
 });
 </script>
 
 <template>
-  <div>
+  <div class="desk-page">
     <MainHeader />
     <BreadcrumbNavigation>Desk 1</BreadcrumbNavigation>
-    <main>
+    <main class="desk-page__main">
       <h1>Do your work</h1>
-      <section v-for="reservation in reservationsList" :key="reservation.id">
-        <ReservationTable :reservations="reservation" enableButtons employee />
+      <section v-for="reservation in activeReservations" :key="reservation.id">
+        <ReservationTable
+          @remove="handleRemoveTicket"
+          @confirm="handleConfirmTicket"
+          :reservations="reservation"
+          enableButtons
+          employee
+        />
       </section>
     </main>
   </div>
@@ -36,5 +77,10 @@ export default defineComponent({
 <style scoped lang="scss">
 h1 {
   font-size: 48px;
+}
+.desk-page {
+  &__main {
+    margin-bottom: 128px;
+  }
 }
 </style>
