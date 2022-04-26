@@ -10,10 +10,6 @@ export default {
       type: String,
       default: "/",
     },
-    currentPathName: {
-      type: String,
-      default: "",
-    },
     nestedName: {
       type: String,
       default: "",

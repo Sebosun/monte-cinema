@@ -1,6 +1,6 @@
 <script>
 import MainHeader from "@/components/MainHeader.vue";
-import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
+import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
 import ContactCard from "@/components/chunks/ContactCard.vue";
 import SocialMediaIconsList from "@/components/chunks/SocialMediaIconsList.vue";
 export default {
