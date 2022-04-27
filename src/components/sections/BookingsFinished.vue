@@ -2,6 +2,7 @@
 import Vue, { PropType } from "vue";
 import { dateToBookingHour } from "@/helpers/timeUtils";
 import { getTicketRowSeat, ticketTypes } from "@/helpers/tickets";
+import UiButton from "../UI/UiButton.vue";
 
 interface CheckoutData {
   movie: string;
@@ -32,16 +33,17 @@ export default Vue.extend({
     },
   },
   computed: {
-    formatTime() {
+    formatTime(): string {
       return dateToBookingHour(this.checkoutData.time);
     },
   },
+  components: { UiButton },
 });
 </script>
 
 <template>
   <main class="bookings-finished">
-    <div
+    <section
       class="bookings-finished__wrapper"
       v-for="(ticket, index) in checkoutData.tickets"
       :key="index"
@@ -52,12 +54,12 @@ export default Vue.extend({
       </div>
       <div>
         <h3 class="font--label">Seat</h3>
-        <div class="bookings-finished--seat">
+        <p class="bookings-finished--seat">
           Row:
           <b>{{ formatSeat(ticket.seat).row }}</b
           >, Seat
           <b>{{ formatSeat(ticket.seat).seat }}</b>
-        </div>
+        </p>
       </div>
       <div>
         <h3 class="font--label">Time</h3>
@@ -65,14 +67,20 @@ export default Vue.extend({
       </div>
       <div>
         <h3 class="font--label">Ticket Type</h3>
-        {{ getTicketString(ticket.ticket_type_id) }}
+        <p>{{ getTicketString(ticket.ticket_type_id) }}</p>
       </div>
-    </div>
+    </section>
+    <section class="bookings-finished__nav">
+      <router-link to="/">
+        <UiButton large colors="brand">Go to homepage</UiButton>
+      </router-link>
+    </section>
   </main>
 </template>
 
 <style scoped lang="scss">
 .bookings-finished {
+  margin-top: 64px;
   &__wrapper {
     display: flex;
     gap: 32px;
@@ -81,6 +89,44 @@ export default Vue.extend({
   &--seat {
     color: #343541;
     width: max-content;
+  }
+
+  &__nav {
+    display: flex;
+    margin-top: 64px;
+    a {
+      margin-left: auto;
+    }
+  }
+
+  @include media-sm {
+    margin: 64px 27px;
+    h3 {
+      margin: 0;
+    }
+
+    p {
+      margin-top: 8px;
+    }
+
+    &__wrapper {
+      flex-flow: column;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    &__nav {
+      display: flex;
+      margin-top: 64px;
+      a,
+      button {
+        width: min(100%, 500px);
+      }
+
+      a {
+        margin-inline: auto;
+      }
+    }
   }
 }
 </style>

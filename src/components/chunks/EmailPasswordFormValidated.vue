@@ -1,5 +1,4 @@
 <script lang="ts">
-import Vue from "vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
 
@@ -7,64 +6,75 @@ import validateEmail from "@/helpers/validateEmail";
 import validatePassword from "@/helpers/validatePassword";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 
-type InputError = boolean | string;
+import { computed, defineComponent } from "@vue/composition-api";
 
-interface PasswordValidation {
-  length: boolean;
-  digits: boolean;
-  letters: boolean;
-}
+import useEmailPasswordTouched from "@/helpers/composables/useEmailPasswordTouched";
 
-export default Vue.extend({
-  data() {
-    return {
-      email: "" as string,
-      password: "",
-      isEmailTouched: false,
-      isPasswordTouched: false,
-    };
-  },
-  methods: {
-    submitForm() {
-      this.touchAll();
-      if (this.isFormValid) {
-        this.$emit("submit", { email: this.email, password: this.password });
+type ValidationType = "length" | "digits" | "letters";
+
+export default defineComponent({
+  setup(_, { emit }) {
+    const { email, password, isEmailTouched, isPasswordTouched } =
+      useEmailPasswordTouched();
+
+    function submitForm() {
+      touchAll();
+      if (isFormValid.value) {
+        emit("submit", { email: email.value, password: password.value });
       }
-    },
-    touchAll() {
-      this.isEmailTouched = true;
-      this.isPasswordTouched = true;
-    },
-    getValidationClass(validationType: "length" | "digits" | "letters") {
-      const validator = this.passwordValidation[validationType];
+    }
+
+    function touchAll() {
+      isEmailTouched.value = true;
+      isPasswordTouched.value = true;
+    }
+
+    function getValidationClass(validationType: ValidationType) {
+      const validator = passwordValidation.value[validationType];
       if (validator === false) return "";
       return validator ? "validated-form__info" : "validated-form__info--error";
-    },
-  },
-  computed: {
-    emailError(): InputError {
-      if (!this.isEmailTouched) return false;
-      const emailValidation = validateEmail(this.email);
-      return emailValidation ? emailValidation : "";
-    },
-    passwordError(): InputError {
-      if (!this.isPasswordTouched) return false;
-      return validatePassword(this.password);
-    },
-    passwordValidation(): PasswordValidation {
+    }
+
+    const passwordValidation = computed(() => {
       return {
-        length: this.isPasswordTouched ? this.password.length > 8 : false,
-        digits: this.isPasswordTouched ? !!this.password.match(/\d/) : false,
-        letters: this.isPasswordTouched
-          ? !!this.password.match(/[a-zA-Z]/)
+        length: isPasswordTouched.value ? password.value.length > 8 : false,
+        digits: isPasswordTouched.value ? !!password.value.match(/\d/) : false,
+        letters: isPasswordTouched.value
+          ? !!password.value.match(/[a-zA-Z]/)
           : false,
       };
-    },
-    isFormValid(): boolean {
-      return !this.emailError && !this.passwordError;
-    },
-  },
+    });
 
+    const emailError = computed(() => {
+      if (!isEmailTouched.value) return false;
+      const emailValidation = validateEmail(email.value);
+      return emailValidation ? emailValidation : "";
+    });
+
+    const passwordError = computed(() => {
+      if (isPasswordTouched.value) return false;
+      return validatePassword(password.value);
+    });
+
+    const isFormValid = computed(() => {
+      return !emailError.value && !passwordError.value;
+    });
+
+    return {
+      email,
+      password,
+      isEmailTouched,
+      isPasswordTouched,
+
+      submitForm,
+      touchAll,
+      getValidationClass,
+      emailError,
+      passwordError,
+      passwordValidation,
+      isFormValid,
+    };
+  },
   components: { UiButton, PasswordInputShowHide, FormWrapper },
 });
 </script>

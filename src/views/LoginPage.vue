@@ -1,74 +1,93 @@
-<script>
+<script lang="ts">
 import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
 import AuthHeader from "@/components/AuthHeader.vue";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
-export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      error: { status: false, message: "" },
-      isEmailTouched: false,
-      isPasswordTouched: false,
-    };
-  },
-  mounted() {
-    if (this.$store.getters["user/isLoggedIn"]) {
-      const redirectPath = this.$store.getters.redirectTo;
-      this.$router.push(redirectPath);
-    }
-  },
-  methods: {
-    async submitForm() {
-      this.touchAll();
-      if (this.isFormValid) {
-        try {
-          await this.$store.dispatch("user/login", {
-            email: this.email,
-            password: this.password,
-          });
+import useEmailPasswordTouched from "@/helpers/composables/useEmailPasswordTouched";
+import {
+  onMounted,
+  computed,
+  ref,
+  ComputedRef,
+  defineComponent,
+} from "@vue/composition-api";
+import getStore from "@/helpers/composables/store";
+import router from "@/router";
 
-          if (this.$store.getters.redirect) {
-            const redirectPath = this.$store.getters.redirectTo;
-            this.$router.push(redirectPath);
-          } else {
-            this.$router.push("/");
-          }
-        } catch (error) {
-          if (error.response.status === 401) {
-            this.error = {
-              status: true,
-              message: "Invalid credentials",
-            };
-          } else {
-            this.error = {
-              status: true,
-              message:
-                "Something went wrong. Please recheck your details and try again.",
-            };
-          }
+export default defineComponent({
+  setup() {
+    const {
+      email,
+      password,
+      isEmailTouched,
+      isPasswordTouched,
+      emailError,
+      passwordError,
+    } = useEmailPasswordTouched();
+
+    const error = ref({ status: false, message: "" });
+    const { store } = getStore();
+
+    onMounted(() => {
+      if (store.getters["user/isLoggedIn"]) {
+        const redirectPath = store.getters.redirectTo;
+        router.push(redirectPath);
+      }
+    });
+
+    function touchAll() {
+      isEmailTouched.value = true;
+      isPasswordTouched.value = true;
+    }
+    const isFormValid: ComputedRef<boolean> = computed(() => {
+      return !emailError.value && !passwordError.value;
+    });
+
+    async function submitForm() {
+      touchAll();
+      if (!isFormValid) return false;
+
+      try {
+        await store.dispatch("user/login", {
+          email: email.value,
+          password: password.value,
+        });
+
+        if (store.getters.redirect) {
+          const redirectPath = store.getters.redirectTo;
+          router.push(redirectPath);
+        } else {
+          router.push("/");
+        }
+      } catch (err: any) {
+        if (err.response.status === 401) {
+          error.value = {
+            status: true,
+            message: "Invalid credentials",
+          };
+        } else {
+          error.value = {
+            status: true,
+            message:
+              "Something went wrong. Please recheck your details and try again.",
+          };
         }
       }
-    },
-    touchAll() {
-      this.isEmailTouched = true;
-      this.isPasswordTouched = true;
-    },
-  },
-  computed: {
-    emailError() {
-      if (!this.isEmailTouched) return "";
-      return this.email.length > 0 ? "" : "Email cannot be empty";
-    },
-    passwordError() {
-      if (!this.isPasswordTouched) return "";
-      return this.password.length > 0 ? "" : "Password cannot be empty";
-    },
-    isFormValid() {
-      return !this.emailError && !this.passwordError;
-    },
+    }
+
+    return {
+      email,
+      password,
+      isEmailTouched,
+      isPasswordTouched,
+      error,
+      touchAll,
+      emailError,
+      passwordError,
+      isFormValid,
+      submitForm,
+    };
   },
   metaInfo: {
     title: "Screenings",
@@ -80,7 +99,7 @@ export default {
     FormWrapper,
     ErrorMessage,
   },
-};
+});
 </script>
 
 <template>

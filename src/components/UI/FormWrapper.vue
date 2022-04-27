@@ -26,6 +26,7 @@
     max-width: 100%;
 
     border-radius: 8px;
+    border: 2px solid transparent;
 
     &:hover {
       background-color: #eaeaea;
@@ -62,6 +63,17 @@
   .action-buttons a {
     width: 100%;
     margin: auto 0;
+  }
+
+  .error-input {
+    input {
+      border: 2px solid red;
+    }
+  }
+
+  .error-message {
+    margin-top: 10px;
+    color: var(--color-error);
   }
 
   @include media-sm {

@@ -6,4 +6,6 @@
   --color-red: #f47073;
   --color-background: #ffffff;
   --color-error: #cc0000;
+
+  --max-mobile-width: 475px;
 }

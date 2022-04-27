@@ -17,10 +17,11 @@
 @mixin input {
   background-color: #f7f7f7;
   border: 0;
-  padding: 17.5px 24px;
+  padding: 15.5px 22px;
   max-width: 100%;
 
   border-radius: 8px;
+  border: 2px solid transparent;
 
   &:hover {
     background-color: #eaeaea;
