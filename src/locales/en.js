@@ -11,6 +11,7 @@ export default {
     contact: "Contact Us",
     logout: "Logout",
     login: "Login",
+    my_account: "My Account",
     registration: "Register",
   },
   soon: {
@@ -24,4 +25,7 @@ export default {
     movie: "Movie",
   },
   contact: "Contact Us",
+  myAccount: {
+    language: "language",
+  },
 };
