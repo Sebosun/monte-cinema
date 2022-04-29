@@ -1,8 +1,9 @@
 <script>
 export default {
   created() {
-    this.$store.dispatch("movies/getMovies");
     this.$store.dispatch("user/restoreUserData");
+    this.$store.dispatch("movies/getMovies");
+    this.$i18n.locale = localStorage.getItem("user-lang");
   },
   metaInfo: {
     title: "",
@@ -15,6 +16,7 @@ export default {
 <template>
   <div id="app">
     <router-view />
+    <notifications position="bottom center" />
   </div>
 </template>
 
@@ -66,7 +68,6 @@ a {
   text-transform: uppercase;
   color: var(--color-red);
   font-family: Roboto Mono;
-  font-weight: 700;
   line-height: 18.46px;
 }
 </style>

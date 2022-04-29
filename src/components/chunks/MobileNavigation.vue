@@ -14,7 +14,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .navigation--mobile {
   flex-grow: 1;
   display: flex;

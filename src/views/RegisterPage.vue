@@ -16,8 +16,6 @@ export default {
       this.nextStep = true;
     },
     async submitRegistration(event) {
-
-      /* console.log("data submitted to the server", event); */
       const userCreds = {
         ...this.userCredentials,
         first_name: event.firstName,
@@ -27,6 +25,13 @@ export default {
 
       try {
         await this.$store.dispatch("user/register", userCreds);
+
+        if (this.$store.getters.redirect) {
+          const redirectPath = this.$store.getters.redirectTo;
+          this.$router.push(redirectPath);
+        } else {
+          this.$router.push("/");
+        }
       } catch (error) {
         this.error = {
           status: true,
@@ -70,7 +75,7 @@ export default {
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .register-page {
   margin: 64px 0;
   margin-inline: auto;

@@ -1,34 +1,40 @@
-<script>
+<script lang="ts">
+import Vue from "vue";
+
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import MainHeader from "@/components/MainHeader.vue";
-import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
+import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
 import MovieDescription from "@/components/chunks/MovieDescription.vue";
 import ScreeningsForOneMovie from "@/components/sections/ScreeningsForOneMovie.vue";
 
 import * as moviesApi from "@/helpers/api/movies";
+import { Movie, ScreeningTypes } from "@/interfaces/MovieTypes";
 
-export default {
+interface MetaInfo {
+  title: string;
+}
+
+export default Vue.extend({
   name: "MovieDetails",
-
   data() {
     return {
-      movie: null,
+      movie: new Object() as Movie,
       loading: true,
-      screenings: [],
-      error: { status: false, message: "" },
+      screenings: new Object() as ScreeningTypes,
+      error: { status: false, message: "Something went wrong" },
     };
   },
   props: {
     id: {
-      type: String,
+      type: Number,
       required: true,
     },
   },
-  async created() {
+  async mounted() {
     this.fetchMovie();
   },
   computed: {
-    title() {
+    title(): string {
       if (this.movie) {
         return this.movie.title;
       } else {
@@ -50,7 +56,7 @@ export default {
       this.loading = false;
     },
   },
-  metaInfo() {
+  metaInfo(): MetaInfo {
     return { title: this.title };
   },
   components: {
@@ -60,7 +66,7 @@ export default {
     ScreeningsForOneMovie,
     MovieDescription,
   },
-};
+});
 </script>
 
 <template>

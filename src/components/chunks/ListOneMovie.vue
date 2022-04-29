@@ -1,14 +1,10 @@
 <script>
 import MovieCard from "@/components/UI/MovieCard.vue";
 import Tags from "@/components/UI/Tags.vue";
-import UiButton from "@/components/UI/UiButton.vue";
-import {
-  minutesToHoursAndRemainder,
-  dateToHoursMinutes,
-} from "@/helpers/timeUtils";
+import ButtonsScreenings from "./ButtonsScreenings.vue";
+import { minutesToHoursAndRemainder } from "@/helpers/timeUtils";
 
 export default {
-  components: { MovieCard, Tags, UiButton },
   props: {
     movie: {
       type: Object,
@@ -16,31 +12,34 @@ export default {
     },
     screenings: {
       type: Array,
-      required: true,
+      default: () => [],
+    },
+    show: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
-    screeningsWithDatesObjects() {
+    screeningsWithDates() {
       return this.screenings.map((screening) => {
         const screeningDate = new Date(screening.datetime);
 
         return { ...screening, datetime: screeningDate };
       });
     },
+    isComponentVisible() {
+      return this.screenings.length >= 1 || this.show;
+    },
     movieLength() {
       return minutesToHoursAndRemainder(this.movie.length);
     },
   },
-  methods: {
-    getScreeningHour(date) {
-      return dateToHoursMinutes(date);
-    },
-  },
+  components: { MovieCard, Tags, ButtonsScreenings },
 };
 </script>
 
 <template>
-  <MovieCard v-if="screenings.length >= 1" class="list-one-movie">
+  <MovieCard v-if="isComponentVisible" class="list-one-movie">
     <div class="list-one-movie__wrapper">
       <div class="list-one-movie__fill">
         <img :src="movie.poster_url" :alt="movie.title" />
@@ -53,31 +52,28 @@ export default {
             {{ movieLength }}
           </div>
         </div>
-
         <div class="list-one-movie__buttons-container--md">
-          <UiButton
-            v-for="screening in screeningsWithDatesObjects"
-            :key="screening.id"
-            transparent
-            colors="brand"
-            >{{ getScreeningHour(screening.datetime) }}</UiButton
-          >
+          <slot>
+            <ButtonsScreenings
+              :screeningsWithDates="screeningsWithDates"
+              class="list-one-movie__buttons-container--md"
+            />
+          </slot>
         </div>
       </div>
     </div>
     <div class="list-one-movie__buttons-container--sm">
-      <UiButton
-        v-for="screening in screeningsWithDatesObjects"
-        :key="screening.id"
-        transparent
-        colors="brand"
-        >{{ getScreeningHour(screening.datetime) }}</UiButton
-      >
+      <slot>
+        <ButtonsScreenings
+          :screeningsWithDates="screeningsWithDates"
+          class="list-one-movie__buttons-container--sm"
+        />
+      </slot>
     </div>
   </MovieCard>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .list-one-movie {
   &__wrapper {
     margin: 1rem 0;
@@ -126,7 +122,6 @@ export default {
   &__buttons-container--sm {
     width: 100%;
     padding: 0.625rem 0;
-    max-width: min-content;
     margin-top: -20px;
     display: flex;
     overflow-x: auto;

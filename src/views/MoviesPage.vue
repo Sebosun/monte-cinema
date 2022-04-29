@@ -2,8 +2,9 @@
 import MainHeader from "@/components/MainHeader.vue";
 import MovieItem from "@/components/chunks/MovieItem.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
-import getGenres from "@/helpers/getGenres";
-import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
+import getGenres from "@/helpers/getGenres.ts";
+import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
+import DropdownSelect from "@/components/chunks/DropdownSelect.vue";
 
 export default {
   name: "MoviesPage",
@@ -12,6 +13,15 @@ export default {
       search: "",
       selectedGenre: "",
     };
+  },
+  methods: {
+    handleGenreChange(genre) {
+      if (genre.name === "All movies") {
+        this.selectedGenre = "";
+      } else {
+        this.selectedGenre = genre.name;
+      }
+    },
   },
   computed: {
     loading() {
@@ -43,7 +53,13 @@ export default {
     title: "All Movies",
     titleTemplate: "%s | Monte Cinema",
   },
-  components: { MainHeader, MovieItem, LoadingSpinner, BreadcrumbNavigation },
+  components: {
+    MainHeader,
+    MovieItem,
+    LoadingSpinner,
+    BreadcrumbNavigation,
+    DropdownSelect,
+  },
 };
 </script>
 
@@ -71,12 +87,12 @@ export default {
         </div>
         <div class="movies__inputs--select">
           <label for="genres" class="label font--label">Category</label>
-          <select class="input" name="genres" v-model="selectedGenre">
-            <option selected value="">All movies</option>
-            <option v-for="genre in genres" :value="genre.name" :key="genre.id">
-              {{ genre.name }}
-            </option>
-          </select>
+          <DropdownSelect
+            :items-array="genres"
+            :selected="selectedGenre"
+            resetTerm="All movies"
+            @select="handleGenreChange"
+          />
         </div>
       </div>
       <div class="movies__list">
@@ -113,6 +129,7 @@ export default {
     &--wrapper {
       margin: 40px 24px;
     }
+
     &__list {
       display: flex;
       flex-flow: column;
@@ -140,6 +157,7 @@ export default {
       grid-template-columns: 2fr 1fr;
       gap: 20px;
       &--select {
+        display: grid;
         margin-left: 20px;
       }
     }

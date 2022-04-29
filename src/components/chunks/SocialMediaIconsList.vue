@@ -21,13 +21,13 @@ export default {
 
 <template>
   <ul class="socials">
-    <li><TwitterSVG /></li>
-    <li><FacebookSVG /></li>
-    <li><LinkedInSVG /></li>
-    <li><InstaSVG /></li>
-    <li><GithubSVG /></li>
-    <li><BeSVG /></li>
-    <li><BallSVG /></li>
+    <li><TwitterSVG alt="twitter" /></li>
+    <li><FacebookSVG alt="facebook" /></li>
+    <li><LinkedInSVG alt="linked-in" /></li>
+    <li><InstaSVG alt="instagram" /></li>
+    <li><GithubSVG alt="github" /></li>
+    <li><BeSVG alt="Be company" /></li>
+    <li><BallSVG alt="International company" /></li>
   </ul>
 </template>
 

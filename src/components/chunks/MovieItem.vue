@@ -1,7 +1,8 @@
 <script>
 import Tags from "@/components/UI/Tags.vue";
 import MovieCard from "@/components/UI/MovieCard.vue";
-import { minutesToHoursAndRemainder } from "@/helpers/timeUtils";
+import { minutesToHoursAndRemainder } from "@/helpers/timeUtils.ts";
+import { computed } from "@vue/composition-api";
 export default {
   props: {
     movie: {
@@ -9,10 +10,12 @@ export default {
       required: true,
     },
   },
-  computed: {
-    movieLength() {
-      return minutesToHoursAndRemainder(this.movie.length);
-    },
+  setup(props) {
+    const movieLength = computed(() => {
+      return minutesToHoursAndRemainder(props.movie.length);
+    });
+
+    return { movieLength };
   },
   components: { MovieCard, Tags },
 };

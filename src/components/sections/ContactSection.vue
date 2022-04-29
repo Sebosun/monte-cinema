@@ -7,7 +7,7 @@ export default {
 
 <template>
   <div class="contact">
-    <h1 class="font--header">Contact Us</h1>
+    <h1 class="font--header">{{ $t("contact") }}</h1>
     <ContactCard class="contact--card" />
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script>
 import MainHeader from "@/components/MainHeader.vue";
-import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
+import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
 import ContactCard from "@/components/chunks/ContactCard.vue";
 import SocialMediaIconsList from "@/components/chunks/SocialMediaIconsList.vue";
 export default {
@@ -20,7 +20,7 @@ export default {
     <main class="contact__content">
       <h1 class="font--header">Contact us</h1>
       <div class="contact__wrapper">
-        <div class="contact__img" />
+        <div role="img" aria-label="map to monterail" class="contact__img" />
         <ContactCard class="contact__card" />
         <SocialMediaIconsList />
       </div>

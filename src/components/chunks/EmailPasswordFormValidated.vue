@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import UiButton from "@/components/UI/UiButton.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
 
@@ -6,59 +6,77 @@ import validateEmail from "@/helpers/validateEmail";
 import validatePassword from "@/helpers/validatePassword";
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 
-export default {
-  data() {
+import { computed, defineComponent } from "@vue/composition-api";
+
+import useEmailPasswordTouched from "@/helpers/composables/useEmailPasswordTouched";
+
+type ValidationType = "length" | "digits" | "letters";
+
+export default defineComponent({
+  setup(_, { emit }) {
+    const { email, password, isEmailTouched, isPasswordTouched } =
+      useEmailPasswordTouched();
+
+    function submitForm() {
+      touchAll();
+      if (isFormValid.value) {
+        emit("submit", { email: email.value, password: password.value });
+      }
+    }
+
+    function touchAll() {
+      isEmailTouched.value = true;
+      isPasswordTouched.value = true;
+    }
+
+    function getValidationClass(validationType: ValidationType) {
+      const validator = passwordValidation.value[validationType];
+      if (validator === false) return "";
+      return validator ? "validated-form__info" : "validated-form__info--error";
+    }
+
+    const passwordValidation = computed(() => {
+      return {
+        length: isPasswordTouched.value ? password.value.length > 8 : false,
+        digits: isPasswordTouched.value ? !!password.value.match(/\d/) : false,
+        letters: isPasswordTouched.value
+          ? !!password.value.match(/[a-zA-Z]/)
+          : false,
+      };
+    });
+
+    const emailError = computed(() => {
+      if (!isEmailTouched.value) return false;
+      const emailValidation = validateEmail(email.value);
+      return emailValidation ? emailValidation : "";
+    });
+
+    const passwordError = computed(() => {
+      if (isPasswordTouched.value) return false;
+      return validatePassword(password.value);
+    });
+
+    const isFormValid = computed(() => {
+      return !emailError.value && !passwordError.value;
+    });
+
     return {
-      email: "",
-      password: "",
-      isEmailTouched: false,
-      isPasswordTouched: false,
+      email,
+      password,
+      isEmailTouched,
+      isPasswordTouched,
+
+      submitForm,
+      touchAll,
+      getValidationClass,
+      emailError,
+      passwordError,
+      passwordValidation,
+      isFormValid,
     };
   },
-  methods: {
-    submitForm() {
-      this.touchAll();
-      if (this.isFormValid) {
-        this.$emit("submit", { email: this.email, password: this.password });
-      }
-    },
-    touchAll() {
-      this.isEmailTouched = true;
-      this.isPasswordTouched = true;
-    },
-    getValidationClass(validationType) {
-      const validator = this.passwordValidation[validationType];
-      if (typeof validator === "undefined") return "";
-      return validator ? "validated-form__info" : "validated-form__info--error";
-    },
-  },
-  computed: {
-    emailError() {
-      if (!this.isEmailTouched) return false;
-      return validateEmail(this.email, this.isEmailTouched);
-    },
-    passwordError() {
-      if (!this.isPasswordTouched) return false;
-      return validatePassword(this.password, this.isPasswordTouched);
-    },
-    passwordValidation() {
-      return {
-        length: this.isPasswordTouched ? this.password.length > 8 : undefined,
-        digits: this.isPasswordTouched
-          ? !!this.password.match(/\d/)
-          : undefined,
-        letters: this.isPasswordTouched
-          ? !!this.password.match(/[a-zA-Z]/)
-          : undefined,
-      };
-    },
-    isFormValid() {
-      return !this.emailError && !this.passwordError;
-    },
-  },
-
   components: { UiButton, PasswordInputShowHide, FormWrapper },
-};
+});
 </script>
 
 <template>
@@ -80,12 +98,12 @@ export default {
               v-model="email"
               placeholder="example@monterail.com"
             />
-            <div class="validated-form__error--message">{{ emailError }}</div>
+            <div v-if="emailError" class="validated-form__error--message">
+              {{ emailError }}
+            </div>
           </li>
 
-          <li
-            :class="{ 'validated-form__error--input': !!passwordError.valid }"
-          >
+          <li :class="{ 'validated-form__error--input': !!passwordError }">
             <password-input-show-hide
               @touched="isPasswordTouched = true"
               v-model="password"

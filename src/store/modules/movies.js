@@ -1,4 +1,4 @@
-import * as moviesApi from "@/helpers/api/movies";
+import * as moviesApi from "@/helpers/api/movies.ts";
 
 const movies = {
   namespaced: true,

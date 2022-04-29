@@ -11,14 +11,14 @@ export default {
   <section class="hero">
     <div class="hero__wrapper background--rose">
       <h1 class="hero__wrapper__title font--header">
-        Welcome to the best Cinema in Monterail
+        {{ $t("hero.title") }}
       </h1>
       <p class="font--paragraph">
-        Best movies, best experiences, best people.
+        {{ $t("hero.subTitleTop") }}
         <br class="hero__wrapper__break" />
-        And all that doesn't exist. Yikes.
+        {{ $t("hero.subTitleBottom") }}
       </p>
-      <ui-button medium colors="brand">Book a ticket</ui-button>
+      <ui-button medium colors="brand">{{ $t("hero.callToAction") }}</ui-button>
     </div>
     <img src="@/assets/hero_image.jpg" alt="cinema" />
   </section>

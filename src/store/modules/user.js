@@ -10,6 +10,7 @@ const user = {
   state: {
     user: null,
     authToken: null,
+    userLang: "en-UK",
   },
   getters: {
     isLoggedIn: (state) => !!state.authToken,

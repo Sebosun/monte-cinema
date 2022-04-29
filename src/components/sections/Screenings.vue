@@ -1,31 +1,41 @@
-<script>
+<script lang="ts">
+import Vue, { PropType } from "vue";
 import ListOneMovie from "@/components/chunks/ListOneMovie.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
-import getGenres from "@/helpers/getGenres";
+import DropdownSelect from "@/components/chunks/DropdownSelect.vue";
+
 import {
   ONE_DAY_IN_MILLISECONDS,
   dateToHumanReadableDay,
-} from "@/helpers/timeUtils.js";
-import CalendarSVG from "@/assets/calendar.svg";
+} from "@/helpers/timeUtils";
 
-export default {
+import CalendarSVG from "@/assets/calendar.svg";
+import getGenres from "@/helpers/getGenres";
+
+interface genreObj {
+  name: string;
+  id: number;
+}
+
+import { movieWithScreenings } from "@/interfaces/MovieTypes";
+
+import { Error } from "./AllScreeningsLogic.vue";
+
+export default Vue.extend({
   data() {
     return {
       selectedGenre: "",
-      modelConfig: {
-        type: "Date",
-      },
     };
   },
   props: {
     movies: {
-      type: Array,
+      type: Array as PropType<movieWithScreenings[]>,
       required: true,
     },
     selectedDay: {
-      type: Date,
+      type: Date as PropType<Date>,
       required: true,
     },
     empty: {
@@ -37,30 +47,37 @@ export default {
       default: true,
     },
     error: {
-      type: Object,
+      type: Object as PropType<Error>,
       required: true,
     },
   },
   methods: {
-    dayToHuman(day) {
+    dayToHuman(day: Date) {
       return dateToHumanReadableDay(day);
     },
-    emitDayUpdate(event) {
+    emitDayUpdate(event: string) {
       this.$emit("changeDate", new Date(event));
+    },
+    handleGenreChange(genre: genreObj) {
+      if (genre.name === "All movies") {
+        this.selectedGenre = "";
+      } else {
+        this.selectedGenre = genre.name;
+      }
     },
   },
   computed: {
-    genres() {
+    genres(): genreObj[] {
       return getGenres(this.movies);
     },
-    filterMovies() {
+    filterMovies(): movieWithScreenings[] {
       const filteredMovies = this.movies.filter(
         (item) => item.genre.name === this.selectedGenre
       );
       // making sure something is actually selected
       return this.selectedGenre == "" ? this.movies : filteredMovies;
     },
-    datesForDaySwitchingButtons() {
+    datesForDaySwitchingButtons(): Date[] {
       const today = new Date();
       const dayIndexes = Array.from(Array(4).keys());
 
@@ -69,11 +86,13 @@ export default {
           new Date(today.getTime() + dayNumber * ONE_DAY_IN_MILLISECONDS)
       );
     },
-    currentScreeningsText() {
-      const options = { weekday: "long" };
+    currentScreeningsText(): string {
+      const options = { weekday: "long" } as const;
+
       const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
         this.selectedDay
       );
+
       return `${dayStr} ${this.selectedDay.toLocaleDateString("en-UK")}`;
     },
   },
@@ -83,8 +102,9 @@ export default {
     ErrorMessage,
     LoadingSpinner,
     CalendarSVG,
+    DropdownSelect,
   },
-};
+});
 </script>
 
 <template>
@@ -92,12 +112,14 @@ export default {
     <div class="screenings__wrapper">
       <div class="screenings__top">
         <div class="screenings__headers font--header">
-          <h1>Screenings:</h1>
-          <h2>{{ currentScreeningsText }}</h2>
+          <h1>{{ $t("screenings.screenings") }}:</h1>
+          <h2>
+            {{ $d(new Date(selectedDay), "short") }}
+          </h2>
         </div>
         <div class="screenings__filters">
           <div class="screenings__days">
-            <div class="font--label">Day</div>
+            <div class="font--label">{{ $t("screenings.day") }}</div>
             <div class="screenings__button-container">
               <ui-button
                 v-for="(date, index) in datesForDaySwitchingButtons"
@@ -107,7 +129,7 @@ export default {
                   !(date.toDateString() === selectedDay.toDateString())
                 "
                 colors="primary"
-                >{{ dayToHuman(date) }}</ui-button
+                >{{ $d(new Date(date), "shortDay") }}</ui-button
               >
               <div class="screenings__calendar">
                 <vc-date-picker :value="selectedDay" @input="emitDayUpdate">
@@ -126,17 +148,16 @@ export default {
           </div>
 
           <div v-if="movies.length > 1" class="screenings__genres">
-            <label for="genres" class="font--label">Movie</label>
-            <select name="genres" v-model="selectedGenre">
-              <option selected value="">All movies</option>
-              <option
-                v-for="genre in genres"
-                :value="genre.name"
-                :key="genre.id"
-              >
-                {{ genre.name }}
-              </option>
-            </select>
+            <label for="genres" class="font--label">{{
+              $t("screenings.movie")
+            }}</label>
+            <DropdownSelect
+              :items-array="genres"
+              :selected="selectedGenre"
+              resetTerm="All movies"
+              @select="handleGenreChange"
+              class="screenings__genres--select"
+            />
           </div>
         </div>
       </div>
@@ -172,6 +193,7 @@ export default {
 
   &__headers {
     margin-bottom: 2rem;
+    text-transform: capitalize;
   }
 
   &__headers h1 {
@@ -218,6 +240,7 @@ export default {
   &__button-container button {
     font-size: 0.875rem;
     padding: 19px 40px;
+    text-transform: capitalize;
   }
 
   &__button-container .button + .button {
@@ -254,10 +277,9 @@ export default {
     flex-direction: column;
   }
 
-  &__genres select {
+  &__genres--select {
     width: min(calc(100% - 1.5rem), 29.25rem);
     margin-right: 1.5rem;
-    padding: 1.094rem 1.5rem 1.094rem 1.5rem;
 
     border: 0;
     background-color: #f7f7f7;
@@ -306,7 +328,7 @@ export default {
       justify-content: space-around;
     }
 
-    &__genres select {
+    &__genres--select {
       margin: 0;
       width: 100%;
       margin: 12px 0;

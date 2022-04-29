@@ -1,4 +1,4 @@
-export default function validatePassword(password) {
+export default function validatePassword(password: string) {
   // Anything with less than eight characters
   // OR anything with no numbers
   // OR or anything with no lowercase or uppercase char

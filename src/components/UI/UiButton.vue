@@ -89,7 +89,7 @@ export default {
   &:disabled {
     background-color: var(--color-secondary);
     cursor: not-allowed;
-    border: 0;
+    border-color: var(--color-secondary);
     &:hover {
       color: white;
       background: var(--color-secondary);

@@ -2,67 +2,78 @@
 import FormWrapper from "@/components/UI/FormWrapper.vue";
 import UiButton from "@/components/UI/UiButton.vue";
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
+import { ref, computed } from "@vue/composition-api";
+import useUserInformation from "@/helpers/composables/useUserInformation";
+
 export default {
-  data() {
-    return {
-      name: "",
-      lastName: "",
-      birthday: "",
-      privacyPolicy: false,
-      isFirstNameTouched: false,
-      isLastNameTouched: false,
-      isBirthdayTouched: false,
-      isPrivacyTouched: false,
-    };
-  },
   props: {
     error: {
       type: Object,
     },
   },
-  methods: {
-    submitForm() {
-      this.touchAll();
-      if (this.isFormValid) {
-        this.$emit("submit", {
-          firstName: this.name,
-          lastName: this.lastName,
-          birthday: this.birthday,
-        });
-      }
-    },
-    touchAll() {
-      this.isFirstNameTouched = true;
-      this.isLastNameTouched = true;
-      this.isBirthdayTouched = true;
-      this.isPrivacyTouched = true;
-    },
-  },
-  computed: {
-    firstNameError() {
-      if (!this.isFirstNameTouched) return "";
-      return this.name.length > 0 ? "" : "First name cannot be empty";
-    },
-    lastNameError() {
-      if (!this.isLastNameTouched) return "";
-      return this.lastName.length > 0 ? "" : "Last name cannot be empty";
-    },
-    birthdayError() {
-      if (!this.isBirthdayTouched) return "";
-      return this.birthday === "" ? "Birthday is required" : "";
-    },
-    privacyError() {
-      if (!this.isPrivacyTouched) return "";
-      return this.privacyPolicy === false ? "Privacy is required" : "";
-    },
-    isFormValid() {
+  setup(props, { emit }) {
+    const {
+      name,
+      lastName,
+      birthday,
+      isFirstNameTouched,
+      isLastNameTouched,
+      isBirthdayTouched,
+      firstNameError,
+      lastNameError,
+      birthdayError,
+    } = useUserInformation();
+
+    const privacyPolicy = ref(false);
+    const isPrivacyTouched = ref(false);
+
+    function submitForm() {
+      touchAll();
+      emit("submit", {
+        firstName: name.value,
+        lastName: lastName.value,
+        birthday: birthday.value,
+      });
+    }
+
+    function touchAll() {
+      isFirstNameTouched.value = true;
+      isLastNameTouched.value = true;
+      isBirthdayTouched.value = true;
+      isPrivacyTouched.value = true;
+    }
+
+    const privacyError = computed(() => {
+      if (!isPrivacyTouched.value) return "";
+      return privacyPolicy.value === false ? "Privacy is required" : "";
+    });
+
+    const isFormValid = computed(() => {
       return (
-        !this.birthdayError &&
-        !this.lastNameError &&
-        !this.firstNameError &&
-        !this.privacyError
+        !birthdayError.value &&
+        !lastNameError.value &&
+        !firstNameError.value &&
+        !privacyError.value
       );
-    },
+    });
+
+    return {
+      name,
+      lastName,
+      birthday,
+      privacyPolicy,
+      isFirstNameTouched,
+      isLastNameTouched,
+      isBirthdayTouched,
+      isPrivacyTouched,
+      touchAll,
+      submitForm,
+      firstNameError,
+      lastNameError,
+      birthdayError,
+      privacyError,
+      isFormValid,
+    };
   },
   components: { FormWrapper, UiButton, ErrorMessage },
 };
@@ -141,7 +152,7 @@ export default {
   </FormWrapper>
 </template>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .user-info {
   &__error {
     &--input input {
