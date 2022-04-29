@@ -1,13 +1,16 @@
 <script lang="ts">
-import { defineComponent, ref, computed } from "@vue/composition-api";
+import { defineComponent, ref, computed, watch } from "@vue/composition-api";
 
 import MainHeader from "@/components/MainHeader.vue";
 import ReservationTable from "@/components/chunks/ReservationTable.vue";
 import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
 
-import { defaultClient } from "@/helpers/api/axiosClient";
 import { Ticket, ReservationModel } from "@/interfaces/ReservationsTypes";
 import UiButton from "@/components/UI/UiButton.vue";
+
+import { defaultClient } from "@/helpers/api/axiosClient";
+import { getReservations } from "@/helpers/api/employeeActions";
+import debounce from "lodash.debounce";
 
 /* eslint-disable */
 enum ReservationStatus {
@@ -21,8 +24,8 @@ export default defineComponent({
   components: { MainHeader, BreadcrumbNavigation, ReservationTable, UiButton },
   setup() {
     const reservationsList = ref<ReservationModel[]>([]);
-
     const search = ref("");
+    const page = ref(2);
 
     defaultClient
       .get("/reservations?page=2")
@@ -37,6 +40,18 @@ export default defineComponent({
           reservation.status.id === ReservationStatus.Booked ||
           reservation.status.id === ReservationStatus.Confirmed
       );
+    });
+
+    const fetchUserWithEmail = debounce(async () => {
+      const { data }: { data: ReservationModel[] } = await getReservations({
+        user_email: search.value,
+        page: page.value,
+      });
+      reservationsList.value = data;
+    }, 1000);
+
+    watch(search, () => {
+      fetchUserWithEmail();
     });
 
     const handleRemoveTicket = (ticket: Ticket) => {
@@ -63,6 +78,7 @@ export default defineComponent({
       activeReservations,
       handleRemoveTicket,
       handleConfirmTicket,
+      fetchUserWithEmail,
     };
   },
 });
@@ -89,10 +105,7 @@ export default defineComponent({
           type="text"
         />
       </section>
-      <section
-        v-for="reservation in moviesSearchFiltered"
-        :key="reservation.id"
-      >
+      <section v-for="reservation in activeReservations" :key="reservation.id">
         <ReservationTable
           @remove="handleRemoveTicket"
           @confirm="handleConfirmTicket"

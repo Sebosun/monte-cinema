@@ -15,10 +15,7 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
-    employee: {
-      type: Boolean,
-      default: false,
-    },
+    employee: Boolean,
   },
   methods: {
     getRow(ticket: string) {
@@ -56,7 +53,7 @@ export default Vue.extend({
       <div
         :class="[
           'reservations-table__ticket-info',
-          { 'reservations-table--employee': employee },
+          { 'reservations-table__ticket-info--employee': employee },
         ]"
       >
         <div class="reservations-table__movie">
@@ -173,11 +170,11 @@ export default Vue.extend({
     @include media-lg {
       min-width: 800px;
     }
-  }
 
-  &--employee {
-    @include media-md {
-      grid-template-columns: repeat(5, 1fr);
+    &--employee {
+      @include media-md {
+        grid-template-columns: repeat(5, 1fr);
+      }
     }
   }
 
