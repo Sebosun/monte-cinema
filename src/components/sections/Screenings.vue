@@ -92,6 +92,7 @@ export default Vue.extend({
       const dayStr = new Intl.DateTimeFormat("en-UK", options).format(
         this.selectedDay
       );
+
       return `${dayStr} ${this.selectedDay.toLocaleDateString("en-UK")}`;
     },
   },
@@ -111,12 +112,14 @@ export default Vue.extend({
     <div class="screenings__wrapper">
       <div class="screenings__top">
         <div class="screenings__headers font--header">
-          <h1>Screenings:</h1>
-          <h2>{{ currentScreeningsText }}</h2>
+          <h1>{{ $t("screenings.screenings") }}:</h1>
+          <h2>
+            {{ $d(new Date(selectedDay), "short") }}
+          </h2>
         </div>
         <div class="screenings__filters">
           <div class="screenings__days">
-            <div class="font--label">Day</div>
+            <div class="font--label">{{ $t("screenings.day") }}</div>
             <div class="screenings__button-container">
               <ui-button
                 v-for="(date, index) in datesForDaySwitchingButtons"
@@ -126,7 +129,7 @@ export default Vue.extend({
                   !(date.toDateString() === selectedDay.toDateString())
                 "
                 colors="primary"
-                >{{ dayToHuman(date) }}</ui-button
+                >{{ $d(new Date(date), "shortDay") }}</ui-button
               >
               <div class="screenings__calendar">
                 <vc-date-picker :value="selectedDay" @input="emitDayUpdate">
@@ -145,7 +148,9 @@ export default Vue.extend({
           </div>
 
           <div v-if="movies.length > 1" class="screenings__genres">
-            <label for="genres" class="font--label">Movie</label>
+            <label for="genres" class="font--label">{{
+              $t("screenings.movie")
+            }}</label>
             <DropdownSelect
               :items-array="genres"
               :selected="selectedGenre"
@@ -188,6 +193,7 @@ export default Vue.extend({
 
   &__headers {
     margin-bottom: 2rem;
+    text-transform: capitalize;
   }
 
   &__headers h1 {
@@ -234,6 +240,7 @@ export default Vue.extend({
   &__button-container button {
     font-size: 0.875rem;
     padding: 19px 40px;
+    text-transform: capitalize;
   }
 
   &__button-container .button + .button {

@@ -11,6 +11,7 @@ import {
 import MainHeader from "@/components/MainHeader.vue";
 import PasswordInputShowHide from "@/components/chunks/PasswordInputShowHide.vue";
 import UserInformationForm from "@/components/chunks/UserInformationForm.vue";
+import LanguageSwitcher from "@/components/chunks/LanguageSwitcher.vue";
 
 import UiButton from "@/components/UI/UiButton.vue";
 import FormWrapper from "@/components//UI/FormWrapper.vue";
@@ -21,6 +22,7 @@ import useUserInformation from "@/helpers/composables/useUserInformation";
 import useEmailPasswordTouched from "@/helpers/composables/useEmailPasswordTouched";
 
 import { UserInformationModel } from "@/interfaces/UserTypes";
+import LoadingSpinner from "../UI/LoadingSpinner.vue";
 
 export default defineComponent({
   components: {
@@ -29,6 +31,8 @@ export default defineComponent({
     UiButton,
     UserInformationForm,
     PasswordInputShowHide,
+    LoadingSpinner,
+    LanguageSwitcher,
   },
   setup() {
     const {
@@ -173,6 +177,7 @@ export default defineComponent({
         novalidate
         class="validated-form__form"
       >
+        <LanguageSwitcher />
         <ul>
           <error-message v-if="error.status">{{ error.message }}</error-message>
           <li

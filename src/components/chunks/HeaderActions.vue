@@ -26,18 +26,24 @@ export default defineComponent({
   <div class="header-actions">
     <template v-if="isLoggedIn">
       <router-link :to="{ name: 'Account' }">
-        <UiButton medium colors="brand" transparent> My account </UiButton>
+        <UiButton medium colors="brand" transparent>
+          {{ $t("navigation.my_account") }}
+        </UiButton>
       </router-link>
-      <UiButton @click="logout" medium colors="brand"> Logout </UiButton>
+      <UiButton @click="logout" medium colors="brand">
+        {{ $t("navigation.logout") }}
+      </UiButton>
     </template>
     <template v-else>
       <router-link :to="{ name: 'Register' }">
         <UiButton medium borderless transparent colors="brand">
-          Register
+          {{ $t("navigation.registration") }}
         </UiButton>
       </router-link>
       <router-link :to="{ name: 'Login' }">
-        <UiButton medium colors="brand"> Login </UiButton>
+        <UiButton medium colors="brand">
+          {{ $t("navigation.login") }}
+        </UiButton>
       </router-link>
     </template>
   </div>

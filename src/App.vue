@@ -3,6 +3,7 @@ export default {
   created() {
     this.$store.dispatch("user/restoreUserData");
     this.$store.dispatch("movies/getMovies");
+    this.$i18n.locale = localStorage.getItem("user-lang");
   },
   metaInfo: {
     title: "",
