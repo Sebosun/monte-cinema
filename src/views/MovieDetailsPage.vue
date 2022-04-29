@@ -3,7 +3,7 @@ import Vue from "vue";
 
 import ErrorMessage from "@/components/UI/ErrorMessage.vue";
 import MainHeader from "@/components/MainHeader.vue";
-import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
+import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
 import MovieDescription from "@/components/chunks/MovieDescription.vue";
 import ScreeningsForOneMovie from "@/components/sections/ScreeningsForOneMovie.vue";
 

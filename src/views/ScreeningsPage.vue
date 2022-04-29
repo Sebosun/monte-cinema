@@ -1,6 +1,6 @@
 <script>
 import MainHeader from "@/components/MainHeader.vue";
-import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
+import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
 import AllScreeningsLogic from "@/components/sections/AllScreeningsLogic.vue";
 export default {
   metaInfo: {

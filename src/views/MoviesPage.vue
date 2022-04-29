@@ -3,7 +3,7 @@ import MainHeader from "@/components/MainHeader.vue";
 import MovieItem from "@/components/chunks/MovieItem.vue";
 import LoadingSpinner from "@/components/UI/LoadingSpinner.vue";
 import getGenres from "@/helpers/getGenres.ts";
-import BreadcrumbNavigation from "@/components/chunks/BreadcrumbNavigation.vue";
+import BreadcrumbNavigation from "@/components/navigation/BreadcrumbNavigation.vue";
 import DropdownSelect from "@/components/chunks/DropdownSelect.vue";
 
 export default {

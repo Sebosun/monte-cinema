@@ -1,5 +1,7 @@
 import BookingPage from "@/views/BookingPage.vue";
 import MyAccountPage from "@/views/MyAccountPage.vue";
+import EmployeeDeskPage from "@/views/employee/EmployeeDeskPage.vue";
+
 export default [
   {
     path: "/booking",
@@ -17,6 +19,12 @@ export default [
     path: "/my-account",
     name: "Account",
     component: MyAccountPage,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/desk",
+    name: "Desk",
+    component: EmployeeDeskPage,
     meta: { requiresAuth: true },
   },
 ];

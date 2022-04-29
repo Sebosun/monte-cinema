@@ -15,6 +15,7 @@ export default Vue.extend({
       type: Boolean,
       default: false,
     },
+    employee: Boolean,
   },
   methods: {
     getRow(ticket: string) {
@@ -28,6 +29,15 @@ export default Vue.extend({
     formatTime(): string {
       return dateToBookingHour(this.reservations.seance_datetime);
     },
+    isConfirmed(): boolean {
+      return this.reservations.status.name.toLowerCase() === "confirmed";
+    },
+    isRemoveButtonShown(): boolean {
+      if (this.isConfirmed && this.employee) {
+        return false;
+      }
+      return true;
+    },
   },
   components: { UiButton },
 });
@@ -40,7 +50,12 @@ export default Vue.extend({
       v-for="(ticket, index) in reservations.tickets"
       :key="index"
     >
-      <div class="reservations-table__ticket-info">
+      <div
+        :class="[
+          'reservations-table__ticket-info',
+          { 'reservations-table__ticket-info--employee': employee },
+        ]"
+      >
         <div class="reservations-table__movie">
           <h3 class="font--label">Movie</h3>
           <p>{{ reservations.movie_title }}</p>
@@ -62,6 +77,12 @@ export default Vue.extend({
           <h3 class="font--label">Ticket Type</h3>
           <p>${{ ticket.price }} {{ ticket.type }}</p>
         </div>
+        <template v-if="employee">
+          <div class="reservations-table__email">
+            <h3 class="font--label">Email</h3>
+            <p>{{ reservations.user_email }}</p>
+          </div>
+        </template>
       </div>
       <template v-if="enableButtons">
         <div class="reservations-table__actions-status">
@@ -69,22 +90,35 @@ export default Vue.extend({
             :class="[
               'reservations-table__status',
               {
-                'reservations-table--confirmed':
-                  reservations.status.name.toLowerCase() === 'confirmed',
+                'reservations-table--confirmed': isConfirmed,
               },
             ]"
           >
             <h3>{{ reservations.status.name }}</h3>
           </div>
-          <div class="reservations-table__remove">
+          <div v-if="isRemoveButtonShown" class="left-auto">
             <UiButton
               colors="primary"
               transparent
               @click="$emit('remove', ticket)"
-              medium
+              :medium="!employee"
+              :small="employee"
               >Remove</UiButton
             >
           </div>
+
+          <template v-if="employee && !isConfirmed">
+            <div class="left-auto">
+              <UiButton
+                colors="brand"
+                transparent
+                @click="$emit('confirm', ticket)"
+                :medium="!employee"
+                :small="employee"
+                >Confirm</UiButton
+              >
+            </div>
+          </template>
         </div>
       </template>
     </section>
@@ -122,7 +156,7 @@ export default Vue.extend({
       margin-bottom: 48px;
     }
     @include media-md {
-      grid-template-columns: 1fr minmax(10%, 30%);
+      grid-template-columns: 1fr minmax(20%, 30%);
     }
   }
 
@@ -134,7 +168,13 @@ export default Vue.extend({
       grid-template-columns: repeat(4, 1fr);
     }
     @include media-lg {
-      min-width: 850px;
+      min-width: 800px;
+    }
+
+    &--employee {
+      @include media-md {
+        grid-template-columns: repeat(5, 1fr);
+      }
     }
   }
 
@@ -174,7 +214,7 @@ export default Vue.extend({
     background: var(--color-rose);
   }
 
-  &__remove {
+  .left-auto {
     @include media-md {
       margin-left: auto;
     }
